@@ -1,10 +1,9 @@
+import AppRouter from "./routes/AppRouter"
+
 const App = () => {
-  return (
-    <div>
-        <>NestEve</>      
-    </div>
-  )
+  return <AppRouter/>
 }
 
 export default App
+
 
