@@ -21,7 +21,7 @@ const UpcomingEvents = () => {
           category: "NIGHT LIFE",
         },
         {
-          id: 1,
+          id: 2,
           title: "ByeMoon Party",
           description: `Get ready to light up the night! 🌕 Join us for the electrifying Bye Moon Party on December 31, 2024. Let’s welcome
           the New Year with music, dance, and unforgettable memories. Don’t miss it!`,
@@ -35,7 +35,7 @@ const UpcomingEvents = () => {
           category: "NIGHT LIFE",
         },
         {
-          id: 1,
+          id: 3,
           title: "ByeMoon Party",
           description: `Get ready to light up the night! 🌕 Join us for the electrifying Bye Moon Party on December 31, 2024. Let’s welcome
           the New Year with music, dance, and unforgettable memories. Don’t miss it!`,
@@ -49,7 +49,7 @@ const UpcomingEvents = () => {
           category: "NIGHT LIFE",
         },
         {
-          id: 1,
+          id: 4,
           title: "ByeMoon Party",
           description: `Get ready to light up the night! 🌕 Join us for the electrifying Bye Moon Party on December 31, 2024. Let’s welcome
           the New Year with music, dance, and unforgettable memories. Don’t miss it!`,

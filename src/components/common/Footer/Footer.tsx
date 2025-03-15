@@ -9,12 +9,12 @@ const Footer = () => {
     <footer className="border-[#2f00ff] border-2 py-5">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
-          <div  className='p-10'>
+          <div className='p-10'>
             {/* <Logo /> */}
             <img src="/logo.png" alt="logo" className="w-28 md:w-36 lg:w-40" />
             <p className="mt-4 text-gray-400 max-w-md">
-              Your ultimate destination for planning and discovering unforgettable events! 
-              From music festivals to workshops and themed gatherings, we connect you to 
+              Your ultimate destination for planning and discovering unforgettable events!
+              From music festivals to workshops and themed gatherings, we connect you to
               experiences that inspire. Start creating lasting memories today.
             </p>
           </div>

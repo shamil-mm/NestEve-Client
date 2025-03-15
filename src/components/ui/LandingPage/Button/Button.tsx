@@ -13,7 +13,7 @@ const Button :React.FC<ButtonProps>= ({variant='Primary',children,...props}) => 
   return (
     <button
     className={`
-      px-6 py-2 rounded-md font-medium transition-all
+      px-6 py-2 rounded-md font-medium transition-all w-full md:w-auto
       ${variants[variant as keyof typeof variants]}
     `}
       {...props}

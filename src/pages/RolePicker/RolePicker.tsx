@@ -1,4 +1,3 @@
-import React from 'react'
 import AuthProcessLayouts from '../../components/common/AuthProcessLayouts/AuthProcessLayouts'
 
 const RolePicker = () => {

@@ -3,6 +3,7 @@ import Navbar from '../../../common/Navbar/Navbar';
 import Button from '../../../ui/LandingPage/Button/Button';
 
 const Hero = () => {
+ 
   return (
     <div className="relative h-screen flex flex-col">
 

@@ -9,8 +9,8 @@ interface EventFilterProps {
 const EventFilter:React.FC<EventFilterProps> = ({ label, placeholder }) => {
   return (
     <div className="relative">
-      <select className="w-full py-3 px-4 pr-8 bg-indigo-900/40 border border-indigo-800 rounded-md text-white appearance-none focus:outline-none focus:ring-2 focus:ring-white">
-        <option value="" disabled selected>{placeholder}</option>
+      <select defaultValue="option" className="w-full py-3 px-4 pr-8 bg-indigo-900/40 border border-indigo-800 rounded-md text-white appearance-none focus:outline-none focus:ring-2 focus:ring-white">
+        <option value="option" disabled >{placeholder}</option>
         <option value="option1">Option 1</option>
         <option value="option2">Option 2</option>
         <option value="option3">Option 3</option>

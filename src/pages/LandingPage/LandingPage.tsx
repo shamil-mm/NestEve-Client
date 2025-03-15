@@ -5,7 +5,16 @@ import ExploreCategories from '../../components/layout/LandingPage/ExploreCatego
 import LatestPosts from '../../components/layout/LandingPage/LatestPosts/LatestPosts'
 import EventSearch from '../../components/layout/LandingPage/EventSearch/EventSearch'
 import Footer from '../../components/common/Footer/Footer'
+import { useEffect } from 'react'
+import { useAppDispatch } from '../../hooks/AuthHook'
+import { clear } from '../../store/slices/auth'
+
 const LandingPage = () => {
+  const dispatch=useAppDispatch()
+
+  useEffect(()=>{
+    dispatch(clear())
+  },[])
   return (
     <div className='min-h-screen bg-black test-white'>
       <Hero/>
