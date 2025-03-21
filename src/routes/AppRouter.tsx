@@ -9,6 +9,8 @@ import Dashboard from "../pages/AdminPages/Dashboard";
 import User from "../pages/AdminPages/User";
 import Organizers from "../pages/AdminPages/Organizer";
 import VerifyForgotPassword from "../pages/verifyEmail/VerifyForgotPassword";
+import EditUserProfile from "../pages/UserProfile/EditUserProfile";
+import UserProfile from "../pages/UserProfile/UserProfile";
 
 const AppRouter = () => {
   return (
@@ -19,7 +21,9 @@ const AppRouter = () => {
             <Route path="/verify-email" element={<VerifyEmail/>} />
             <Route path='/forgot-password' element={<VerifyForgotPassword/>}/>
             <Route element={<ProtectedRoutes/>}>
-           
+            <Route path='/profile' element={<UserProfile/>}></Route>
+            <Route path='/edit-profile' element={<EditUserProfile/>}></Route>
+
             </Route>
 
       

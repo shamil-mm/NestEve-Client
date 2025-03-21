@@ -159,3 +159,114 @@ export const verifyForgotPasswordToken= async(token:string)=>{
       
   }
 }
+
+export const fetchUserData=async(userId: string)=>{
+  try {
+    const response=await client.get(`/auth/api/currect-user/${userId}`)
+    return response?.data?.user
+    
+  } catch (error) {
+    console.log('fetch user data error',error)
+  }
+}
+export const fetchAddress=async(userId: string)=>{
+  try {
+    const response=await client.get(`/auth/api/user-address/${userId}`)
+    return response?.data?.address
+    
+  } catch (error) {
+    console.log('fetch user data error',error)
+  }
+}
+export const addAddress=async(email:string,address:object)=>{
+  try {
+    const response=await client.post(`/auth/api/add-address`,{email,address})
+   return response.data
+    
+  } catch (error) {
+    console.log('user address sent to the server error',error)
+  }
+}
+export const deleteAddress=async(data:{userId:string,addressId:string})=>{
+  try {
+    const response=await client.post(`/auth/api/delete-address`,data)
+    return response.data
+  } catch (error) {
+    console.log('user address delete error',error)
+  }
+}
+export const updateAddress=async(email:string,address:object,addressId:string)=>{
+  try {
+    const response=await client.post(`/auth/api/update-address`,{email,address,addressId})
+   return response.data
+    
+  } catch (error) {
+    console.log('user address sent to the server error',error)
+  }
+}
+export const updateName=async(data:{userId:string,name:string})=>{
+
+  try {
+    const response=await client.post(`/auth/api/update-name`,data)
+   return response.data
+    
+  } catch (error) {
+    console.error('User name update error:', error);
+    throw new Error('Failed to update user name. Please try again later.');
+  }
+}
+export const updatePassword=async(email:string,passwords:{oldpassword:string,newpassword:string})=>{
+
+  try {
+    const response=await client.post(`/auth/api/update-password`,{email,passwords})
+   return response.data
+    
+  } catch (error) {
+    console.error('User name update error:', error);
+    throw new Error('Failed to update user name. Please try again later.');
+  }
+}
+
+export const imageUpload=async(url:string,imageFile:File)=>{
+  try {
+   console.log('url form service',url)
+   const response=await axios.put(url,imageFile,{headers:{'Content-Type':imageFile.type}})
+   return response
+   
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw new Error('Failed to update image. Please try again later.');
+  }
+
+}
+export const generatePrisignedUrl=async(params:{fileName:string,fileType:string})=>{
+  try {
+    console.log(params)
+    const response=await client.get(`/auth/api/generate-presigned-url`,{params})
+    return response.data
+  } catch (error) {
+    console.error('generateprisigned url error:', error);
+    throw new Error('Failed to generate prisigned url . Please try again later.');
+  }
+
+}
+export const saveImageUrl=async(imageUrl :string,id:string)=>{
+  try {
+    
+    const response=await client.post(`/auth/api/save-image-url`,{imageUrl,id})
+   return response.data
+  } catch (error) {
+    console.error('Failed to save image url', error);
+    throw new Error('Failed to save image url');
+    
+  }
+}
+export const deleteImage=async(imageUrl:string)=>{
+  try {
+    const response=await client.post(`/auth/api/delete-image-url`,{imageUrl})
+    console.log('delete image ',response)
+  } catch (error) {
+    console.error('Failed to delete image from s3', error);
+    throw new Error('Failed to delete image from s3');
+  }
+}
