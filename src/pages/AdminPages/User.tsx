@@ -115,9 +115,9 @@ const User = () => {
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
+            {/* <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
               Add New User
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -126,7 +126,7 @@ const User = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-blue-600 text-white">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">User Id</th>
+                {/* <th className="px-6 py-3 text-left text-sm font-medium border-r">User Id</th> */}
                 <th className="px-6 py-3 text-left text-sm font-medium border-r">User name</th>
                 <th className="px-6 py-3 text-left text-sm font-medium border-r">Email</th>
                 <th className="px-6 py-3 text-left text-sm font-medium border-r">Event Created</th>
@@ -138,7 +138,7 @@ const User = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredUsers?filteredUsers.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user._id}</td>
+                  {/* <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user._id}</td> */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user.email}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-center border-r">10</td>

@@ -9,13 +9,33 @@ import FavoriteCart from '../../components/ui/UserProfile/FavoriteCart';
 import nightlife from '../../assets/byemoon.jpg'
 import RatingAndReview from '../../components/ui/UserProfile/RatingAndReview';
 import { useAppSelector } from "../../hooks/AuthHook";
+import { useEffect, useState } from 'react';
+import { fetchUserData, getProfileImage } from '../../services/authServices';
 
 
 const UserProfile = () => {
     const navigate=useNavigate()
+    
+    const id = useAppSelector((state) => state.authUser?.user?.id)
+    const [currentUser, setCurrentUser] = useState<{name:string,email:string;avatarUrl:string,role:string}|null>(null);
+    const [selectedImage,setSelectedImage]=useState<string | null>(null)
+    useEffect(()=>{ 
+      const fetchUser=async()=>{
+       
+        if(id){
+          const getUser= await fetchUserData(id as string)
+          setCurrentUser(getUser)
+          const response= await getProfileImage(getUser.avatarUrl)
+          if(JSON.stringify(response.data.url)!=='{}'){
+            setSelectedImage(response.data.url)
+          }
+        }
+      }
+      fetchUser()
+    },[id])
 
-    const avatarUrl = useAppSelector((state) => state.authUser?.user?.avatarUrl)
-    const name = useAppSelector((state) => state.authUser?.user?.name)
+    
+
     const favorites = [
       { image: nightlife, name: "ByeMoon Party" },
       { image: nightlife, name: "Beach Bash" },
@@ -34,11 +54,12 @@ const UserProfile = () => {
       {/* Profile Header */}
       <div className="flex flex-col items-center gap-4 p-4">
         <div className="w-25 h-25 rounded-full bg-gray-300 overflow-hidden">
-          {avatarUrl ? (<img src={avatarUrl} alt="User avatar" className="w-full h-full object-cover" />):(<img src={useravatar} alt="User avatar" className="w-full h-full object-cover" />)}
+         {/* <h1>{selectedImage}</h1>  */}
+          {selectedImage ? (<img src={selectedImage} alt="User avatar" className="w-full h-full object-cover" />):(<img src={useravatar} alt="User avatar" className="w-full h-full object-cover" />)}
           {/* <img src={useravatar} alt="User avatar" className="w-full h-full object-cover" /> */}
         </div>
         <div className="flex-1">
-          <h2 className="text-lg font-semibold">{name}</h2>
+          <h2 className="text-lg font-semibold">{currentUser?.name}</h2>
         </div>
         <button onClick={()=>{navigate('/edit-profile')}} className="text-sm border border-blue-700 rounded px-3 py-1">
           Edit

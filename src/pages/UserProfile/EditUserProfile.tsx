@@ -2,11 +2,12 @@ import SecondNavbar from "../../components/common/Navbar2/SecondNavbar"
 import useravatar from '../../assets/useravatar.jpg'
 import bg from '../../../src/assets/abstract-background.jpg';
 import React, { useEffect, useState } from "react";
-import { addAddress, deleteAddress, fetchAddress, fetchUserData, updateAddress, updateName, updatePassword } from "../../services/authServices";
+import { addAddress, deleteAddress, deleteImageFromServer, fetchAddress, fetchUserData, getProfileImage, updateAddress, updateName, updatePassword } from "../../services/authServices";
 import { useAppSelector } from "../../hooks/AuthHook";
 import { zodAddressSchema } from "../../schemas/userSchema";
 import { toast } from "react-fox-toast";
 import ImageUpload from "../../components/layout/UserProfile/ImageUpload";
+
 
 const EditUserProfile = () => {
   interface addressForm{
@@ -22,17 +23,19 @@ const EditUserProfile = () => {
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [showFileUploadForm, setShowFileUploadForm] = useState(false);
     const id = useAppSelector((state) => state.authUser?.user?.id)
-    const [currentUser, setCurrentUser] = useState<{name:string,email:string;avatarUrl:string,role:string}|null>(null);
+    const [currentUser, setCurrentUser] = useState<{name:string,email:string;avatarUrl:string|null,role:string}|null>(null);
     const [singleAddress,setSingleAddress]=useState<addressForm>({phone:"" ,
       street: "",
       city: "",
       state: "",
       country: "",
       zip: ""})
+    const [selectedImage,setSelectedImage]=useState<string | null>(null)
     const [zoderror,setZodError]=useState<Record<string,string>>({})
     const [selectedAddress, setSelectedAddress] = useState<number>(0);
     const [name,setName]=useState("")
     const [passwords,setPasswords]=useState({})
+  
      
   
     const [addresses, setAddresses] = useState<addressForm[]>([]);
@@ -43,17 +46,22 @@ const EditUserProfile = () => {
       if (savedAddress !== null) {
         setSelectedAddress(parseInt(savedAddress, 10)); 
       }
-
     },[])
   useEffect(()=>{
     const fetchUser=async()=>{
       const user= await fetchUserData(id as string)
-      setCurrentUser(user)
+      if(user){
+        setCurrentUser(user)
+      }
+      const response= await getProfileImage(user.avatarUrl)
+      if(JSON.stringify(response.data.url)!=='{}'){
+        setSelectedImage(response.data.url)
+      }
       const address=await fetchAddress(id as string)
       setAddresses(address)
     }
     fetchUser()
-  },[id])
+  },[id,currentUser?.avatarUrl])
 
   const handleAddress=async(e:React.FormEvent)=>{
     e.preventDefault()
@@ -95,7 +103,10 @@ const EditUserProfile = () => {
           state: "",
           country: "",
           zip: ""})
-        setShowAddressForm(false);  
+        setShowAddressForm(false);
+
+        console.log("address submited :",res?.address) 
+        setAddresses((prev)=>[...prev,res?.address]); 
       }else{
        toast.error(res.message)
       }
@@ -179,7 +190,20 @@ const EditUserProfile = () => {
       </div>
     )
   }
+  const deleteProfileImage=async()=>{
+    if(id && currentUser?.avatarUrl ){
+      const response=await deleteImageFromServer(id as string,currentUser?.avatarUrl as string)
+      if(response?.data?.status){
+        setCurrentUser(prevUser => ({
+          ...prevUser!,
+          avatarUrl: null
+        }));
+        setSelectedImage(null)
 
+      }
+    }
+    
+  }
   
 
 
@@ -280,8 +304,8 @@ const EditUserProfile = () => {
         <div className="flex flex-col items-center space-y-4 w-full md:w-1/3">
           <div className="relative">
             <div className="w-24 h-24 rounded-full bg-gray-300 overflow-hidden">
-              {currentUser?.avatarUrl ?( <img 
-                src={currentUser?.avatarUrl} 
+              {selectedImage ?( <img 
+                src={selectedImage} 
                 alt="User avatar" 
                 className="w-full h-full object-cover"
               />):( <img 
@@ -293,9 +317,17 @@ const EditUserProfile = () => {
             </div>
             <span className="block text-center mt-2 text-lg font-medium">{currentUser?.name}</span>
             <br/>
-            <button onClick={()=>setShowFileUploadForm(true)} className="bg-blue-600 text-white px-3 py-1 text-xs rounded absolute bottom-0 ml-6">
+            <div className="flex justify-center gap-2 mt-2">
+            <button onClick={()=>setShowFileUploadForm(true)} className="border-blue-600 border-1 text-white px-3 py-1 text-xs rounded">
               Edit
             </button>
+            {selectedImage && ( <button onClick={deleteProfileImage} className="border-red-600 border-1 text-white px-3 py-1 text-xs rounded">
+              delete
+            </button>)}
+           
+            </div>
+           
+        
           </div>
           <div/>
 

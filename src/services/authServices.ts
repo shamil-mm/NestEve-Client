@@ -227,7 +227,11 @@ export const updatePassword=async(email:string,passwords:{oldpassword:string,new
   }
 }
 
+
+// image upload recorrection
+
 export const imageUpload=async(url:string,imageFile:File)=>{
+  console.log(imageFile)
   try {
    console.log('url form service',url)
    const response=await axios.put(url,imageFile,{headers:{'Content-Type':imageFile.type}})
@@ -241,7 +245,6 @@ export const imageUpload=async(url:string,imageFile:File)=>{
 }
 export const generatePrisignedUrl=async(params:{fileName:string,fileType:string})=>{
   try {
-    console.log(params)
     const response=await client.get(`/auth/api/generate-presigned-url`,{params})
     return response.data
   } catch (error) {
@@ -250,10 +253,10 @@ export const generatePrisignedUrl=async(params:{fileName:string,fileType:string}
   }
 
 }
-export const saveImageUrl=async(imageUrl :string,id:string)=>{
+export const saveImageUrl=async(params:{fileName:string,fileType:string},id:string)=>{
   try {
-    
-    const response=await client.post(`/auth/api/save-image-url`,{imageUrl,id})
+    console.log(params)
+    const response=await client.post(`/auth/api/save-image-url`,{params,id})
    return response.data
   } catch (error) {
     console.error('Failed to save image url', error);
@@ -263,10 +266,75 @@ export const saveImageUrl=async(imageUrl :string,id:string)=>{
 }
 export const deleteImage=async(imageUrl:string)=>{
   try {
+    console.log("delete image url is working")
     const response=await client.post(`/auth/api/delete-image-url`,{imageUrl})
     console.log('delete image ',response)
   } catch (error) {
     console.error('Failed to delete image from s3', error);
     throw new Error('Failed to delete image from s3');
+  }
+}
+
+export const uploadImageToServer=async(file:File,id:string,oldImageUrl:string)=>{
+  try {
+
+    const formData=new FormData()
+    formData.append('image',file,file.name)
+    formData.append('userId',id)
+    formData.append('oldImageUrl',oldImageUrl)
+    console.log('File details:', {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    });
+
+    const response=await client.post(`/auth/api/upload-image-to-server`,formData,{
+      headers:{"Content-Type": "multipart/form-data"},
+      timeout: 30000, 
+      onUploadProgress: (progressEvent) => {
+        const percentCompleted = progressEvent.total 
+          ? Math.round((progressEvent.loaded * 100) / progressEvent.total) 
+          : 0;
+        console.log(`Upload Progress: ${percentCompleted}%`);
+      }
+    })
+    return response
+   } catch (error :any) {
+     console.error('Error uploading image:', error);
+     if (error.response) {
+      // The request was made and the server responded with a status code
+      console.error('Server Response Error:', error.response.data);
+      console.error('Status Code:', error.response.status);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('No Response Received:', error.request);
+    } else {
+      // Something happened in setting up the request
+      console.error('Error Setup:', error.message);
+    }
+
+    throw new Error('Failed to upload image. Please check file size and network connection.');
+  }
+   
+}
+
+export const getProfileImage= async(avatarUrl:string)=>{
+  try {
+    const response=await client.get(`/auth/api/get-profileImage`,{params:{avatarUrl}})
+    return response
+  } catch (error) {
+    console.error('Failed to get image from s3', error);
+    throw new Error('Failed to get image from s3');
+  }
+}
+
+export const deleteImageFromServer=async (id:string,avatarUrl:string)=>{
+  try {
+    const response=await client.post(`/auth/api/delete-profileImage`,{id,avatarUrl})
+    return response
+    
+  } catch (error) {
+    console.error('Failed to get image from s3', error);
+    throw new Error('Failed to get image from s3');   
   }
 }

@@ -32,7 +32,7 @@ const Navbar = () => {
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAppSelector((state) => state.authUser)
   if (user?.role == "organizer") {
-    userDropdownOptions.unshift({ label: "Manage Events", onClick: () => navigate('/manageEvents') })
+    userDropdownOptions.unshift({ label: "Manage Events", onClick: () => navigate('/manage-events') })
   }
 
   return (

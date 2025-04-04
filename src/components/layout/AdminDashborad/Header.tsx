@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const dispatch=useAppDispatch()
-  const {user}=useAppSelector((state)=>state.authUser)
+  const {admin}=useAppSelector((state)=>state.authAdmin)
   const navigate=useNavigate()
 
   const handleLogout=async(e:React.MouseEvent<HTMLDivElement>)=>{
@@ -53,12 +53,12 @@ const Header = () => {
               2
             </span>
           </div>
-          {user&&(<div className="flex items-center">
+          {admin&&(<div className="flex items-center">
             <div className="h-8 w-8 rounded-full bg-gray-300 mr-2 flex items-center justify-center">
               <span className="text-xs font-medium">MR</span>
             </div>
             <div className="hidden md:block">
-              <div className="text-sm font-medium">{user.email}</div>
+              <div className="text-sm font-medium">{admin.email}</div>
               <div className="text-xs text-gray-500">Admin</div>
             </div>
           </div>)}

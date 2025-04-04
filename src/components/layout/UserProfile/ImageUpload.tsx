@@ -1,29 +1,46 @@
 import { FileUp } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { deleteImage, generatePrisignedUrl, imageUpload, saveImageUrl } from '../../../services/authServices';
+import { deleteImage, fetchUserData, generatePrisignedUrl, getProfileImage, imageUpload, saveImageUrl, uploadImageToServer } from '../../../services/authServices';
 import { toast } from 'react-fox-toast';
 import { useAppDispatch,useAppSelector } from "../../../hooks/AuthHook";
 import { setAvatar } from '../../../store/slices/authUsers';
+import { useNavigate } from 'react-router-dom';
 
 const ImageUpload = () => {
+
     const [selectedImage,setSelectedImage]=useState<string | null>(null)
     const [imageFile,setImageFile]=useState<File|null>(null);
     const [uploading,setUploading]=useState(false)
-    const [previewUrl,setPreviewUrl]=useState<string|null>(null)
     const [error,setError]=useState("")
     const dispatch=useAppDispatch()
-    useEffect(()=>{
-        setSelectedImage(selectedImage)
-    },[selectedImage])
-
     const id = useAppSelector((state) => state.authUser?.user?.id)
+    const [user,setUser]=useState<{name:string,email:string;avatarUrl:string,role:string}|null>(null)
+    const navigate=useNavigate()
+
+    // useEffect(()=>{
+    //     setSelectedImage(selectedImage)
+    // },[selectedImage])
+
+    useEffect(()=>{ 
+        const fetchUser=async()=>{
+          const user= await fetchUserData(id as string)
+          setUser(user)
+          const response= await getProfileImage(user.avatarUrl)
+          console.log(response.data.url)
+          if(JSON.stringify(response.data.url)!=='{}'){
+            setSelectedImage(response.data.url)
+          }
+          
+        }
+        fetchUser()
+      },[id])
+   
     const handleImageChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
         const file=e?.target.files?.[0]
         if(file && file.type.startsWith('image/')){
             const reader= new FileReader()
             reader.onloadend=()=>{
-               const result =  reader.result as string
-                setSelectedImage(result)    
+                setSelectedImage(reader.result as string)    
             }
             reader.readAsDataURL(file)
             setImageFile(file)
@@ -42,42 +59,27 @@ const ImageUpload = () => {
         setError("Please select an image to upload.")
         return
     }
+    if (!id) {
+      setError("User ID not found. Please try again.");
+      return;
+    }
+    
     setUploading(true);
     setError("")
       try {
-
-          const oldImageUrl=previewUrl
-          console.log("old url",oldImageUrl)
-        
-
-
-       const{url}= await generatePrisignedUrl({fileName:imageFile.name ,fileType:imageFile.type})
-       const res= await imageUpload(url,imageFile)
-       const imageUrl=url.split('?')[0]
-
-       if(oldImageUrl){
-        await deleteImage(oldImageUrl)
-       }
-
-       console.log("new image url",imageUrl)
-       setPreviewUrl(imageUrl)
-       if (!id) {
-        setError("User ID not found. Please try again.");
-        return;
-    }
-       const response=await saveImageUrl(imageUrl,id as string)
-       dispatch(setAvatar(imageUrl))
-       if(res.status===200 && response.status===true){
-        toast.success('Image Updated')
-       }
-       
-
+        const oldImageUrl=user?.avatarUrl
+        const response=await uploadImageToServer(imageFile,id,oldImageUrl as string)
+        if(response.data){
+          toast.success('Image Updated')
+          dispatch(setAvatar(response.data.avatarUrl))
+          navigate('/profile')
+        }
         
       } catch (err:any) {
         console.error('Upload error:', err);
         const errorMessage = err.response?.data?.message || 'Failed to upload image. Please try again.';
       setError(errorMessage);
-      // toast.error(errorMessage)
+      toast.error(errorMessage)
         
       }finally{
         setUploading(false);
@@ -90,19 +92,19 @@ const ImageUpload = () => {
 
     <div  >
       <div className= " bg-black/80 bg-opacity-70 p-12 space-y-4  max-w-[100%]">
-      <div className="flex justify-center align-middle">
-    {previewUrl ? (<img src={previewUrl} alt="Uploaded preview" className="w-20 h-20 rounded-full object-cover" />) :(
+     <div className="flex justify-center align-middle">
+    
       
-      selectedImage ? (
-        <img src={selectedImage} alt="Preview" className="w-20 h-20 rounded-full object-cover" />
+      {selectedImage ? (
+        <img src={selectedImage}  alt="Preview" className="w-20 h-20 rounded-full object-cover" />
     ):(
         <FileUp size={80}/>
-    )
     )}
+    
     
       
         
-      </div>
+      </div> 
       <h1  className="text-center"> Upload Profile Image</h1>
            
             

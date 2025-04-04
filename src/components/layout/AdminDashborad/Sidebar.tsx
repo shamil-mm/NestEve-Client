@@ -10,7 +10,8 @@ import {
     CreditCard, 
     User, 
     LogOut, 
-    UserRoundCog
+    UserRoundCog,
+    Group
   } from 'lucide-react';
   import { Link} from 'react-router-dom';
 
@@ -22,7 +23,8 @@ const Sidebar = () => {
         { icon: <Ticket size={20} />, label: 'Ticketing' },
         { icon: <Users size={20} />, label: 'Users' ,link:'/admin-user'},
         { icon:<UserRoundCog size={20} /> ,label:'Organizers',link:'/admin-organizer'},
-        { icon: <Tag size={20} />, label: 'Categories and Tags' },
+        { icon: <Tag size={20} />, label: 'Tags',link:'/admin-tags' },
+        { icon: <Group size={20} />, label: 'Categories',link:'/admin-category' },
         { icon: <MessageSquare size={20} />, label: 'Messages' },
         { icon: <Bell size={20} />, label: 'Notifications' },
         { icon: <CreditCard size={20} />, label: 'Payment and Transactions' },
