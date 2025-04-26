@@ -1,69 +1,33 @@
 import EventCard from "./EventCard"
 import SectionTitle from "../../../ui/LandingPage/SectionTitle/SectionTitle"
 import Button from "../../../ui/LandingPage/Button/Button";
+import { useEffect, useState } from "react";
+import { fetchAllEvents } from "../../../../services/EventServices";
+import { IEvent } from "../../../../interfaces/IEvent";
+import { useNavigate } from "react-router-dom";
 
 
 
 const UpcomingEvents = () => {
-    const events = [
-        {
-          id: 1,
-          title: "ByeMoon Party",
-          description: `Get ready to light up the night! 🌕 Join us for the electrifying Bye Moon Party on December 31, 2024. Let’s welcome
-          the New Year with music, dance, and unforgettable memories. Don’t miss it!`,
-          date: "DEC 31, 2024",
-          startDate: "2024-12-31", 
-          eventTime: "21:00", 
-          doortime: "20:00", 
-          image: "/api/placeholder/400/300",
-          capacity: 500,
-          time: "20:00",
-          category: "NIGHT LIFE",
-        },
-        {
-          id: 2,
-          title: "ByeMoon Party",
-          description: `Get ready to light up the night! 🌕 Join us for the electrifying Bye Moon Party on December 31, 2024. Let’s welcome
-          the New Year with music, dance, and unforgettable memories. Don’t miss it!`,
-          date: "DEC 31, 2024",
-          startDate: "2024-12-31", 
-          eventTime: "21:00", 
-          doortime: "20:00", 
-          image: "/api/placeholder/400/300",
-          capacity: 500,
-          time: "20:00",
-          category: "NIGHT LIFE",
-        },
-        {
-          id: 3,
-          title: "ByeMoon Party",
-          description: `Get ready to light up the night! 🌕 Join us for the electrifying Bye Moon Party on December 31, 2024. Let’s welcome
-          the New Year with music, dance, and unforgettable memories. Don’t miss it!`,
-          date: "DEC 31, 2024",
-          startDate: "2024-12-31", 
-          eventTime: "21:00", 
-          doortime: "20:00", 
-          image: "/api/placeholder/400/300",
-          capacity: 500,
-          time: "20:00",
-          category: "NIGHT LIFE",
-        },
-        {
-          id: 4,
-          title: "ByeMoon Party",
-          description: `Get ready to light up the night! 🌕 Join us for the electrifying Bye Moon Party on December 31, 2024. Let’s welcome
-          the New Year with music, dance, and unforgettable memories. Don’t miss it!`,
-          date: "DEC 31, 2024",
-          startDate: "2024-12-31", 
-          eventTime: "21:00", 
-          doortime: "20:00", 
-          image: "/api/placeholder/400/300",
-          capacity: 500,
-          time: "20:00",
-          category: "NIGHT LIFE",
-        },
-        
-      ];
+  
+  const [events,setEvents]=useState< IEvent []>([])
+  const navigate=useNavigate()
+  useEffect(()=>{
+    const fetchEvent=async()=>{
+      try {
+        const response=await fetchAllEvents()
+        if(response?.data.events){
+          setEvents(response?.data.events)
+        }
+      } catch (error) {
+        console.log('error in fetch event from upcoming events')
+      }
+
+    }
+    fetchEvent()
+
+
+  },[])
     
   return (
     <section className="py-20 bg-black">
@@ -86,12 +50,12 @@ const UpcomingEvents = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {events.map(event => (
-            <EventCard key={event.id} event={event} />
+            <EventCard key={event._id} event={event} />
           ))}
         </div>
       </div>
       <div className="flex justify-center">
-      <Button variant="outline">ALL EVENTS</Button>
+      <Button variant="outline" onClick={()=>{navigate('/search-event')}}>ALL EVENTS</Button>
       </div>
     </section>
   )

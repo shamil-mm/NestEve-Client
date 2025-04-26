@@ -4,23 +4,100 @@ export const zodEventSchema=z.object({
   description: z.string().min(10, "Description should be at least 10 characters"),
   startDate: z.string().refine((date) => !isNaN(Date.parse(date)), { message: "Invalid start date" }),
   endDate: z.string().refine((date) => !isNaN(Date.parse(date)), { message: "Invalid end date" }),
-  startTime: z.string().min(1, "Start time is required").regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format"),
-  endTime: z.string().min(1, "End time is required") .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format"),
+  startTime: z.string().min(1, "Start time is required").regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time "),
+  endTime: z.string().min(1, "End time is required") .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time "),
   status: z.enum(["showing", "hidden", "draft"]),
-  ticketCharge: z.string().min(1, { message: "Ticket price is required" }).refine((val) => !isNaN(Number(val)) && Number(val) >= 0, { message: "Invalid ticket price" }),
   category: z.string().min(1, "Category is required"),
   venue: z.string().min(1, "Venue is required"),
-  capacity: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, { message: "Capacity must be a number" }),
-  location: z.string().min(3, "Location must be at least 3 characters"),
+  locationName: z.string().min(3, "Location must be at least 3 characters"),
   latitude: z.string().optional(),
   longitude: z.string().optional(),
 }).refine(({ startTime, endTime }) => {
-    return startTime < endTime; 
+  const [startHours, startMinutes] = startTime.split(":").map(Number);
+  const [endHours, endMinutes] = endTime.split(":").map(Number);
+  const start=new Date()
+  start.setHours(startHours,startMinutes,0,0)
+  const end=new Date();
+    end.setHours(endHours,endMinutes,0,0)
+    if (end <= start) {
+      end.setDate(end.getDate() + 1);
+    }
+    return end > start 
   }, {
-    message: "startTime must be before endTime",
+    message: "End time must be after start time",
     path: ["endTime"], 
   })
   .refine(({ startDate, endDate }) => Date.parse(startDate) < Date.parse(endDate), {
     message: "startDate must be before endDate",
     path: ["endDate"], 
   });
+
+
+
+  
+
+const createTicketTypeSchema=(seated:boolean):z.ZodType<any>=>{
+  return z.object({
+    name:z.string().min(1,"Name is required"),
+    price:z.string()
+    .optional()
+    .refine(
+      (val)=>seated || (!!val && !isNaN(Number(val as string))),{
+      message:"Price must be a number"
+    }),
+    capacity:z.number().min(1,"Capacity must be at least 1")
+ 
+  })
+}
+
+export const createZodTickenTypesSchema=(seated:boolean):z.ZodType<any>=>
+  z.array(createTicketTypeSchema(seated))
+  .min(1,"At least one ticket type is required")
+
+
+
+
+
+
+
+
+
+
+//   const ticketTypeSchema=z.object({
+//     name:z.string().min(1,"Name is required"),
+//     price:z.string().optional().refine(val=>!isNaN(Number(val as string)),{
+//       message:"Price must be a number"
+//     }),
+//     capacity:z.number().min(1,"Capacity must be at least 1")
+//   })
+//  export const ZodTicketTypesSchema=z.array(ticketTypeSchema).min(1,'At least one ticket type is required')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ const seatCategorySchema = z.object({
+  name: z.string().min(1, "Category name is required"),
+  rowRange: z
+    .array(
+      z.string().length(3).regex(/^[A-Z]-[A-Z]$/, "Row range must be in format A-J"),
+    ),
+  price: z.number().min(0, "Price must be a positive number"),
+});
+
+export const zodSeatingLayoutSchema = z.object({
+  rows: z.number().min(1, "Rows must be at least 1"),
+  columns: z.number().min(1, "Columns must be at least 1"),
+  categories: z
+    .array(seatCategorySchema)
+    .min(1, "At least one seat category is required"),
+});

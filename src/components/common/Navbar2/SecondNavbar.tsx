@@ -5,6 +5,7 @@ import Button from "../../ui/LandingPage/Button/Button";
 // import { useNavigate } from "react-router-dom";
 // import { useAppSelector, useAppDispatch } from "../../../hooks/AuthHook";
 import { BellDot, Calendar, User } from 'lucide-react'
+import { useNavigate } from "react-router-dom";
 
 
 const SecondNavbar = () => {
@@ -13,7 +14,7 @@ const SecondNavbar = () => {
 //   const dispatch = useAppDispatch()
 
  
-//   const navigate = useNavigate()
+  const navigate = useNavigate()
 //   const { user, isAuthenticated } = useAppSelector((state) => state.authUser)
  
 
@@ -22,7 +23,7 @@ const SecondNavbar = () => {
     <nav className="absolute top-0 left-0 right-0 z-50 bg-black/70 ">
       <div className="container mx-auto py-4 md:py-6 flex justify-between items-center text-white">
         {/* Logo */}
-        <img src="/logo.png" alt="logo" className="w-28 md:w-36 lg:w-40" />
+        <img src="/logo.png" alt="logo" onClick={()=>navigate('/')} className="w-28 md:w-36 lg:w-40" />
 
         {/* Desktop Buttons */}
         {/* {isAuthenticated ? ( */}

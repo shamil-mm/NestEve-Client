@@ -13,7 +13,7 @@ const User = () => {
   }
 
   const [users, setUsers]=useState<Users[]>([])
-  const [data,setData]=useState<Users|object>({})
+  // const [data,setData]=useState<Users|object>({})
   useEffect(()=>{
     const FetchUsers=async()=>{
       try {
@@ -27,7 +27,7 @@ const User = () => {
       }
     }
     FetchUsers()
-  },[data])
+  },[])
    
    
     
@@ -46,18 +46,30 @@ const User = () => {
         }
       };
     
-      // Handle search
+      
       const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
         setSearchTerm(e.target.value);
       };
-      // Handle block
+  
 
       const handleBlock=async(data:{email:string,is_block:boolean})=>{
-        const res=await blockUser(data)
-        setData(res?.data?.response?.updatedUser)
+        try {
+          const res=await blockUser(data)
+          const updatedUser=res?.data?.response?.updatedUser
+          // setData(res?.data?.response?.updatedUser)
+          setUsers(prevUser=>
+            prevUser.map(user=>
+              user.email===updatedUser.email ? {...user,is_block:updatedUser.is_block}:user
+            )
+          )
+          
+        } catch (error) {
+          console.error("Error blocking user:", error);
+        }
+       
       }
     
-      // Filter users based on search term
+  
       
 
      let filteredUsers 

@@ -15,7 +15,11 @@ const Navbar = () => {
   const naveItem = ["Home", "Find Events", "About"];
   const userDropdownOptions = [
     { label: "Profile", onClick: () => navigate('/profile') },
-    { label: "Settings", onClick: () => navigate('/settings') },
+    { label: "Browse Events", onClick: () => navigate('/search-event') },
+    { label: "Tickets", onClick: () => navigate('/event-tickets') },
+    { label: "Notifications", onClick: () => navigate('/event-notifications') },
+    { label: "Chats", onClick: () => navigate('/event-chats') },
+    { label: "Payment & History", onClick: () => navigate('/event-payment-history') },
     { label: "Logout", onClick: () => handleLogout() },
   ];
   const handleLogout = async () => {

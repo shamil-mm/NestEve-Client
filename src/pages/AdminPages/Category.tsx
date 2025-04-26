@@ -83,10 +83,10 @@ const Category = () => {
     const handleBlock=async(data:{id:string,is_block:boolean})=>{
       console.log(data)
             const response=await blockCategory(data)
-            if(response?.data?.response?.message==="success"){
-              setCategoryList((prevList)=>
+            if(response?.status===200){
+              setCategoryList(prevList=>
                 prevList.map((category)=>
-                  category._id===data.id?{...category,is_block:!category.is_block}:category
+                  category._id === data.id ? {...category,is_block:!category.is_block}:category
                 )
               )
             }

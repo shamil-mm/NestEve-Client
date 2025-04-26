@@ -14,7 +14,7 @@ const Organizers = () => {
     }
   
     const [users, setUsers]=useState<Organizer[]>([])
-    const [data,setData]=useState<Organizer|object>({})
+    // const [data,setData]=useState<Organizer|object>({})
     useEffect(()=>{
       const FetchOrganizers=async()=>{
         try {
@@ -29,15 +29,7 @@ const Organizers = () => {
         }
       }
       FetchOrganizers()
-    },[data])
-     
-     
-
-    // const [users, setUsers] = useState([
-    //     { id: '123', name: 'Shamil', email: 'Shamil@gamil.com', eventCreated: 2, ticketPurchased: 2, status: 'Active' },
-    //     { id: '123', name: 'Shamil', email: 'Shamil@gmail.com', eventCreated: 2, ticketPurchased: 2, status: 'Suspended' },
-    //     { id: '123', name: 'Shamil', email: 'Shamil@gamil.com', eventCreated: 2, ticketPurchased: 2, status: 'Active' },
-    //   ]);
+    },[])
     
       const [searchTerm, setSearchTerm] = useState('');
       const [sortField, setSortField] = useState('');
@@ -61,7 +53,17 @@ const Organizers = () => {
 
       const handleBlock=async(data:{email:string,is_block:boolean})=>{
               const res=await blockUser(data)
-              setData(res?.data?.response?.updatedUser)
+              const updateduser=res?.data?.response?.updatedUser
+              if(updateduser){
+                setUsers(prevUsers=>
+                  prevUsers.map(user=>
+                    user.email===updateduser.email ?
+                    {...user,is_block:updateduser.is_block}
+                    :user
+                  )
+                )
+              }
+
             }
     
       // Filter users based on search term

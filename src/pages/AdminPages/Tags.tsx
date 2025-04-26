@@ -4,7 +4,7 @@ import CreateTagModal from '../../components/layout/Modal/CreateTagModal';
 import { blockList, editTag, fetchSingleTag, getTags, tagCreation } from '../../services/EventServices';
 
 const Tags = () => {
-    const [sortField, setSortField] = useState('');
+    const [sortField, ] = useState('');
     const[isModalOpen,setIsModalOpen]=useState(false)
     const [name,setName]=useState("")
     const [error,setError]=useState<string|null>(null)
@@ -71,12 +71,11 @@ const Tags = () => {
        
     }
     const handleBlock= async(_id:string,is_block:boolean)=>{
-      console.log(is_block,'handle book is working and ',_id,)
       const response=await blockList(_id,is_block)
-      if(response?.data?.response?.message==="success"){
-                      setTagList((prevList)=>
+      if(response?.status===200){
+                      setTagList(prevList=>
                         prevList.map((list)=>
-                          list._id===_id?{...list,is_block:!list.is_block}:list
+                          list._id===_id ? {...list,is_block:!list.is_block}:list
                         )
                       )
                     }

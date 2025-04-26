@@ -10,3 +10,13 @@ body {
 @theme {
   --color-nBlue: #2f00ff;
 }
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

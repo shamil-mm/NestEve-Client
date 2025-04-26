@@ -14,6 +14,8 @@ import UserProfile from "../pages/UserProfile/UserProfile";
 import ManageEvents from "../pages/ManageEvents/ManageEvents";
 import Tags from "../pages/AdminPages/Tags";
 import Category from "../pages/AdminPages/Category";
+import Events from "../pages/AdminPages/Events";
+import BrowseEvent from "../pages/BrowseEvent/BrowseEvent";
 
 const AppRouter = () => {
   return (
@@ -29,6 +31,7 @@ const AppRouter = () => {
             <Route path='/profile' element={<UserProfile/>}></Route>
             <Route path='/edit-profile' element={<EditUserProfile/>}></Route>
             <Route path='/manage-events' element={<ManageEvents/>}></Route>
+            <Route path='/search-event' element={<BrowseEvent/>}></Route>
             </Route>
 
             <Route element={<PublicRoutesAdmin/>}>
@@ -41,6 +44,8 @@ const AppRouter = () => {
             <Route path='/admin-organizer' element={<Organizers/>}/>
             <Route path='/admin-tags' element={<Tags/>}/>
             <Route path='/admin-category' element={<Category/>}/>
+            <Route path='/admin-events' element={<Events/>}/>
+
             </Route>
 
             

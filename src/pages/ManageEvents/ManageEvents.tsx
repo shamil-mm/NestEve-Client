@@ -19,7 +19,7 @@ const ManageEvents = () => {
     <Organizersidebar handlePageCB={handlePageCB}/>
     <div className="px-5 w-full">
 
-    {correntOption === "HOME" && <OrganizerHome/> }
+    {correntOption === "HOME" && <OrganizerHome onSuccess={handlePageCB}/> }
     {correntOption === "EVENTS" && <OrganizerEvents/>}
     {correntOption === "FINANCE" && <OrganizerFinance/>}
     {correntOption === "ORDERS" && <OrganizerOrders/>}

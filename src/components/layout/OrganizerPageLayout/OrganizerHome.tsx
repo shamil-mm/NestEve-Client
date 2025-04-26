@@ -1,16 +1,18 @@
 import {   SquarePen } from "lucide-react"
 import { useState } from "react"
 import OrganizerCreateEvent from "./OrganizerCreateEvent"
+interface OrganizerHomeProps{
+  onSuccess(value:string):void
+}
 
-
-const OrganizerHome = () => {
+const OrganizerHome:React.FC<OrganizerHomeProps> = ({onSuccess}) => {
     const [createEvent,setCreateEvent]=useState<boolean>(false)
     const close=(value:boolean)=>{
         setCreateEvent(value)
     }
 
    if(createEvent){
-    return(<OrganizerCreateEvent close={close}/>)
+    return(<OrganizerCreateEvent close={close} onSuccess={onSuccess}/>)
    }
   return (
     <div className="text-white">

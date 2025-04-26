@@ -19,7 +19,7 @@ const Sidebar = () => {
 
     const menuItems = [
         { icon: <LayoutDashboard size={20} />, label: 'Dashboard', active: true ,link:'/admin-dashboard'},
-        { icon: <Calendar size={20} />, label: 'Events' },
+        { icon: <Calendar size={20} />, label: 'Events',link:'/admin-events' },
         { icon: <Ticket size={20} />, label: 'Ticketing' },
         { icon: <Users size={20} />, label: 'Users' ,link:'/admin-user'},
         { icon:<UserRoundCog size={20} /> ,label:'Organizers',link:'/admin-organizer'},
