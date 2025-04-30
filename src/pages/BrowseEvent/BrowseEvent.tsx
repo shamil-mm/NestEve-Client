@@ -8,6 +8,7 @@ import { fetchSearchEvents } from "../../services/EventServices"
 import { useAppSelector } from "../../hooks/AuthHook"
 import UserEventCardUI from "../../components/ui/UserEventCardUI/UserEventCardUI"
 import UserEventDetail from "../../components/ui/UserEventCardUI/UserEventDetail"
+import CheckoutModal from "../../components/layout/Modal/CheckoutModal"
 
 
 
@@ -15,9 +16,9 @@ import UserEventDetail from "../../components/ui/UserEventCardUI/UserEventDetail
 const BrowseEvent = () => {
 
     const [events,setEvents]=useState<IEvent[]>([])
-   
-    // const [queryParams,setQueryParams]=useState<string|null>(null)
-    // const [selectedCategory,setSelectedCategory]=useState<string|null>(null)
+    const [checkoutModal,setCheckoutModal]=useState<boolean>(false)
+    
+    
 
     const [filters,setFilters]=useState({
       search:"",
@@ -27,8 +28,11 @@ const BrowseEvent = () => {
         customDate:""
       }
     })
+    const checkoutmodalfn=useCallback((value:boolean)=>{
+      
+      setCheckoutModal(value)
 
-
+    },[checkoutModal])
 
     const id = useAppSelector((state) => state.authUser?.user?.id) 
     const [detailview,setDetailview]=useState(false)
@@ -85,17 +89,27 @@ const BrowseEvent = () => {
         setDetailview(value)
         setDetailviewEvent(null)
       }
-   
-       
+
+    if(checkoutModal){
+      return(
+        <>
+          <CheckoutModal />
+        </>
+      )
+    }   
   return (
 
     <>
   <PageLayout>
+ 
+    
+
     <BrowseEventSidebar getSelectedFilters={getSelectedFilters}/>
+    
 
     {detailview && detailviewEvent?(
         <div className="w-9/12 h-fit flex flex-col px-3">
-            <UserEventDetail event={detailviewEvent} close={close}/>
+            <UserEventDetail event={detailviewEvent} close={close} checkoutmodalfn={checkoutmodalfn}/>
         </div>
     ):(
         <div className="w-9/12 h-fit flex flex-col px-3 ">

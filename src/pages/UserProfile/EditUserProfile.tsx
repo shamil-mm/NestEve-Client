@@ -9,6 +9,7 @@ import { toast } from "react-fox-toast";
 import ImageUpload from "../../components/layout/UserProfile/ImageUpload";
 
 
+
 const EditUserProfile = () => {
   interface addressForm{
     phone:string;
@@ -41,27 +42,59 @@ const EditUserProfile = () => {
     const [addresses, setAddresses] = useState<addressForm[]>([]);
     const [editAddress,setEditAddress]=useState<addressForm|null>(null)
 
-    useEffect(()=>{
-      const savedAddress=localStorage.getItem('selectedAddress')
-      if (savedAddress !== null) {
-        setSelectedAddress(parseInt(savedAddress, 10)); 
-      }
-    },[])
+    const [getAddress,setGetAddress]=useState({})
+   
+
+    
+
   useEffect(()=>{
+   
     const fetchUser=async()=>{
-      const user= await fetchUserData(id as string)
+    
+        const user= await fetchUserData(id as string)
+        
+
       if(user){
         setCurrentUser(user)
-      }
+       
       const response= await getProfileImage(user.avatarUrl)
+      
       if(JSON.stringify(response.data.url)!=='{}'){
         setSelectedImage(response.data.url)
       }
+    }
+   
       const address=await fetchAddress(id as string)
+
+    
+     localStorage.setItem('selectedAddressId',"")   
+      if(address.length===1){
+        localStorage.setItem('selectedAddressId',String(address[0]._id))   
+      }else{
+        const index=localStorage.getItem('selectedAddress')
+        if (index !== null && address[Number(index)]) {
+          localStorage.setItem('selectedAddressId', String(address[Number(index)]._id));
+        } else {
+          localStorage.setItem('selectedAddressId', String(address[0]._id)); 
+        }
+      }
       setAddresses(address)
+ 
+      
     }
     fetchUser()
   },[id,currentUser?.avatarUrl])
+ 
+
+
+  useEffect(()=>{
+    const savedAddress=localStorage.getItem('selectedAddress')
+  
+    if (savedAddress !== null) {
+      setSelectedAddress(parseInt(savedAddress, 10)); 
+    }
+  },[])
+
 
   const handleAddress=async(e:React.FormEvent)=>{
     e.preventDefault()
@@ -89,6 +122,7 @@ const EditUserProfile = () => {
         setShowAddressForm(false);
         // Refresh addresses
         const address = await fetchAddress(id as string);
+        
         setAddresses(address);
       } else {
         toast.error(res.message);
@@ -127,6 +161,7 @@ const EditUserProfile = () => {
     }));
   }
   }
+  
 
   const handleAddressDelete=async (e:React.MouseEvent<HTMLButtonElement>,addressId ?:string)=>{
     e.preventDefault()
@@ -153,6 +188,10 @@ const EditUserProfile = () => {
   const handleSelect=(index: number)=>{
     setSelectedAddress(index)
     localStorage.setItem('selectedAddress',String(index))
+    if (index !== null && addresses[Number(index)]) {
+      localStorage.setItem('selectedAddressId', String(addresses[Number(index)]._id));
+    }
+
   }
 
   const handleName=async(e:React.FormEvent)=>{
@@ -181,6 +220,8 @@ const EditUserProfile = () => {
       toast.error(res.message)
     }
   }
+ 
+  
 
   if(showFileUploadForm){
     return(

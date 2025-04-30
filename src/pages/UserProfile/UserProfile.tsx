@@ -17,6 +17,7 @@ const UserProfile = () => {
     const navigate=useNavigate()
     
     const id = useAppSelector((state) => state.authUser?.user?.id)
+  
     const [currentUser, setCurrentUser] = useState<{name:string,email:string;avatarUrl:string,role:string}|null>(null);
     const [selectedImage,setSelectedImage]=useState<string | null>(null)
     useEffect(()=>{ 
@@ -62,7 +63,7 @@ const UserProfile = () => {
           <h2 className="text-lg font-semibold">{currentUser?.name}</h2>
         </div>
         <button onClick={()=>{navigate('/edit-profile')}} className="text-sm border border-blue-700 rounded px-3 py-1">
-          Edit
+        Manage Profile and Addresses
         </button>
       </div>
       

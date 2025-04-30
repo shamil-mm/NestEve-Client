@@ -16,7 +16,8 @@ import Tags from "../pages/AdminPages/Tags";
 import Category from "../pages/AdminPages/Category";
 import Events from "../pages/AdminPages/Events";
 import BrowseEvent from "../pages/BrowseEvent/BrowseEvent";
-
+import PaymentSuccess from "../components/ui/Payment/PaymentSuccess";
+import PaymentFailure from "../components/ui/Payment/PaymentFailure";
 const AppRouter = () => {
   return (
     <Router>
@@ -32,6 +33,10 @@ const AppRouter = () => {
             <Route path='/edit-profile' element={<EditUserProfile/>}></Route>
             <Route path='/manage-events' element={<ManageEvents/>}></Route>
             <Route path='/search-event' element={<BrowseEvent/>}></Route>
+            <Route path='/success' element={<PaymentSuccess/>}></Route>
+            <Route path='/cancel' element={<PaymentFailure/>}></Route>
+          
+         
             </Route>
 
             <Route element={<PublicRoutesAdmin/>}>

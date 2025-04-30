@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { client } from './client';
 
-const API_BASE_URL =import.meta.env.VITE_API_BASE_URL||'http://localhost:5001';
+const API_BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
 export const userRegister =async (formData:{name:String;email:string;password:string,role:'user'|'organizer'| null,organization?:string})=>{
     try {

@@ -2,6 +2,11 @@ import { Minus, Plus, Ticket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IEvent } from "../../../interfaces/IEvent";
 import { toast } from "react-fox-toast";
+import { useDispatch } from "react-redux";
+import { setCheckoutData } from "../../../store/slices/checkout";
+
+
+
 
 
 
@@ -18,10 +23,13 @@ interface NonseatedCheckoutProps{
     modalfn(value:boolean,tickets:ITicket[],ticket:ITicket):void
     newTickets:ITicket[]
     updatedData:{selectedSeats:[],totalSeatPrice:string,cate:string,seatcount:number}
+    checkoutModal(value:boolean):void
 }
 
 
-const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updatedData,newTickets}) => {
+const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updatedData,newTickets,checkoutModal}) => {
+
+ const dispatch=useDispatch()
   const [tickets, setTickets] = useState<ITicket[]>(()=>{
         if(!event.is_seated){
           return event.ticketTypes.map((ticket,index)=>({
@@ -44,6 +52,7 @@ const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updat
 });
 
 
+
  
 
     useEffect(()=>{
@@ -64,6 +73,8 @@ const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updat
       }
     },[updatedData, event.is_seated])
 
+   
+   
 
     
     
@@ -88,16 +99,31 @@ const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updat
         modalfn(true,tickets,ticket)
       }
 
-      const handleCheckout=(e:React.MouseEvent<HTMLButtonElement>)=>{
+
+
+
+
+      const handleCheckout=(e:React.MouseEvent<HTMLButtonElement>,is_seated:boolean)=>{
         e.preventDefault()
-        const totalquantity=tickets.map((value)=>value.quantity).reduce((acc,value)=>acc+value)
-        const totalseatSelected=tickets.map((value)=>value.selectedSeats).reduce((acc,value)=>acc+value!.length ,0)
-       if(totalquantity===totalseatSelected){
-        console.log('submit is working')
-       }else{
-        toast.error("Please select all the seats you've added before continuing")
-       }
+        
+        if(is_seated){
+          const totalquantity=tickets.map((value)=>value.quantity).reduce((acc,value)=>acc+value)
+          const totalseatSelected=tickets.map((value)=>value.selectedSeats).reduce((acc,value)=>acc+value!.length ,0)
+         
+         if(totalquantity===totalseatSelected){
+         
+          dispatch(setCheckoutData({tickets,isSeated:event.is_seated,event:{_id:event._id,title:event.title,startDate:event.startDate,startTime:event.startTime,endTime:event.endTime ,venue:event.venue,locationName:event.locationName}}))
+          checkoutModal(true)
+         }else{
+          toast.error("Please select all the seats you've added before continuing")
+         }
+        }else{
+          dispatch(setCheckoutData({tickets,isSeated:event.is_seated,event:{_id:event._id,title:event.title,startDate:event.startDate,startTime:event.startTime,endTime:event.endTime ,venue:event.venue,locationName:event.locationName}}))
+          checkoutModal(true)
+        }
       }
+
+    
 
      
   return (
@@ -197,7 +223,7 @@ const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updat
               totalTickets > 0 ? 'bg-black border-2 border-blue-700' : 'bg-black cursor-not-allowed'
             }`}
             disabled={totalTickets === 0}
-            onClick={handleCheckout}
+            onClick={(e)=>handleCheckout(e,event.is_seated)}
           >
             {totalTickets > 0 ? `Checkout ₹  ${totalPrice}` : 'Add tickets to continue'}
           </button>

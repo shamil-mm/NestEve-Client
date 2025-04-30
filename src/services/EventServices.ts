@@ -125,7 +125,7 @@ export const fetchTagSuggestions=async(inputValue:string)=>{
 }
 export const fetchCategoriesList=async()=>{
     try {
-        console.log('fetchCategoriesList service is working')
+        
         const response =  await client.get(`/events/api/fetch-categories-list`);
         console.log(response,"fetchCategoriesList response")
         return response  

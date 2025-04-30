@@ -3,6 +3,7 @@ import authReducer from './slices/auth'
 import localStorageMiddleware from "../middleware/localStorageMiddleware"
 import authUser from './slices/authUsers'
 import authAdmin from './slices/authAdmin'
+import checkout from './slices/checkout'
 
 const loadStateFromLocalStorage=()=>{
     try {
@@ -47,7 +48,8 @@ export const store = configureStore({
     reducer:{
        auth:authReducer,
        authUser:authUser,
-       authAdmin:authAdmin
+       authAdmin:authAdmin,
+       checkout:checkout
     },
     
     preloadedState:{

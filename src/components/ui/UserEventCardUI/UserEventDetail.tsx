@@ -1,25 +1,37 @@
 
-import { useState } from 'react';
-import { Calendar, Clock, MapPin, Users, DollarSign, Armchair, Ticket } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Calendar, Clock, MapPin, Armchair,  } from 'lucide-react';
 import { IEvent } from '../../../interfaces/IEvent';
 import NonseatedCheckout from '../Checkout/NonseatedCheckout';
 import SeatSelectionModal from '../../layout/Modal/SeatSelectionModal';
 import { ITicket } from '../Checkout/NonseatedCheckout';
 
 
+
 interface UserEventDetailProps{
     event:IEvent
     close: (value:boolean) => void;
+    checkoutmodalfn(value:boolean):void
 }
 interface IupdatedData{selectedSeats:[], totalSeatPrice: string, cate: string, seatcount: number}
-const UserEventDetail:React.FC<UserEventDetailProps> = ({event,close}) => {
+const UserEventDetail:React.FC<UserEventDetailProps> = ({event,close,checkoutmodalfn}) => {
 
     const [showModal,setShowModal]=useState(false)
     const [showMap, setShowMap] = useState(false);
     const [tickets,setTickets]=useState<ITicket[] |[]>([])
     const [currentTicket,setCurrentTicket]=useState<ITicket|null>(null)
+    const [checkoutModal,setCheckoutModal]=useState<boolean>(false)
+
 
     const [updatedData,setUpdatedData]=useState<IupdatedData|{}>({})
+
+    useEffect(()=>{
+      if(checkoutModal){
+        checkoutmodalfn(true)
+      }
+  
+
+    },[checkoutModal,checkoutmodalfn])
    
       const selectedSeatfunc=(selectedSeats:[],totalSeatPrice:string,cate:string,seatcount:number)=>{
         const data={selectedSeats,totalSeatPrice,cate,seatcount}
@@ -32,6 +44,9 @@ const UserEventDetail:React.FC<UserEventDetailProps> = ({event,close}) => {
       setTickets(Tickets)
       setShowModal(value)
     }
+    
+
+
     if(showModal){
       return(
         <SeatSelectionModal event={event} tickets={tickets} ticket={currentTicket as ITicket} selectFN={selectedSeatfunc} />
@@ -201,7 +216,7 @@ const UserEventDetail:React.FC<UserEventDetailProps> = ({event,close}) => {
              
             </div>
               
-              <NonseatedCheckout event={event} modalfn={modalfn} newTickets={tickets} updatedData={updatedData as IupdatedData}/>
+              <NonseatedCheckout event={event} modalfn={modalfn} newTickets={tickets} updatedData={updatedData as IupdatedData} checkoutModal={setCheckoutModal}/>
             
 
 
