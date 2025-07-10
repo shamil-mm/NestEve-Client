@@ -12,14 +12,15 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUser, setIsUser] = useState(false)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const naveItem = ["Home", "Find Events", "About"];
   const userDropdownOptions = [
     { label: "Profile", onClick: () => navigate('/profile') },
     { label: "Browse Events", onClick: () => navigate('/search-event') },
     { label: "Tickets", onClick: () => navigate('/event-tickets') },
     { label: "Notifications", onClick: () => navigate('/event-notifications') },
-    { label: "Chats", onClick: () => navigate('/event-chats') },
-    { label: "Payment & History", onClick: () => navigate('/event-payment-history') },
+    { label: "Chats", onClick: () => navigate('/chats') },
+    { label: "Wallet", onClick: () => navigate('/wallet') },
     { label: "Logout", onClick: () => handleLogout() },
   ];
   const handleLogout = async () => {
@@ -33,10 +34,14 @@ const Navbar = () => {
 
     }
   }
-  const navigate = useNavigate()
+  
   const { user, isAuthenticated } = useAppSelector((state) => state.authUser)
   if (user?.role == "organizer") {
     userDropdownOptions.unshift({ label: "Manage Events", onClick: () => navigate('/manage-events') })
+  }
+
+  const handleCalendar=()=>{
+    navigate('/calendar') 
   }
 
   return (
@@ -61,7 +66,7 @@ const Navbar = () => {
         {/* Desktop Buttons */}
         {isAuthenticated ? (
           <div className="hidden md:flex space-x-4 ">
-            <Calendar className="mt-3 cursor-pointer" />
+            <Calendar onClick={handleCalendar} className="mt-3 cursor-pointer" />
             <BellDot className="mt-3 cursor-pointer" />
             <User className="mt-3 cursor-pointer" onClick={() => setIsUser(!isUser)} />
             {isUser && (

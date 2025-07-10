@@ -1,9 +1,12 @@
+import OrganizerOrdersData from "../OrganizerOrdersData/OrganizerOrdersData"
+
 
 const OrganizerOrders = () => {
-  return (
-    <h1 className="text-white">
-      organizer order page
-    </h1>
+
+ return (
+   <>
+   <OrganizerOrdersData/>
+   </>
   )
 }
 

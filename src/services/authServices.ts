@@ -169,41 +169,9 @@ export const fetchUserData=async(userId: string)=>{
     console.log('fetch user data error',error)
   }
 }
-export const fetchAddress=async(userId: string)=>{
-  try {
-    const response=await client.get(`/auth/api/user-address/${userId}`)
-    return response?.data?.address
-    
-  } catch (error) {
-    console.log('fetch user data error',error)
-  }
-}
-export const addAddress=async(email:string,address:object)=>{
-  try {
-    const response=await client.post(`/auth/api/add-address`,{email,address})
-   return response.data
-    
-  } catch (error) {
-    console.log('user address sent to the server error',error)
-  }
-}
-export const deleteAddress=async(data:{userId:string,addressId:string})=>{
-  try {
-    const response=await client.post(`/auth/api/delete-address`,data)
-    return response.data
-  } catch (error) {
-    console.log('user address delete error',error)
-  }
-}
-export const updateAddress=async(email:string,address:object,addressId:string)=>{
-  try {
-    const response=await client.post(`/auth/api/update-address`,{email,address,addressId})
-   return response.data
-    
-  } catch (error) {
-    console.log('user address sent to the server error',error)
-  }
-}
+
+
+
 export const updateName=async(data:{userId:string,name:string})=>{
 
   try {
@@ -228,7 +196,6 @@ export const updatePassword=async(email:string,passwords:{oldpassword:string,new
 }
 
 
-// image upload recorrection
 
 export const imageUpload=async(url:string,imageFile:File)=>{
   console.log(imageFile)
@@ -302,14 +269,13 @@ export const uploadImageToServer=async(file:File,id:string,oldImageUrl:string)=>
    } catch (error :any) {
      console.error('Error uploading image:', error);
      if (error.response) {
-      // The request was made and the server responded with a status code
+     
       console.error('Server Response Error:', error.response.data);
       console.error('Status Code:', error.response.status);
     } else if (error.request) {
-      // The request was made but no response was received
+     
       console.error('No Response Received:', error.request);
     } else {
-      // Something happened in setting up the request
       console.error('Error Setup:', error.message);
     }
 
@@ -325,6 +291,16 @@ export const getProfileImage= async(avatarUrl:string)=>{
   } catch (error) {
     console.error('Failed to get image from s3', error);
     throw new Error('Failed to get image from s3');
+  }
+}
+
+export const saveLocation= async(location:{lat:number,lng:number},userId:string)=>{
+  try {
+    const response=await client.post(`/auth/api/location`,{location,userId})
+    return response
+  } catch (error) {
+    console.error('Failed saveLocation', error);
+    throw new Error('Failed to saveLocation ');
   }
 }
 

@@ -23,9 +23,16 @@ export interface ITags{
     _id:string
     tag:string
 }
+export interface IOrganizer {
+  _id: string;
+  name: string;
+  email?: string;
+  avatarUrl?: string;
+}
 export interface IEvent{
     filter(arg0: (event: any) => boolean): unknown;
     _id:string;
+    organizerId:IOrganizer,
     title:string;
     description:string;
     image:string;
@@ -35,8 +42,7 @@ export interface IEvent{
     endDate:string;
     startTime:string;
     endTime:string;
-    venue:string;
-    locationName:string;
+    location:{type:"Point";coordinates:[number,number]};
     status:string;
     ticketTypes:[ITicketTypes];
     layoutConfig:ILayoutConfig

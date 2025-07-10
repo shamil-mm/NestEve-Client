@@ -4,6 +4,8 @@ import localStorageMiddleware from "../middleware/localStorageMiddleware"
 import authUser from './slices/authUsers'
 import authAdmin from './slices/authAdmin'
 import checkout from './slices/checkout'
+import tempPost from './slices/tempPost'
+import chatReducer from './slices/chat'
 
 const loadStateFromLocalStorage=()=>{
     try {
@@ -36,10 +38,21 @@ const loadAuthAdminStateFromLocalStorage =()=>{
         return undefined;
     }
 }
+const loadChatStateFromLocalStorage =()=>{
+    try {
+        const serializedState=localStorage.getItem('chatState')
+        if(serializedState==null)return undefined;
+        return JSON.parse(serializedState)
+    } catch (error) {
+        console.error('Failed to load chat state from local storage:', error);
+        return undefined;
+    }
+}
 
 const persistedState=loadStateFromLocalStorage()
 const persistedAuthUserState=loadAuthUserStateFromLocalStorage();
 const persistedAuthAdminState=loadAuthAdminStateFromLocalStorage();
+const persistedChatState=loadChatStateFromLocalStorage();
 
 
 
@@ -49,13 +62,16 @@ export const store = configureStore({
        auth:authReducer,
        authUser:authUser,
        authAdmin:authAdmin,
-       checkout:checkout
+       checkout:checkout,
+       tempPost:tempPost,
+       chat:chatReducer,
     },
     
     preloadedState:{
         auth:persistedState || {step:'role',selectedRole:null},
         authUser:persistedAuthUserState || {},
         authAdmin:persistedAuthAdminState || {},
+        chat:persistedChatState || {}
     },
     middleware: (getDefaultMiddleware) =>
         new Tuple(...getDefaultMiddleware(),localStorageMiddleware),

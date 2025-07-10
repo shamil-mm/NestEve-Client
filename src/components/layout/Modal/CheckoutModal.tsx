@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import bg from '../../../assets/abstract-background.jpg'
-import { fetchAddress } from "../../../services/authServices";
 import { useAppSelector } from "../../../hooks/AuthHook";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import {loadStripe} from '@stripe/stripe-js';
 import { stripeCheckout } from "../../../services/bookingService";
 import { toast } from "react-fox-toast";
+import Swal from "sweetalert2";
 
 
 export interface Address {
@@ -21,12 +21,11 @@ export interface Address {
   }
 
 const CheckoutModal = () => {
-
-      const selectedAddressId=localStorage.getItem("selectedAddressId")
-      const [address,setAddress]=useState<Address|null>(null)
       const user= useAppSelector((state) => state.authUser?.user) 
       const navigate=useNavigate()
       let {event,tickets,isSeated}=useSelector((state:RootState)=>state.checkout)
+      
+    
       tickets= tickets.filter((value)=>value.quantity>0)
 
       const publishableKey=import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
@@ -46,35 +45,9 @@ const CheckoutModal = () => {
      
  
 
-      useEffect(()=>{
-        async function fetchaddress(userId:string){
-            const address=await fetchAddress(userId as string)
-           let selectedAddress= address.find((value:Address)=>value._id===selectedAddressId)
-           setAddress(selectedAddress||null)
-        }
-        if(user?.id){
-            fetchaddress(user?.id as string)
-        }
-      },[user?.id,selectedAddressId])
+      
 
-      useEffect(()=>{
-        if(user && address){
-
-        
-         setFormData({
-            email: user?.email as string,
-            phone: address?.phone as number,
-            streetAddress: address?.street as string,
-            city:address?.city as string,
-            state: address?.state as string,
-            country: address?.country as string,
-            zipCode: address?.zip as number,
-            paymentMethod:""
-          });
-         
-        }
-       
-      },[user,address])
+      
 
   const handlePaymentMethodChange = (method:string) => {
     setFormData((prev) => ({
@@ -99,29 +72,32 @@ const CheckoutModal = () => {
       toast.error("Pleace Select Your PaymentMethod")
       return
     }
-    if(!address){
-      toast.error("Pleace Provide your Address")
-      return
-    }
-    
-    // console.log('event:', event);
-    // console.log('price per category',pricePerCategory);
-    // console.log('tickets',tickets)
-
 
     if(formData.paymentMethod==="Strip"){
       try {
-        const stripe=await loadStripe(publishableKey)
-      const res=  await stripeCheckout(event,tickets,user?.id as string)
+       
+      const stripe=await loadStripe(publishableKey)
+      const res=  await stripeCheckout({...event,is_seated:isSeated},tickets,user?.id as string)
       const sessionId=res?.data.response
       if (res){
-        
-        const result=stripe?.redirectToCheckout({
+        stripe?.redirectToCheckout({
           sessionId:sessionId
         })
       }
-      } catch (error) {
-        console.log(error)
+      } catch (error:any) {
+       const msg = error?.message || "";
+
+        const match = msg.match(/You specified '(.*)'/);
+        const extractedMessage = match?.[1];
+
+        if (extractedMessage === "some one is processing") {
+           Swal.fire({
+              icon: 'error',
+              title: 'Oops!',
+              text: 'Someone is already processing this booking. Please try again shortly.',
+            });
+            navigate("/search-event")
+        }
       }
     }
    
@@ -137,69 +113,8 @@ const CheckoutModal = () => {
         <h1 className="text-3xl font-bold text-center mb-8">Checkout</h1>
      
           <div className="flex flex-col md:flex-row gap-6">
-            {/* Left Column - Billing Address */}
-            <div className="flex-1 p-4 border border-white-700 ">
-              
-             
-              
-              <div className="mb-4"><h2 className="text-2xl font-bold mb-6">Billing address</h2>
-                
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2">User E-mail : <br/>{formData.email}</label>
-                </div> 
-             
-                {address ? (
-                 
-              
-                   <div className="mb-4">
-                   <label className="block mb-2">Address </label>
-                
-                   <div className="mb-2">
-                     <label className="block mb-1 text-sm">Phone :{formData.phone}</label>
-                    
-                   </div>
-   
-                   
-                   
-                   <div className="mb-2">
-                     <label className="block mb-1 text-sm">Street Address:{formData.streetAddress}</label>
-                    
-                   </div>
-                   
-                   <div className="mb-2">
-                     <label className="block mb-1 text-sm">City : {formData.city}</label>
-                    
-                   </div>
-                   
-                   <div className="mb-2">
-                     <label className="block mb-1 text-sm">State : {formData.state}</label>
-                    
-                   </div>
-                   
-                   <div className="mb-2">
-                     <label className="block mb-1 text-sm">Country : {formData.country}</label>
-                     
-                   </div>
-                   
-                   <div className="mb-2">
-                     <label className="block mb-1 text-sm">Zip-Code: {formData.zipCode}</label>
-                     
-                   </div>
-                 </div>
-                ):(
-                <>
-                
-                Add your address to proceed <span className="underline text-blue-600" onClick={()=>navigate('/edit-profile')}> go to set address</span>
-                </>
-                )}
-              
-              
-              {/* <div className="mt-4">
-                <button className="text-blue-400 hover:text-blue-300 text-sm">Go to Address Management</button>
-              </div> */}
-            </div>
-            
+         
+           
           
             <div className="flex-1 flex flex-col gap-6">
               <div className="p-4 border border-white-700 ">
@@ -263,7 +178,7 @@ const CheckoutModal = () => {
                         )}
                       </div>
                     </div>
-                    <span>Strip</span>
+                    <span>Stripe</span>
                   </label>
                   
                   <label className="flex items-center gap-2 cursor-pointer">

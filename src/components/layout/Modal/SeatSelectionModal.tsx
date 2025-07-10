@@ -1,9 +1,11 @@
-import { Armchair, Check, TicketPercent, X } from "lucide-react";
+import { Armchair, Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IEvent } from "../../../interfaces/IEvent";
 import { generateTheaterSeating } from "../../../utils/generateSeatRows";
 import { ITicket } from "../../ui/Checkout/NonseatedCheckout";
-import { current } from "@reduxjs/toolkit";
+import { fetchBookedSeats } from "../../../services/bookingService";
+import { IfilteredRows } from "../../../interfaces/filteredRow";
+
 
 interface SeatSelectionModalProps{
     event:IEvent,
@@ -14,6 +16,7 @@ interface SeatSelectionModalProps{
 
 const SeatSelectionModal:React.FC<SeatSelectionModalProps> = ({event,tickets,selectFN,ticket}) => {  
   const [selectedSeats, setSelectedSeats] = useState<any[]>([]);
+  const [filteredRows,setFilteredRows]=useState<IfilteredRows[]>([])
 
   useEffect(()=>{
     const cTicket=tickets.find(t=>t.name===ticket.name)
@@ -24,12 +27,27 @@ const SeatSelectionModal:React.FC<SeatSelectionModalProps> = ({event,tickets,sel
     
 
   },[tickets,ticket.name])
+  useEffect(()=>{
+    async function featchBookedTickets(){
+      try {
+        const res= await fetchBookedSeats(event._id as string)
+        const seats=res?.data?.selectedSeats
+        const response=generateTheaterSeating(event.layoutConfig ,ticket.name ,seats)
+        const theaterSeating =response ||{ rows:[]}
+        const filteredRows=theaterSeating.rows
+        setFilteredRows(filteredRows)
+      } catch (error) {
+        console.log('error in seat selection modal page',error)
+      }
 
-  const response=generateTheaterSeating(event.layoutConfig ,ticket.name )
+    }
+    featchBookedTickets()
+  },[])
 
   
-  const theaterSeating =response ||{ rows:[]}
-  const filteredRows=theaterSeating.rows
+
+  
+  
 
 
   
@@ -60,6 +78,8 @@ const SeatSelectionModal:React.FC<SeatSelectionModalProps> = ({event,tickets,sel
 
 
 
+
+
 const confirmSelection=(e:React.MouseEvent<HTMLButtonElement>)=>{
   e.preventDefault()
   selectFN((selectedSeats as []),totalPrice,ticket.name,ticket.quantity)
@@ -80,7 +100,7 @@ const confirmSelection=(e:React.MouseEvent<HTMLButtonElement>)=>{
       <div className="mb-4">
       
         <div className="grid grid-cols-1 ">
-        <button className={`p-2  flex items-center justify-center uppercase text-sm bg-black border-1 border-blue-700}`}>
+        <button className={`p-2  flex items-center justify-center uppercase text-sm bg-black border-1 border-blue-700`}>
               <Armchair className={`h-4 w-4 mr-1 `} />
               {ticket.name}
             </button>
@@ -106,7 +126,7 @@ const confirmSelection=(e:React.MouseEvent<HTMLButtonElement>)=>{
                     <button
                       key={seatIdx}
                       className={`w-6 h-6 flex items-center justify-center border-blue-700 border-1 bg-black  ${
-                        seat.status === 'taken' ? ' cursor-not-allowed' : 
+                        seat.status === 'taken' ? ' cursor-not-allowed border-red-600 border-1 font-bold' : 
                         isSelected ? 'border-green-400 border-3 font-bold' :"" 
                         
                         

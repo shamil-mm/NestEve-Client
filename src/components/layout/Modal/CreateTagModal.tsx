@@ -1,4 +1,4 @@
-import { useState } from "react"
+
 
 interface CreateTagModalProps{
     isOpen:boolean;
@@ -6,7 +6,7 @@ interface CreateTagModalProps{
     children:React.ReactNode
 }
 const CreateTagModal:React.FC<CreateTagModalProps> = ({isOpen ,children}) => {
-    const [tabIndex]=useState(-1)
+    // const [tabIndex]=useState(-1)
     if(!isOpen)return null
   return (
     <>

@@ -7,7 +7,7 @@ type EventCardProps={
   event:IEvent
 }
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
-  console.log(event)
+
   return (
     <div className="relative min-h-120 flex flex-col items-center bg-transparent">
       {/* Event Image */}

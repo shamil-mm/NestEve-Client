@@ -1,4 +1,14 @@
 import {z} from 'zod'
+
+
+const locationSchema =  z
+  .tuple([z.number(), z.number()])
+  .refine(
+    ([lng, lat]) => lng >= -180 && lng <= 180 && lat >= -90 && lat <= 90,
+    { message: "Coordinates must be valid [longitude, latitude]" }
+  );
+
+  
 export const zodEventSchema=z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
   description: z.string().min(10, "Description should be at least 10 characters"),
@@ -8,10 +18,7 @@ export const zodEventSchema=z.object({
   endTime: z.string().min(1, "End time is required") .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time "),
   status: z.enum(["showing", "hidden", "draft"]),
   category: z.string().min(1, "Category is required"),
-  venue: z.string().min(1, "Venue is required"),
-  locationName: z.string().min(3, "Location must be at least 3 characters"),
-  latitude: z.string().optional(),
-  longitude: z.string().optional(),
+  location: locationSchema.optional(),
 }).refine(({ startTime, endTime }) => {
   const [startHours, startMinutes] = startTime.split(":").map(Number);
   const [endHours, endMinutes] = endTime.split(":").map(Number);

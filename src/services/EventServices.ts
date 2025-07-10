@@ -4,7 +4,7 @@ import {client} from './client'
 export  const tagCreation=async(name:string)=>{
     try {
         console.log('tag creation service is working',name)
-        const response =  await client.post(`/events/api/tags`,{name});
+        const response =  await client.post(`/events/api/admin/tags`,{name});
         console.log(response,"tag creation response")
         return response
         
@@ -15,7 +15,7 @@ export  const tagCreation=async(name:string)=>{
 export  const getTags=async()=>{
     try {
         console.log('get tags service is working')
-        const response =  await client.get(`/events/api/tags`);
+        const response =  await client.get(`/events/api/admin/tags`);
         console.log(response,"get tags response")
         return response
         
@@ -26,7 +26,7 @@ export  const getTags=async()=>{
 export  const blockList=async(_id:string,is_block:boolean)=>{
     try {
         console.log('block tag service is working')
-        const response =  await client.post(`/events/api/block-tag`,{_id,is_block});
+        const response =  await client.post(`/events/api/admin/block-tag`,{_id,is_block});
         console.log(response,"block tag response")
         return response
         
@@ -37,7 +37,7 @@ export  const blockList=async(_id:string,is_block:boolean)=>{
 export  const fetchSingleTag=async(id:string)=>{
     try {
         console.log('fetchSingleTag service is working')
-        const response =  await client.get(`/events/api/fetch-single-tag/${id}`);
+        const response =  await client.get(`/events/api/admin/fetch-single-tag/${id}`);
         console.log(response,"fetchSingleTag response")
         return response
         
@@ -48,7 +48,7 @@ export  const fetchSingleTag=async(id:string)=>{
 export  const editTag=async(name:string,id:string)=>{
     try {
         console.log(name,'editTag service is working',id)
-        const response =  await client.patch(`/events/api/tag`,{name,id});
+        const response =  await client.patch(`/events/api/admin/tag`,{name,id});
         console.log(response,"editTag response")
         return response
         
@@ -60,7 +60,7 @@ export  const editTag=async(name:string,id:string)=>{
 export  const categoryCreation=async(categoryName:string,description:string)=>{
     try {
         console.log(categoryName,'Category creation service is working',description)
-        const response =  await client.post(`/events/api/category`,{categoryName,description});
+        const response =  await client.post(`/events/api/admin/category`,{categoryName,description});
         console.log(response,"category creation response")
         return response
         
@@ -71,7 +71,7 @@ export  const categoryCreation=async(categoryName:string,description:string)=>{
 export  const editCategory=async(categoryName:string,description:string,id:string)=>{
     try {
         console.log(categoryName,'editCategory service is working',description,id)
-        const response =  await client.patch(`/events/api/category`,{categoryName,description,id});
+        const response =  await client.patch(`/events/api/admin/category`,{categoryName,description,id});
         console.log(response,"editCategory response")
         return response
         
@@ -83,7 +83,7 @@ export  const editCategory=async(categoryName:string,description:string,id:strin
 export  const getcategories=async()=>{
     try {
         console.log('get Category service is working')
-        const response =  await client.get(`/events/api/category`);
+        const response =  await client.get(`/events/api/admin/category`);
         console.log(response,"get category response")
         return response
         
@@ -95,7 +95,7 @@ export  const getcategories=async()=>{
 export  const blockCategory=async(data:{id:string,is_block:boolean})=>{
     try {
         console.log('block Category service is working')
-        const response =  await client.post(`/events/api/block-category`,data);
+        const response =  await client.post(`/events/api/admin/block-category`,data);
         console.log(response,"block category response")
         return response
         
@@ -106,7 +106,7 @@ export  const blockCategory=async(data:{id:string,is_block:boolean})=>{
 export  const fetchSingleCategory=async(id:string)=>{
     try {
         console.log('fetchSingleCategory service is working')
-        const response =  await client.get(`/events/api/fetch-single-category/${id}`);
+        const response =  await client.get(`/events/api/admin/fetch-single-category/${id}`);
         return response
         
     } catch (error) {
@@ -127,7 +127,6 @@ export const fetchCategoriesList=async()=>{
     try {
         
         const response =  await client.get(`/events/api/fetch-categories-list`);
-        console.log(response,"fetchCategoriesList response")
         return response  
     } catch (error) {
         console.error("fetchCategoriesList failed from service.ts", error);
@@ -168,9 +167,9 @@ export const createEvent=async(eventData:object,image:File,userId:string)=>{
 
 export const fetchEvents=async(id:string)=>{
     try {
-        console.log('fetchEvents service is working')
+
         const response =  await client.get(`/events/api/fetch-events-list/${id}`);
-        console.log(response,"fetchEvents response")
+        
         return response  
     } catch (error) {
         console.error("fetchEvents failed from service.ts", error);
@@ -265,25 +264,68 @@ export const blockEvent=async(data:{id:string,is_block:boolean})=>{
 export const fetchSearchEvents=async(filterdata:{
     search:string,
     category:string,
+    sort:string,
+    page:string,
+    limit:string,
     date:{
       dateFilter:string,
       customDate:string
     }
   })=>{
     try {
-        console.log('fetchSearchEvents service is working')
+        
         const params=new URLSearchParams();
         if(filterdata.search) params.append("search",filterdata.search)
         if(filterdata.category) params.append("category",filterdata.category)
+        if(filterdata.sort) params.append("sort",filterdata.sort)
+        if(filterdata.page) params.append("page",filterdata.page)
+        if(filterdata.limit) params.append("limit",filterdata.limit)
         if(filterdata.date?.dateFilter) params.append("dateFilter",filterdata?.date?.dateFilter)
         if(filterdata.date?.customDate) params.append("customDate",filterdata.date?.customDate)
         const queryString=`?${params.toString()}`;
-        console.log(queryString)
         const response =  await client.get(`/events/api/fetch-search-events${queryString}`);
-      
-        console.log("fetchSearchEvents response",response)
         return response  
     } catch (error) {
         console.error("fetchSearchEvents failed from service.ts", error);
     }
+   
+}
+
+export const fetchSingleEvent= async(id :string)=>{
+    try {
+     
+        const response=await client.get(`/events/api/single-event/${id}`)
+        return response
+    } catch (error) {
+        console.log('fetch single event failed',error)
+    }
+
+}
+export const getFinanceData= async(id :string,page:number,limit:number,searchQuery:string,sortBy:string,filterBy:string)=>{
+    try {
+     
+        const response=await client.get(`/events/api/finance/${id}`,{
+            params:{
+                page,
+                limit,
+                search:searchQuery,
+                sortBy,
+                filterBy
+            }
+        })
+        return response
+    } catch (error) {
+        console.log('fetch getFinanceData failed',error)
+    }
+
+}
+export const getLocationSuggestions= async()=>{
+    try {
+     
+        const response=await client.get(`/events/api/search`)
+        return response
+    } catch (error) {
+        console.log('fetch getFinanceData failed',error)
+    }
+
 }
