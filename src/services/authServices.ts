@@ -100,20 +100,36 @@ export const Googleauth=async(userData:{userID: string;role: string;})=>{
     }
 }
 
-export const fetchUsers=async()=>{
+export const fetchUsers=async(searchTerm:string, sortField:string, sortDirection:string, filterBy:string, page:number, limit:number)=>{
   try {
    
-    const response = await client.get('/auth/api/admin-get-users')
+    const response = await client.get('/auth/api/admin-get-users',{
+       params: {
+        search: searchTerm,
+        sortField,
+        sortDirection,
+        filterBy,
+        page,
+        limit,
+      },
+    })
     return response
   } catch (error) {
     
     console.log('fetch users error',error)
   }
 }
-export const fetchOrganizers=async()=>{
+export const fetchOrganizers=async(params: {
+  search: string;
+  sortField: string;
+  sortDirection: string;
+  filterBy: string;
+  page: number;
+  limit: number;
+})=>{
   try {
    
-    const response = await client.get('/auth/api/admin-get-organizers')
+    const response = await client.get('/auth/api/admin-get-organizers',{params})
     console.log(response)
     return response
   } catch (error) {
@@ -314,3 +330,15 @@ export const deleteImageFromServer=async (id:string,avatarUrl:string)=>{
     throw new Error('Failed to get image from s3');   
   }
 }
+
+
+export const checkUserLocation=async(userId: string)=>{
+  try {
+    const response=await client.get(`/auth/api/get-user-location/${userId}`)
+    return response.data
+    
+  } catch (error) {
+    console.log('fetch user data error',error)
+  }
+}
+

@@ -12,11 +12,20 @@ export  const tagCreation=async(name:string)=>{
         console.error("Tag creation failed from service.ts", error);
     }
 }
-export  const getTags=async()=>{
+export  const getTags=async(searchTerm:string, sortField:string, sortDirection:string, filterBy:string, page:number, limit:number)=>{
     try {
         console.log('get tags service is working')
-        const response =  await client.get(`/events/api/admin/tags`);
-        console.log(response,"get tags response")
+        const response =  await client.get(`/events/api/admin/tags`,{
+         params: {
+                    search: searchTerm,
+                    sortField,
+                    sortDirection,
+                    filterBy,
+                    page,
+                    limit,
+                },
+        });
+        
         return response
         
     } catch (error) {
@@ -80,11 +89,20 @@ export  const editCategory=async(categoryName:string,description:string,id:strin
     }
 }
 
-export  const getcategories=async()=>{
+export  const getcategories=async(searchTerm:string, sortField:string, sortDirection:string, filterBy:string, page:number, limit:number)=>{
     try {
         console.log('get Category service is working')
-        const response =  await client.get(`/events/api/admin/category`);
-        console.log(response,"get category response")
+        const response =  await client.get(`/events/api/admin/category`,{
+             params: {
+                    search: searchTerm,
+                    sortField,
+                    sortDirection,
+                    filterBy,
+                    page,
+                    limit,
+                },
+        });
+        
         return response
         
     } catch (error) {
@@ -228,22 +246,34 @@ export const removeEvent= async(eventId:string)=>{
     }
 }
 
-export const fetchAllEvents=async()=>{
+export const fetchAllEvents=async(lat:number,lng:number)=>{
     try {
-        console.log('fetchAllEvents service is working')
-        const response =  await client.get(`/events/api/fetch-all-events`);
       
-        console.log("fetchAllEvents response",response)
+        const response =  await client.get(`/events/api/fetch-all-events`,{
+            params:{
+               lat,
+               lng, 
+            }
+        });
+      
+       
         return response  
     } catch (error) {
         console.error("fetchAllEvents failed from service.ts", error);
     }
 }
-export const fetchEvent=async()=>{
+export const fetchEvent=async(searchTerm:string, sortField:string, sortDirection:string, filterBy:string, page:number, limit:number)=>{
     try {
-        console.log('fetchEvent service is working')
-        const response =  await client.get(`/events/api/fetch-events`);
-        console.log("fetchEvent response",response)
+        const response =  await client.get(`/events/api/admin/fetch-events`,{
+        params: {
+        search: searchTerm,
+        sortField,
+        sortDirection,
+        filterBy,
+        page,
+        limit,
+      },
+        })
         return response  
     } catch (error) {
         console.error("fetchEvent failed from service.ts", error);
@@ -267,12 +297,17 @@ export const fetchSearchEvents=async(filterdata:{
     sort:string,
     page:string,
     limit:string,
+    location:{
+        lat: number;
+        lng: number;
+    },
     date:{
       dateFilter:string,
       customDate:string
     }
   })=>{
     try {
+      
         
         const params=new URLSearchParams();
         if(filterdata.search) params.append("search",filterdata.search)
@@ -282,7 +317,11 @@ export const fetchSearchEvents=async(filterdata:{
         if(filterdata.limit) params.append("limit",filterdata.limit)
         if(filterdata.date?.dateFilter) params.append("dateFilter",filterdata?.date?.dateFilter)
         if(filterdata.date?.customDate) params.append("customDate",filterdata.date?.customDate)
+        if (filterdata.location?.lat) params.append("latitude", filterdata.location.lat.toString());
+        if (filterdata.location?.lng) params.append("longitude", filterdata.location.lng.toString());
+        
         const queryString=`?${params.toString()}`;
+
         const response =  await client.get(`/events/api/fetch-search-events${queryString}`);
         return response  
     } catch (error) {
@@ -319,13 +358,55 @@ export const getFinanceData= async(id :string,page:number,limit:number,searchQue
     }
 
 }
-export const getLocationSuggestions= async()=>{
+export const getLocationSuggestions= async(query:string)=>{
     try {
      
-        const response=await client.get(`/events/api/search`)
+        const response=await client.get(`/events/api/search`, {
+            params: { q: query }
+            })
+           
         return response
     } catch (error) {
         console.log('fetch getFinanceData failed',error)
     }
 
 }
+export const markReview =async (userId:string, eventId:string,rating:number,text:string)=>{
+  try {
+        const response=await client.post(`/events/api/review/${eventId}`, {userId,rating,text })
+        return response.data
+    } catch (error) {
+        console.log('fetch markReview failed',error)
+    }
+}
+export const fetchReviews =async (eventId:string,page:number,limit:number)=>{
+  try {
+        const response=await client.get(`/events/api/review/${eventId}`,{
+            params:{
+                page,limit
+            }
+        })
+       
+        return response.data
+    } catch (error) {
+        console.log('fetch FetchReviews failed',error)
+    }
+}
+export const removeReviews =async (eventId:string)=>{
+  try {
+        const response=await client.delete(`/events/api/review/${eventId}`)
+        return response.data
+    } catch (error) {
+        console.log('fetch FetchReviews failed',error)
+    }
+}
+
+export const editReviews =async (reviewId:string,rating:number,text:string)=>{
+  try {
+        const response=await client.patch(`/events/api/review/${reviewId}`,{rating,text })
+        return response.data
+    } catch (error) {
+        console.log('fetch FetchReviews failed',error)
+    }
+}
+

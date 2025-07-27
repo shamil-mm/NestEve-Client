@@ -112,13 +112,13 @@ const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updat
          
          if(totalquantity===totalseatSelected){
          
-          dispatch(setCheckoutData({tickets,isSeated:event.is_seated,event:{_id:event._id,title:event.title,startDate:event.startDate,startTime:event.startTime,endTime:event.endTime ,venue:event.venue,locationName:event.locationName}}))
+          dispatch(setCheckoutData({tickets,isSeated:event.is_seated,event:{_id:event._id,title:event.title,startDate:event.startDate,startTime:event.startTime,endTime:event.endTime ,location:event.location}}))
           checkoutModal(true)
          }else{
           toast.error("Please select all the seats you've added before continuing")
          }
         }else{
-          dispatch(setCheckoutData({tickets,isSeated:event.is_seated,event:{_id:event._id,title:event.title,startDate:event.startDate,startTime:event.startTime,endTime:event.endTime ,venue:event.venue,locationName:event.locationName}}))
+          dispatch(setCheckoutData({tickets,isSeated:event.is_seated,event:{_id:event._id,title:event.title,startDate:event.startDate,startTime:event.startTime,endTime:event.endTime ,location:event.location}}))
           checkoutModal(true)
         }
       }
@@ -141,7 +141,7 @@ const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updat
                   <div className="flex justify-between items-center mb-2">
                     <div>
                       <h3 className="font-bold text-lg">{type.name}</h3>
-                      <p className="text-white">${ticket!.price} per ticket</p>
+                      <p className="text-white">₹{ticket!.price} per ticket</p>
                     </div>
 
                     <div className="flex items-center space-x-2">
@@ -169,7 +169,7 @@ const NonseatedCheckout:React.FC<NonseatedCheckoutProps> = ({event,modalfn,updat
                     </div>
                   </div>
                   
-                  {ticket&&ticket.quantity > 0 && (
+                  {ticket && ticket.quantity > 0 && (
                     <div className="text-right text-sm">
                       Subtotal: ₹{ticket.quantity * (ticket.price as number)}
                     </div>

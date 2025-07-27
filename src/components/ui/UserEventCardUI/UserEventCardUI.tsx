@@ -14,18 +14,15 @@ const UserEventCardUI:React.FC<UserEventCardUIProps> = ({event,callback}) => {
   
   const [address, setAddress] = useState('');
 
-console.log(event)
-  // useEffect(() => {
-  //   const fetchAddress = async () => {
-  //     console.log('fetch address is working', event.location)
-  //     // if (event.location.coordinates) {
-  //     //   const result = await getGeoAddress(event.location.coordinates[0], event.location.coordinates[1]);
-
-  //     //   setAddress(result);
-  //     // }
-  //   };
-  //   fetchAddress();
-  // }, [event]);
+  useEffect(() => {
+    const fetchAddress = async () => {
+      if (event.location.coordinates) {
+        const result = await getGeoAddress(event.location.coordinates[1], event.location.coordinates[0]);
+        setAddress(result);
+      }
+    };
+    fetchAddress();
+  }, [event]);
 
 
   let priceRange

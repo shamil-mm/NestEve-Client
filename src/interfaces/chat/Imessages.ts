@@ -9,7 +9,7 @@ export interface IMessage {
    message?:string;
    mediaUrl?:string|null;
    mediaType?:'image'|'video' |'file'|null;
-   replayTo?:string|null
+   replayTo?:IMessage|null
    createdAt:string;
    updateAt:string
 }

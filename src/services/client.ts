@@ -1,7 +1,6 @@
 import axios from "axios";
 import { store } from "../store";
 import { logoutSuccess } from "../store/slices/authUsers";
-// import { toast } from "react-fox-toast";
 
 const API_BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
@@ -15,10 +14,9 @@ export const client = axios.create({
    client.interceptors.response.use(
        response => response,
        async function (error) {
-           // const originalRequest = error.config;
-           // console.log(error.response.status,originalRequest._retry);
-        
-           if (error.response && error.response.status === 403 && error.response.statusText==='Not Found') {
+       
+
+           if (error.response && error.response.status === 401 && error.response.statusText==='Unauthorized'&& error.response.data.message==='Authentication required' ) {
               
                try {
                    store.dispatch(logoutSuccess());
@@ -33,19 +31,3 @@ export const client = axios.create({
            return Promise.reject(error);
        }
      );
-
-// export const apiClient=createApiClient()
-
-// export const client=(method: string,url: string , data:object={},headers={})=>{
-//     console.log(method,url,data,headers)
-//     return apiClient({
-//         method,
-//         url,
-//         data,
-//         headers:{
-//             ...apiClient.defaults.headers.common,
-//             ...headers
-//         }
-//     })
-// }
-

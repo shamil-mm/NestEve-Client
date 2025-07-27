@@ -4,7 +4,7 @@ export interface ISeats{
     status:string;
     category:string;
     price:string;
-    isVisible:boolean
+    isVisible:boolean;
 }
 
 export interface IfilteredRows{

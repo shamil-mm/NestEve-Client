@@ -51,7 +51,7 @@ const LocationPicker = () => {
             isManualSelection.current=false
             return
         }
-        const delayDebouce=setTimeout(fetchSuggestions,400);
+        const delayDebouce=setTimeout(fetchSuggestions,600);
         return ()=>clearTimeout(delayDebouce)
     },[query])
 

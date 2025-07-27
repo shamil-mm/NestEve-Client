@@ -8,16 +8,18 @@ export interface ITicketTypes{
     capacity:number;
 }
 interface categories{
-    _id:string
+    _id?:string
     name:string;
     rowRange:string[];
     price:number
 }
 export interface ILayoutConfig{
-   
-    rows:number;
-    columns:number;
-    categories:[categories]
+    rows: number;
+    columns: number;
+    seatStyle: string;
+    passageRows: number[];
+    passageColumns: number[];
+    categories:categories[]
 }
 export interface ITags{
     _id:string

@@ -51,7 +51,7 @@ const OrganizerFinanceDatas = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black/70 text-white">
+    <div className="relative min-h-screen bg-black/70 text-white">
       {/* Header */}
       <div className="flex justify-between items-center p-6 border-b ">
         <div className="flex items-center gap-4">
@@ -155,7 +155,7 @@ const OrganizerFinanceDatas = () => {
       </div>
 
       {/* Pagination */}
-     <div className="flex justify-between items-center px-6 pb-6">
+     <div className="absolute bottom-0 left-0 right-0  flex justify-between items-center px-6 pb-6">
         <button
           onClick={() => page > 1 && setPage(page - 1)}
           className="w-10 h-10 rounded-full border border-blue-600 flex items-center justify-center"

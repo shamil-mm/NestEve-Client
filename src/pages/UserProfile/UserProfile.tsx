@@ -1,6 +1,4 @@
-
 import bg from '../../../src/assets/abstract-background.jpg';
-import SecondNavbar from '../../components/common/Navbar2/SecondNavbar';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import useravatar from '../../assets/useravatar.jpg'
@@ -14,6 +12,7 @@ import { fetchUserData, getProfileImage } from '../../services/authServices';
 import { getUserBookings } from '../../services/bookingService';
 import { IBooking } from '../../interfaces/Booking/IBooking';
 import EventTicket from '../../components/ui/UserProfile/EventTicket';
+import Navbar from '../../components/common/Navbar/Navbar';
 
 const UserProfile = () => {
   const navigate = useNavigate()
@@ -77,7 +76,7 @@ const UserProfile = () => {
     <div className="min-h-screen flex flex-col items-center justify-start text-white bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
       <div className=" relative inset-0  bg-black/50"></div>
       <div className='min-h-auto w-full bg-black test-white relative z-10'>
-        <SecondNavbar />
+        <Navbar />
       </div>
       <div className="bg-black/80 w-7xl border-white border-1 z-1 mt-30">
 
@@ -111,7 +110,7 @@ const UserProfile = () => {
 
        
           <div className="px-4 py-2">
-            <h2 className="text-xl font-bold border-b border-white/20">Ticket Purchased Events</h2>
+            <h2 className="text-xl font-bold border-b border-white/20">Recent Ticket Purchases</h2>
           </div>
           <div className="space-y-4 px-4">
             {booking && booking.map((item, index) => (

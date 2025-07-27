@@ -24,15 +24,17 @@ const Chatpage = () => {
   },[organizer])
   useEffect(()=>{
 
-  })
+  },[])
 
   useEffect(() => {
+    if(!userId) return;
   const handleUpdateConversation = (data: {
     conversationId: string;
     lastMessage: string;
     lastMessageTime: string;
+    unreadCounts:{ userId:string , count:number }[]
   }) => {
-    console.log('checking prev message issue',data)
+    
     setChatlist(prev =>
       prev.map(chat =>
         chat.id === data.conversationId
@@ -42,6 +44,7 @@ const Chatpage = () => {
               lastMessageTime: new Date(data.lastMessageTime).toLocaleString('en-IN', {
                 day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
               }),
+              unread:data.unreadCounts.find(entry => entry.userId === userId)?.count || 0,
             }
           : chat
       )
@@ -53,7 +56,9 @@ const Chatpage = () => {
   return () => {
     socket.off("updateConversation", handleUpdateConversation);
   };
-}, []);
+}, [userId]);
+
+
 
 
 
@@ -85,8 +90,15 @@ const Chatpage = () => {
     }
     GetChats()
   },[userId])
-  useEffect(()=>{
-  },[chats])
+
+
+  useEffect(() => {
+  if (chats.length > 0) {
+    chats.forEach(chat => {
+      socket.emit('joinRoom', chat.id);
+    });
+  }
+}, [chats])
 
   useEffect(()=>{
     if(singleChat?._id){
@@ -98,11 +110,19 @@ const Chatpage = () => {
   const handleSingleMessage=async(e:React.MouseEvent<HTMLDivElement>,conversationId:string)=>{
     
     e.preventDefault()
-    
-    if(conversationId){
+    if (!conversationId || !userId) return;
+    socket.emit('markMessagesAsRead', { conversationId, userId });
+    setChatlist(prev =>
+    prev.map(chat =>
+      chat.id === conversationId
+        ? { ...chat, unread: 0 }
+        : chat
+    )
+  );
+
       const res=await getSingleChat(conversationId as string)
       setSingleChat(res.data as IConversation)
-    }
+    
   }
 
   

@@ -1,4 +1,4 @@
-import { Calendar, Clock, MapPin, Star, QrCode, Ticket } from "lucide-react";
+import { Calendar, Clock, MapPin, Star, Ticket } from "lucide-react";
 import { IBooking } from "../../../interfaces/Booking/IBooking";
 import React, { useEffect, useState, useRef } from "react";
 import { fetchSingleEvent } from "../../../services/EventServices";
@@ -6,6 +6,8 @@ import { IEvent } from "../../../interfaces/IEvent";
 import PageLayout from "../../layout/OrganizerPageLayout/PageLayout";
 import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
+import { getGeoAddress } from "../../../utils/geocode";
+import TicketQRCode from "../../common/QrCode/TicketQRCode";
 
 interface EventTicketProps {
   booking: IBooking;
@@ -16,6 +18,9 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
   const [event, setEvent] = useState<IEvent | null>(null);
   const [hideImage, setHideImage] = useState(false);
   const [hiddenDownloadMode, setHiddenDownloadMode] = useState(false);
+  const [address, setAddress] = useState('');
+  
+     
 
   const ticketRef = useRef<HTMLDivElement>(null);
   const printRef = useRef<HTMLDivElement>(null);
@@ -23,12 +28,21 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
   useEffect(() => {
     async function getEvent() {
       const eventId = booking?.eventId?._id;
-      console.log('from EventTicket',eventId)
       const response = await fetchSingleEvent(eventId as string);
       setEvent(response?.data.events);
     }
     getEvent();
   }, [booking.eventId]);
+
+   useEffect(() => {
+        const fetchAddress = async () => {
+          if (event?.location?.coordinates) {
+            const result = await getGeoAddress(event?.location?.coordinates[1], event?.location?.coordinates[0]);
+            setAddress(result);
+          }
+        };
+        fetchAddress();
+      }, [event]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -97,7 +111,7 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
     
    const message = `*Your Event Ticket: "${event?.title}"*
 
- *Venue:* ${event?.venue}
+ *Venue:* ${address}
  *Date:* ${formatDate(event?.startDate || '')}
  *Time:* ${event?.startTime}
 
@@ -174,7 +188,7 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
               </div>
             </div>
           </div>
-          <div className="flex-1 flex items-start space-x-2">
+          <div className="flex-1 flex items-start space-x-2 ml-6">
             <Clock className="text-blue-400 mt-1" size={16} />
             <div>
               <div className="text-xs text-gray-400">Time</div>
@@ -185,10 +199,10 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
 
         <div className="flex space-x-50">
           <div className="flex-1 flex items-start space-x-2">
-            <MapPin className="text-blue-400 mt-1" size={16} />
+            <MapPin className="text-blue-400 mt-1" size={40} />
             <div>
               <div className="text-xs text-gray-400">Venue</div>
-              <div className="text-sm font-medium">{event?.venue || "TBA"}</div>
+              <div className="text-sm font-medium">{address }</div>
             </div>
           </div>
           <div className="flex-1 flex items-start space-x-2">
@@ -255,10 +269,11 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
         <div className="border-t border-white/10 my-2"></div>
 
         {/* QR Code */}
-        <div className="flex items-center justify-center py-2">
-          <div className="flex flex-col items-center">
-            <QrCode size={100} className="text-white" />
-            <div className="text-xs text-gray-400 mt-2">Scan to verify ticket</div>
+        <div className="flex items-center justify-center  ">
+          <div className="flex flex-col items-center bg-white pt-2 px-1">
+            <TicketQRCode ticketId={booking._id}/>
+            <br className="bg-black"/>
+            <div className="text-xs text-black ">Scan to verify ticket</div>
           </div>
         </div>
 

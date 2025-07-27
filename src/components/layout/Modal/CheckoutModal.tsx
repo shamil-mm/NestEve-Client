@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import bg from '../../../assets/abstract-background.jpg'
 import { useAppSelector } from "../../../hooks/AuthHook";
 import { useSelector } from "react-redux";
@@ -126,10 +126,10 @@ const CheckoutModal = () => {
                     <span className="font-bold">Date:</span> {new Date(event.startDate as string).toDateString()} <br />
                     <span className="font-bold">Time:</span> {event.startTime}
                     </p>
-                    <p className="mb-2">
+                    {/* <p className="mb-2">
                     <span className="font-bold">Venue:</span> {event.venue} <br />
                     <span className="font-bold">Location:</span> {event.locationName}
-                    </p>
+                    </p> */}
 
 
                     {tickets.map((value,index)=>(
@@ -137,7 +137,7 @@ const CheckoutModal = () => {
                         <div key={index}>
                          <span>{value.quantity} × {value.name}</span>
                         </div>
-                         <span>{isSeated ? value.selectedSeats?.reduce((acc,value)=>acc+Number(value.price),0) :value.price}</span>
+                         <span>{isSeated ? value.selectedSeats?.reduce((acc,value)=>acc+Number(value.price),0) :value.price}  ₹</span>
                  
                   </div>
                     ))}
@@ -154,7 +154,7 @@ const CheckoutModal = () => {
                   </div>
                   <div className="flex justify-between font-bold">
                     <span>Total Price</span>
-                    <span>{totalPrice}</span>
+                    <span>{totalPrice} ₹</span>
                   </div>
                 </div>
               </div>

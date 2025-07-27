@@ -5,7 +5,7 @@ import { blockUser, fetchOrganizers } from "../../services/authServices";
 
 const Organizers = () => {
 
-  interface Organizer {
+  interface IOrganizer {
       name: string;
       email: string;
       _id: string;
@@ -13,30 +13,33 @@ const Organizers = () => {
       is_block:boolean
     }
   
-    const [users, setUsers]=useState<Organizer[]>([])
-    // const [data,setData]=useState<Organizer|object>({})
+    const [users, setUsers]=useState<IOrganizer[]>([])
+     const [searchTerm, setSearchTerm] = useState('');
+      const [sortField, setSortField] = useState('');
+      const [sortDirection, setSortDirection] = useState('asc');
+      const [filterBy, setFilterBy] = useState('');
+      const [page, setPage] = useState(1);
+      const [totalPages, setTotalPages] = useState(1);
+      const [limit] =useState(1)
+   
     useEffect(()=>{
       const FetchOrganizers=async()=>{
         try {
-          console.log("FetchUsers working")
-          const res= await fetchOrganizers()
-          setUsers(res?.data.organizers)
-          
-          
-  
+          console.log("FetchOrganizer working")
+          const res= await fetchOrganizers({search: searchTerm, sortField, sortDirection, filterBy, page, limit})
+          console.log('FetchOrganizer',res)
+          setUsers(res?.data.organizers.organizers)
+          setTotalPages(res?.data.organizers.totalPages);
         } catch (error) {
           console.log('Fetch User error',error)
         }
       }
       FetchOrganizers()
-    },[])
+    },[searchTerm, sortField, filterBy, page, limit])
     
-      const [searchTerm, setSearchTerm] = useState('');
-      const [sortField, setSortField] = useState('');
-      const [sortDirection, setSortDirection] = useState('asc');
-      const [filterBy, setFilterBy] = useState('');
+     
     
-      // Handle sorting
+    
       const handleSort = (field: SetStateAction<string>) => {
         if (sortField === field) {
           setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -46,7 +49,7 @@ const Organizers = () => {
         }
       };
     
-      // Handle search
+     
       const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
         setSearchTerm(e.target.value);
       };
@@ -86,7 +89,7 @@ const Organizers = () => {
        <div className="container mx-auto p-4">
       <div className="bg-white rounded-lg shadow">
         {/* Header with search, filter and add user button */}
-        <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex justify-between items-center p-4 ">
           <h2 className="text-xl font-semibold">Organizers's List</h2>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -110,15 +113,15 @@ const Organizers = () => {
                 onChange={(e) => setFilterBy(e.target.value)}
               >
                 <option value="">All</option>
-                <option value="Active">Active</option>
-                <option value="Suspended">Suspended</option>
+                <option value="active">Active</option>
+                <option value="suspended">Suspended</option>
               </select>
             </div>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search..."
-                className="border rounded-full pl-10 pr-4 py-1 w-64"
+                className="border rounded-md pl-10 pr-4 py-1 w-64"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -131,30 +134,30 @@ const Organizers = () => {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="overflow-x-auto  rounded-md shadow-lg border border-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 bg-white">
             <thead className="bg-blue-600 text-white">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">User Id</th>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">User name</th>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">Email</th>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">Event Created</th>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">Ticket Purchased</th>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">Status</th>
-                <th className="px-6 py-3 text-left text-sm font-medium">Actions</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold ">User Id</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold ">User name</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold ">Email</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold ">Event Created</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold ">Ticket Purchased</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold ">Status</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold ">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className=" divide-y divide-gray-100">
               {filteredUsers?filteredUsers.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user._id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-center border-r">12</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-center border-r">34</td>
-                  <td className="px-6 py-4 whitespace-nowrap border-r">
+                  <td className="px-6 py-4 text-sm text-gray-800">{user._id.slice(-5)}</td>
+                  <td className="px-6 py-4 text-sm text-gray-800">{user.name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-800">{user.email}</td>
+                  <td className="px-6 py-4 text-sm text-gray-800">1</td>
+                  <td className="px-6 py-4 text-sm text-gray-800">3</td>
+                  <td className="px-6 py-4 text-sm text-gray-800 text-center">
                     <span 
-                      className={`px-2 py-1 rounded-full text-xs ${
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
                         user.status === 'active' 
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-red-100 text-red-800'
@@ -175,6 +178,23 @@ const Organizers = () => {
             </tbody>
           </table>
         </div>
+         <div className="flex justify-center p-4 space-x-2">
+              <button
+                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span className="px-3 py-1 bg-gray-100 rounded">{page} / {totalPages}</span>
+              <button
+                onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
       </div>
     </div>
        </>

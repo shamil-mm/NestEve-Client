@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import AdminCommonLayout from '../../components/common/Admin/AdminCommonLayout';
 import CreateTagModal from '../../components/layout/Modal/CreateTagModal';
 import { blockCategory, categoryCreation, editCategory, fetchSingleCategory, getcategories } from '../../services/EventServices';
+import { Search } from 'lucide-react';
 
 
 const Category = () => {
-    const [sortField, setSortField] = useState('');
+    
     const[isModalOpen,setIsModalOpen]=useState(false)
     const [categoryname,setCategoryname]=useState("")
     const [description,setDescription]=useState("")
@@ -13,18 +14,30 @@ const Category = () => {
     const [discriptionError,setDiscriptionError]=useState<string|null>(null)
     const [categorylist,setCategoryList]=useState<{_id:string; categoryName: string;description: string;is_block: boolean;}[]>([])
     const [isEdit , setIsEdit]=useState<string|null>(null)
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortField, setSortField] = useState('');
+    const [sortDirection, setSortDirection] = useState('asc');
+    const [filterBy, setFilterBy] = useState('');
+    const [page, setPage] = useState(1);
+    const [limit] = useState(8);
+    const [totalPages, setTotalPages] = useState(1);
+
+
     useEffect(() => {
       const fetchCategories = async () => {
         try {
-          const response = await getcategories();
-          setCategoryList(response?.data?.response?.categoris);
+          const response = await getcategories(searchTerm, sortField, sortDirection, filterBy, page, limit);
+          console.log('fetch categories',response)
+          setCategoryList(response?.data?.response?.categories);
+          setTotalPages(response?.data?.response?.totalPages)
         } catch (error) {
           console.error("Error fetching categories:", error);
         }
       };
     
       fetchCategories();
-    }, []);
+    }, [searchTerm, sortField, sortDirection, filterBy, page, limit]);
     
     const toggleModal=()=>{
         setIsModalOpen(!isModalOpen)
@@ -79,6 +92,21 @@ const Category = () => {
         
     }
 
+     const handleSort = (field: SetStateAction<string>) => {
+            if (sortField === field) {
+              setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+            } else {
+              setSortField(field);
+              setSortDirection('asc');
+            }
+          };
+        
+        
+          const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
+            setSearchTerm(e.target.value);
+            setPage(1)
+          };
+
 
     const handleBlock=async(data:{id:string,is_block:boolean})=>{
       console.log(data)
@@ -111,7 +139,7 @@ const Category = () => {
       <div className="bg-white rounded-lg shadow">
        
 
-        <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex justify-between items-center p-4">
           <h2 className="text-xl font-semibold">Categories List</h2>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -119,7 +147,7 @@ const Category = () => {
               <select 
                 className="border rounded px-2 py-1"
                 value={sortField}
-                // onChange={(e) => handleSort(e.target.value)}
+                onChange={(e) => handleSort(e.target.value)}
               >
                 <option value="">Select</option>
                 <option value="name">Name</option>
@@ -131,8 +159,8 @@ const Category = () => {
               <span className="mr-2">Filter by</span>
               <select 
                 className="border rounded px-2 py-1"
-                // value={filterBy}
-                // onChange={(e) => setFilterBy(e.target.value)}
+                value={filterBy}
+                onChange={(e) => setFilterBy(e.target.value)}
               >
                 <option value="">All</option>
                 <option value="Active">Active</option>
@@ -143,11 +171,11 @@ const Category = () => {
               <input
                 type="text"
                 placeholder="Search..."
-                className="border rounded-full pl-10 pr-4 py-1 w-64"
-                // value={searchTerm}
-                // onChange={handleSearch}
+                className="border rounded-md pl-10 pr-4 py-1 w-64"
+                value={searchTerm}
+                onChange={handleSearch}
               />
-              {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} /> */}
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
             </div>
             <button onClick={toggleModal} className="bg-blue-600 text-white px-4 py-2 rounded-md">
               Add New Category
@@ -157,10 +185,7 @@ const Category = () => {
     <h2 className="text-2xl font-semibold text-center mb-6">{isEdit?"Edit Category":"Create new Category"}</h2>
 
     <form>
-      {/* Tag Name Field */}
      
-
-      {/* Category Name Field */}
       <div className="mb-4">
         <label htmlFor="categoryName" className="block text-lg font-medium text-gray-700 mb-2">
           Category Name
@@ -177,7 +202,7 @@ const Category = () => {
          {error && <p className="text-red-500  mb-4">{error}</p>}
       </div>
 
-      {/* Description Field */}
+  
       <div className="mb-4">
         <label htmlFor="description" className="block text-lg font-medium text-gray-700 mb-2">
           Description
@@ -217,8 +242,8 @@ const Category = () => {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="overflow-x-auto  rounded-md shadow-lg border border-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 bg-white">
             <thead className="bg-blue-600 text-white">
               <tr>
                 {/* <th className="px-6 py-3 text-left text-sm font-medium border-r">User Id</th> */}
@@ -266,6 +291,24 @@ const Category = () => {
             </tbody>
           </table>
         </div>
+
+        <div className="flex justify-center p-4 space-x-2">
+              <button
+                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span className="px-3 py-1 bg-gray-100 rounded">{page} / {totalPages}</span>
+              <button
+                onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
       </div>
     </div>
        </>

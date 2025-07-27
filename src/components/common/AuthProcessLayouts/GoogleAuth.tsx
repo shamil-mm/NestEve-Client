@@ -33,14 +33,16 @@ const GoogleAuth: React.FC<IGoogleAuth> = ({ data }) => {
     } catch (error: any) {
       setLoading(false)
       toast.error(error?.response?.data?.message)
+    }finally{
+      setLoading(false)
     }
   }
 
   if (loading) {
     return <>
-      <div className="h-screen flex items-center justify-center text-white  bg-cover bg-center" >
+      <div className="flex items-center justify-center text-white  bg-cover bg-center" >
         <div className="absolute inset-0 backdrop-blur bg-black/50"></div>
-        <div className="relative z-10">
+        <div className="relative right-50 bottom-40 z-10">
           <Loading />
         </div>
 

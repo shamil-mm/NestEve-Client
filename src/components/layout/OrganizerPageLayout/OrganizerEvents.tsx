@@ -5,6 +5,7 @@ import { IEvent } from "../../../interfaces/IEvent"
 import EventDetailView from "../../ui/OrganizerEvent/EventDetailView"
 import OrganizerCreateEvent from "./OrganizerCreateEvent"
 import { useAppSelector } from "../../../hooks/AuthHook"
+import EventManage from "../../ui/OrganizerEvent/EventManage"
 
 
 const OrganizerEvents= () => {
@@ -12,6 +13,7 @@ const OrganizerEvents= () => {
 
   const [events,setEvents]=useState<IEvent[]>([])
   const [detailview,setDetaiview]=useState(false)
+  const [manageEvent,setmanageEvent]=useState(false)
   const [detailviewEvent,setDetaiviewEvent]=useState<IEvent|null>(null)
   const [isEdit,setIsEdit]=useState(false)
   const [editEvent,setEditEvent]=useState<IEvent|null>(null)
@@ -53,14 +55,25 @@ const OrganizerEvents= () => {
           const updatedevents= events.filter((event)=>event._id!==eventId)
           setEvents(updatedevents)
         }
+      }else if(type==="manageEvent"){
+        setmanageEvent(value)
+         setDetaiviewEvent(event)
       }
     }
 
     const close=(value:boolean)=>{
+      setmanageEvent(value)
       setIsEdit(value)
       setEditEvent(null)
       setDetaiview(value)
       setDetaiviewEvent(null)
+    }
+    if(manageEvent &&  detailviewEvent){
+      return(
+        <>
+        <EventManage event={detailviewEvent} close={close} />
+        </>
+      )
     }
 
     

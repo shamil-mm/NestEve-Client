@@ -1,4 +1,4 @@
-import SecondNavbar from "../../components/common/Navbar2/SecondNavbar"
+
 import useravatar from '../../assets/useravatar.jpg'
 import bg from '../../../src/assets/abstract-background.jpg';
 import React, { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { useAppSelector } from "../../hooks/AuthHook";
 import { toast } from "react-fox-toast";
 import ImageUpload from "../../components/layout/UserProfile/ImageUpload";
 import LocationPicker from "../../components/common/Location/LocationPicker";
+import Navbar from "../../components/common/Navbar/Navbar";
 
 
 
@@ -17,6 +18,7 @@ const EditUserProfile = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [name, setName] = useState("")
   const [passwords, setPasswords] = useState({})
+  const [nameError, setNameError] = useState("");
   useEffect(() => {
     const fetchUser = async () => {
 
@@ -47,10 +49,11 @@ const EditUserProfile = () => {
 
   const handleName = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    console.log("name setting event is working", name)
-    console.log(name, id)
-    const res = await updateName({ userId: id as string, name })
+    if(!name.trim() || name.length<3)return
+    let res
+    if(name){
+       res = await updateName({ userId: id as string, name })
+    }
     toast.success(res.message)
   }
   const handleChangePassword = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +66,20 @@ const EditUserProfile = () => {
   }
   const handleNewPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(passwords)
+    const { oldpassword, newpassword } = passwords as { oldpassword: string, newpassword: string }
+    if (!oldpassword || !newpassword) {
+    toast.error("Both passwords are required");
+    return;
+  }
+  if (oldpassword === newpassword) {
+    toast.error("New password must be different from old password");
+    return;
+  }
+  if (newpassword.length < 6) {
+    toast.error("New password must be at least 6 characters");
+    return;
+  }
+
     const res = await updatePassword(currentUser?.email as string, passwords as { oldpassword: string, newpassword: string })
     if (res.status) {
       toast.success(res.message)
@@ -103,7 +119,7 @@ const EditUserProfile = () => {
 
       <div className="absolute inset-0  bg-black/50"></div>
       <div className='min-h-screen bg-black test-white'>
-        <SecondNavbar />
+        <Navbar />
       </div>
       <div className="m-5 flex flex-col sm:flex-row gap-4 relative top-12 z-10 w-full max-w-7xl">
 
@@ -157,9 +173,22 @@ const EditUserProfile = () => {
               <input
                 type="Name"
                 defaultValue={currentUser?.name}
-                onChange={(e) => { setName(e.target.value) }}
+                onChange={(e) => { 
+                  const value = e.target.value;
+                  setName(value)
+                  if (!value.trim() || value.length<3) {
+                      setNameError("Invalid name");
+                      return
+                    } else {
+                      setNameError("");
+                    } 
+                }}
                 className="w-5/10 border border-blue-800 text-white px-3 py-2 rounded text-sm"
               />
+             
+                {nameError && (
+                  <p className="text-red-500 text-xs ml-1 mt-3"> * {nameError}</p>
+                )}
             </div>
 
             <div className="flex">

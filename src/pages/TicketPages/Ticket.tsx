@@ -10,12 +10,15 @@ import { IBooking } from "../../interfaces/Booking/IBooking"
 import EventTicket from "../../components/ui/UserProfile/EventTicket"
 
 
+
+
 const Ticket = () => {
 
      const id = useAppSelector((state) => state.authUser?.user?.id) 
       const [booking,setBooking]=useState<Partial<IBooking>[]|null>(null)
       const [ticketModal,setTicketModal]=useState<boolean>(false)
     const [singleBooking,setSingleBooking]=useState<IBooking|null>(null)
+    
       
      useEffect(()=>{
         async function bookingfc(){
@@ -74,30 +77,47 @@ const Ticket = () => {
       }))
     }
 
+
+
+
+
+
     if(ticketModal && singleBooking){
       return(
         <EventTicket booking={singleBooking}/>
       )
     }
-
+    
 
  
   return (
 
     <>
+   
   <PageLayout>
     <BrowseEventSidebar getSelectedFilters={getSelectedFilters}/>
+    
         <div className="w-8/12 h-fit flex flex-col px-3 ">
-        <div className=" text-white flex justify-end">
-        <select name="sort" className=" border-white rounded-sm h-10">
-            <option value="" className="bg-black text-white">Sort</option>
-            <option value="price-low-to-high" className="bg-black text-white">Low to High</option>
-            <option value="price-high-to-low" className="bg-black text-white">High to Low</option>
-          </select>
-     
-         &nbsp; &nbsp;
-         <SearchBar onSearch={handleSearch}/>
-         </div>
+        
+
+        <div className="text-white flex justify-between items-center">
+ 
+  <div>
+   
+  </div>
+
+ 
+  <div className="flex items-center gap-2">
+    <select name="sort" className="border-white rounded-sm h-10 border-2 my-2 bg-black text-white">
+      <option value="">Sort</option>
+      <option value="price-low-to-high">Low to High</option>
+      <option value="price-high-to-low">High to Low</option>
+    </select>
+
+    <SearchBar onSearch={handleSearch} />
+  </div>
+</div>
+
           <div>
         <TicketsList booking={booking as IBooking[]} handleTicketModal={handleTicketModal} />
         </div>

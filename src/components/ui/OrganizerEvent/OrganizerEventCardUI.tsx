@@ -1,5 +1,7 @@
 import { Calendar, Clock, MapPin, Pencil, Trash2 } from 'lucide-react';
 import { IEvent } from '../../../interfaces/IEvent';
+import { getGeoAddress } from '../../../utils/geocode';
+import { useEffect, useState } from 'react';
 
 
 interface OrganizerEventCardProps{
@@ -10,7 +12,17 @@ interface OrganizerEventCardProps{
 
 
 const OrganizerEventCard:React.FC<OrganizerEventCardProps> = ({event,callback}) => {
+   let [address,setAddress]=useState("")
 
+   useEffect(()=>{
+    async function getAddress(){
+     const res= await getGeoAddress(event.location.coordinates[1],event.location.coordinates[0])
+     setAddress(res)
+    }
+    getAddress()
+   },[event])
+
+   
 
   const handleEdit=(e:React.MouseEvent<HTMLButtonElement>,event:IEvent)=>{
     e.preventDefault()
@@ -55,10 +67,7 @@ const OrganizerEventCard:React.FC<OrganizerEventCardProps> = ({event,callback}) 
         <Calendar size={16} />
         <span className="text-sm">{new Date(event.startDate).toLocaleDateString()}</span>
       </div>
-      <div className="flex items-center gap-1">
-        <MapPin size={16} />
-        <span className="text-sm">{event.locationName}</span>
-      </div>
+      
       <div className="flex items-center gap-1">
         <p>Price <span className="text-sm font-medium">₹{event.is_seated===false?event?.ticketTypes[0].price: Math.min(...event.layoutConfig.categories.map((value)=>value.price)).toString() }</span></p>
       </div>
@@ -79,11 +88,15 @@ const OrganizerEventCard:React.FC<OrganizerEventCardProps> = ({event,callback}) 
     </div>
 
     {/* Description */}
+    <div className="flex items-center gap-1">
+        <MapPin size={16} />
+        <span className="text-sm">{address}</span>
+      </div>
     <p className="text-sm"> {event.description}</p>
 
     {/* Buttons */}
     <div className="flex justify-between mt-auto">
-      <button className="border border-indigo-800 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md">
+      <button onClick={()=>callback(true,event,'manageEvent')} className="border border-indigo-800 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md">
         Manage Tickets
       </button>
       <button onClick={()=>callback(true,event,"detailedView")} className="border border-indigo-800 text-white  hover:bg-indigo-700 text-sm px-4 py-2 rounded-md">

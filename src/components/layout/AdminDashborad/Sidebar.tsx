@@ -2,11 +2,11 @@
 import { 
     LayoutDashboard, 
     Calendar, 
-    Ticket, 
+    // Ticket, 
     Users, 
     Tag, 
-    MessageSquare, 
-    Bell, 
+    // MessageSquare, 
+    // Bell, 
     CreditCard, 
     User, 
     LogOut, 
@@ -27,8 +27,8 @@ const Sidebar = () => {
         { icon: <Group size={20} />, label: 'Categories',link:'/admin-category' },
         // { icon: <MessageSquare size={20} />, label: 'Messages' },
         // { icon: <Bell size={20} />, label: 'Notifications' },
-        { icon: <CreditCard size={20} />, label: 'Payment and Transactions' },
-        { icon: <User size={20} />, label: 'Profile' },
+        { icon: <CreditCard size={20} />, label: 'Payment and Transactions',link:'/admin-payment-transaction' },
+        // { icon: <User size={20} />, label: 'Profile' },
         { icon: <LogOut size={20} />, label: 'Logout' },
         
       ];

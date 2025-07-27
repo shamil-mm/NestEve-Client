@@ -2,8 +2,11 @@ import hero from '@/assets/hero.jpg';
 import Navbar from '../../../common/Navbar/Navbar';
 import Button from '../../../ui/LandingPage/Button/Button';
 
+
 const Hero = () => {
+  
  
+
   return (
     <div className="relative h-screen flex flex-col">
 
@@ -13,7 +16,8 @@ const Hero = () => {
       </div>
 
 
-      <Navbar />
+      <Navbar  />
+      
 
       <div className="relative top-15 z-10 flex flex-col justify-center h-full px-6 md:px-20">
 

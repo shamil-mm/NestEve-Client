@@ -1,21 +1,31 @@
-import  { useEffect, useState } from 'react'
+import  { SetStateAction, useEffect, useState } from 'react'
 import AdminCommonLayout from '../../components/common/Admin/AdminCommonLayout'
 import CreateTagModal from '../../components/layout/Modal/CreateTagModal';
 import { blockList, editTag, fetchSingleTag, getTags, tagCreation } from '../../services/EventServices';
+import { Search } from 'lucide-react';
 
 const Tags = () => {
-    const [sortField, ] = useState('');
     const[isModalOpen,setIsModalOpen]=useState(false)
     const [name,setName]=useState("")
     const [error,setError]=useState<string|null>(null)
     const [tagList,setTagList]=useState<{_id:string; tag: string;usageCount: number;is_block: boolean;}[]>([])
     const [isEdit , setIsEdit]=useState<string|null>(null)
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortField, setSortField] = useState('');
+    const [sortDirection, setSortDirection] = useState('asc');
+    const [filterBy, setFilterBy] = useState('');
+    const [page, setPage] = useState(1);
+    const [limit] = useState(8);
+    const [totalPages, setTotalPages] = useState(1);
+
      useEffect(() => {
           const fetchCategories = async () => {
             try {
-              const response = await getTags();
+              const response = await getTags(searchTerm, sortField, sortDirection, filterBy, page, limit);
               if(response?.data?.tags){
                 setTagList(response?.data?.tags);
+                setTotalPages(response?.data?.totalPages)
               }
             } catch (error) {
               console.error("Error fetching categories:", error);
@@ -23,12 +33,7 @@ const Tags = () => {
           };
         
           fetchCategories();
-        }, []);
-
-
-
-
-
+        }, [searchTerm, sortField, sortDirection, filterBy, page, limit]);
 
     const toggleModal=()=>{
         setIsModalOpen(!isModalOpen)
@@ -70,6 +75,23 @@ const Tags = () => {
         setName("")
        
     }
+
+
+    const handleSort = (field: SetStateAction<string>) => {
+        if (sortField === field) {
+          setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+          setSortField(field);
+          setSortDirection('asc');
+        }
+      };
+    
+    
+      const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setSearchTerm(e.target.value);
+        setPage(1)
+      };
+    
     const handleBlock= async(_id:string,is_block:boolean)=>{
       const response=await blockList(_id,is_block)
       if(response?.status===200){
@@ -100,7 +122,7 @@ const Tags = () => {
       <div className="bg-white rounded-lg shadow">
        
 
-        <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex justify-between items-center p-4 ">
           <h2 className="text-xl font-semibold">Tags's List</h2>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -108,20 +130,19 @@ const Tags = () => {
               <select 
                 className="border rounded px-2 py-1"
                 defaultValue={sortField}
-                // onChange={(e) => handleSort(e.target.value)}
+                onChange={(e) => handleSort(e.target.value)}
               >
                 <option value="">Select</option>
-                <option value="name">Name</option>
-                <option value="email">Email</option>
-                <option value="status">Status</option>
+                <option value="tag">Tag Name</option>
+                
               </select>
             </div>
             <div className="flex items-center">
               <span className="mr-2">Filter by</span>
               <select 
                 className="border rounded px-2 py-1"
-                // value={filterBy}
-                // onChange={(e) => setFilterBy(e.target.value)}
+                value={filterBy}
+                onChange={(e) => setFilterBy(e.target.value)}
               >
                 <option value="">All</option>
                 <option value="Active">Active</option>
@@ -132,11 +153,11 @@ const Tags = () => {
               <input
                 type="text"
                 placeholder="Search..."
-                className="border rounded-full pl-10 pr-4 py-1 w-64"
-                // value={searchTerm}
-                // onChange={handleSearch}
+                className="border rounded-sm pl-10 pr-4 py-1 w-64"
+                value={searchTerm}
+                onChange={handleSearch}
               />
-              {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} /> */}
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
             </div>
             <button onClick={toggleModal} className="bg-blue-600 text-white px-4 py-2 rounded-md">
               Add New Tag
@@ -177,28 +198,28 @@ const Tags = () => {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="overflow-x-auto  rounded-md shadow-lg border border-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 bg-white">
             <thead className="bg-blue-600 text-white">
               <tr>
                 {/* <th className="px-6 py-3 text-left text-sm font-medium border-r">User Id</th> */}
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">Tag</th>
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">Usage count</th>
+                <th className="px-6 py-3 text-left text-sm font-medium ">Tag</th>
+                <th className="px-6 py-3 text-left text-sm font-medium ">Usage count</th>
                 {/* <th className="px-6 py-3 text-left text-sm font-medium border-r">Event Created</th>
                 <th className="px-6 py-3 text-left text-sm font-medium border-r">Ticket Purchased</th> */}
-                <th className="px-6 py-3 text-left text-sm font-medium border-r">Status</th>
+                <th className="px-6 py-3 text-left text-sm font-medium ">Status</th>
                 <th className="px-6 py-3 text-left text-sm font-medium">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-100">
               {tagList?tagList.map((list, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   {/* <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user._id}</td> */}
                   {/* <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm border-r">{user.email}</td> */}
-                  <td className="px-6 py-4 whitespace-nowrap text-sm  border-r">{list.tag}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm  border-r">{list.usageCount}</td>
-                  <td className="px-6 py-4 whitespace-nowrap border-r">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm  ">{list.tag}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm  ">{list.usageCount}</td>
+                  <td className="px-6 py-4 whitespace-nowrap ">
                     <span 
                       className={`px-2 py-1 rounded-full text-xs ${
                         list.is_block === false 
@@ -225,6 +246,23 @@ const Tags = () => {
             </tbody>
           </table>
         </div>
+        <div className="flex justify-center p-4 space-x-2">
+              <button
+                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span className="px-3 py-1 bg-gray-100 rounded">{page} / {totalPages}</span>
+              <button
+                onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
       </div>
     </div>
        </>

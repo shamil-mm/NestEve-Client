@@ -4,11 +4,15 @@ export const formateConversations = async (
   data: IConversation[],
   currentUserId: string
 ) => {
+  console.log('formate conversation data',data)
   return data.map((Conversation: IConversation) => {
     if (Conversation.type === "one-to-one") {
       const opponent = Conversation.participants.find(
         (value) => value._id !== currentUserId
       );
+      const unreadCount=Conversation.unreadCounts.find(
+        (entry)=>entry.userId.toString()===currentUserId
+      )?.count || 0
       return {
         id: Conversation._id,
         name: opponent?.name,
@@ -17,7 +21,7 @@ export const formateConversations = async (
         day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
         })|| "",
         avatar: opponent?.avatar || "👨",
-        unread: Conversation.unreadCounts.length || 0,
+        unread: unreadCount,
       };
     }
   });

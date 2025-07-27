@@ -1,7 +1,9 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar, Clock, MapPin, DollarSign, Pencil, Trash2, Armchair } from 'lucide-react';
 import { IEvent } from '../../../interfaces/IEvent';
+import { getGeoAddress } from '../../../utils/geocode';
+import { StaticMap } from '../../common/Location/StaticMap';
 interface EventDetailViewProps{
     event:IEvent
     close: (value:boolean) => void;
@@ -10,6 +12,17 @@ interface EventDetailViewProps{
 const EventDetailView:React.FC<EventDetailViewProps> = ({event,close}) => {
 
     const [showMap, setShowMap] = useState(false);
+    const [address, setAddress] = useState('');
+    
+        useEffect(() => {
+          const fetchAddress = async () => {
+            if (event.location.coordinates) {
+              const result = await getGeoAddress(event.location.coordinates[1], event.location.coordinates[0]);
+              setAddress(result);
+            }
+          };
+          fetchAddress();
+        }, [event]);
     return (
         <div className="max-w-full mx-auto bg-black/800 text-white  overflow-hidden shadow-xl ">
           <div className='flex justify-end'>
@@ -75,18 +88,12 @@ const EventDetailView:React.FC<EventDetailViewProps> = ({event,close}) => {
                 </div>
               </div>
               
-              <div>
-                <h2 className="text-sm text-white uppercase tracking-wider">Venue</h2>
-                <div className="flex items-center mt-1">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  <p>{event.venue}</p>
-                </div>
-              </div>
+             
               <div>
                 <h2 className="text-sm text-white uppercase tracking-wider">Location</h2>
                 <div className="flex items-center mt-1">
                 <MapPin className="h-4 w-4 mr-1 text-blue-400" />
-                <p>{event.locationName}</p>
+                <p>  {address}</p>
                 </div>
               </div>
 
@@ -172,32 +179,20 @@ const EventDetailView:React.FC<EventDetailViewProps> = ({event,close}) => {
 </div>
           </div>
     
-          {/* Location Map */}
+        
           <br />
           <div className=" bg-black/800">
-            {/* <div className="flex justify-between items-center mb-2">
-              <h2 className="text-sm text-white uppercase tracking-wider">Location</h2>
-              <div className="flex items-center">
-                <MapPin className="h-4 w-4 mr-1 text-blue-400" />
-                <p>{event.locationName}</p>
-              </div>
-            </div> */}
-            
-            <div 
-              className="h-48 bg-gray-300 cursor-pointer relative overflow-hidden"
-              onClick={() => setShowMap(!showMap)}
-            >
-              {showMap ? (
-                <div className="absolute inset-0 flex items-center justify-center text-white">
-                  Interactive map would load here
-                </div>
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-white">
-                  Click to load map
-                </div>
-              )}
-            </div>
-          </div>
+                      <div 
+                        className="h-48 bg-gray-300 cursor-pointer relative overflow-hidden"
+                        
+                      >
+                      
+                          <div className="absolute inset-0 flex items-center justify-center text-white">
+                            <StaticMap latitude={event.location.coordinates[1]} longitude={event.location.coordinates[0]}/>
+                          </div>
+                      
+                      </div>
+                    </div>
          
         </div>
       );

@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
 import EventCreation from '../../../assets/eventCreation.jpg'
 import { zodEventSchema, zodSeatingLayoutSchema, createZodTickenTypesSchema } from '../../../schemas/eventSchema';
 import { z } from 'zod';
 import TagSelecter from '../../ui/OrganizerEvent/TagSelecter';
 import { createEvent, fetchCategoriesList, updateEvent } from '../../../services/EventServices';
 import { toast } from 'react-fox-toast';
-import { IEvent } from '../../../interfaces/IEvent';
+import { IEvent, ILayoutConfig } from '../../../interfaces/IEvent';
 import { useAppSelector } from '../../../hooks/AuthHook';
 import "react-datepicker/dist/react-datepicker.css";
 import { generateBalancedLayouts, getRowCountFromRange } from '../../../utils/eventCreationHelperFunction/ColumnSuggestion';
 import EventLocationPicker from '../../common/Location/EventLocationPicker';
+
 
 
 
@@ -23,7 +24,7 @@ interface OrganizerCreateEventProps {
 }
 const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSuccess, editEvent }) => {
 
-  const [search, setSearch] = useState<string | "">("");
+  
   const userId = useAppSelector((state) => state.authUser?.user?.id)
   // const handleSearch = async () => {
   //   if (!search) return;
@@ -140,7 +141,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
         return {
           ...prev,
           categories: updatedCategories
-        };
+        } 
       });
     }
   };
@@ -185,18 +186,23 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
   };
 
 
-  const [layoutConfig, setLayoutConfig] = useState(
+  const [layoutConfig, setLayoutConfig] = useState<ILayoutConfig>(
     editEvent?.layoutConfig ?
       editEvent.layoutConfig
       :
       {
         rows: 0,
         columns: 0,
-        categories: [{ name: "General", rowRange: [""], price: 0 }]
+        seatStyle:'',
+        passageRows:[],
+        passageColumns:[],
+        categories: [{name: "General", rowRange: [""], price: 0 }]
       });
 
+      const [passageRowsInput, setPassageRowsInput] = useState(layoutConfig.passageRows.join(','));
+      const [passageColumnsInput, setPassageColumnsInput] = useState(layoutConfig.passageColumns.join(','));
 
-  const handleLayoutChange = (field: string, value: number) => {
+  const handleLayoutChange = (field: string, value: any) => {
     if (field === "rows") {
 
       const match = suggestions.find(item => item.rows === value);
@@ -213,6 +219,21 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
         ...prev,
         columns: value,
       }));
+    }else if(field==='seatStyle'){
+      setLayoutConfig(prev=>({
+        ...prev,
+        seatStyle:value
+      }))
+    }else if(field ==='passageRows'){
+      setLayoutConfig(prev=>({
+        ...prev,
+        passageRows:value.split(',').map((v:string)=>parseInt(v)).filter((n:number)=>!isNaN(n))
+      }))
+    }else if(field=== 'passageColumns'){
+      setLayoutConfig(prev=>({
+        ...prev,
+        passageColumns:value.split(',').map(((v:string)=>parseInt(v))).filter((n:number)=>!isNaN(n))
+      }))
     }
   };
 
@@ -225,28 +246,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
     });
   };
 
-  // const addCategory = () => {
-  //   const lastRowLetter = layoutConfig.categories[layoutConfig.categories.length - 1].rowRange[0].split('-')[1];
-  //   const nextRowStart = String.fromCharCode(lastRowLetter.charCodeAt(0) + 1);
-  //   const nextRowEnd = String.fromCharCode(lastRowLetter.charCodeAt(0) + 5 > 90 ? 90 : lastRowLetter.charCodeAt(0) + 5);
-
-  //   setLayoutConfig({
-  //     ...layoutConfig,
-  //     categories: [
-  //       ...layoutConfig.categories,
-  //       { name: "New Section", rowRange: [`${nextRowStart}-${nextRowEnd}`], price: 0 }
-  //     ]
-  //   });
-  // };
-  // const removeCategory = (index: number) => {
-  //   if (layoutConfig.categories.length > 1) {
-  //     const newCategories = layoutConfig.categories.filter((_, i) => i !== index);
-  //     setLayoutConfig({
-  //       ...layoutConfig,
-  //       categories: newCategories
-  //     });
-  //   }
-  // };
+ 
   const handleSelectedTag = useCallback((tags: { _id: string; tag: string }[]) => {
     setSelectedTags(tags)
   }, [])
@@ -282,6 +282,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('submit is working')
+    console.log(layoutConfig)
 
     setFormError({})
     setError("")
@@ -699,7 +700,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
 
                   {/* Seating Layout Configuration */}
                   <div className="mb-4 p-4 border border-white rounded-lg">
-                    <h3 className="text-lg font-medium mb-3">Seating Layout</h3>
+                    <h3 className="text-lg font-medium mb-3">Seating Layout {formError.rows || formError.rows ? <span className='text-red-500'>&nbsp;  &nbsp; &nbsp; * {formError.rows || formError.columns}</span> : ""}</h3>
 
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
@@ -734,6 +735,8 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
                         )}
 
                       </div>
+
+                      
                       <div>
                         <label className="block text-sm font-medium mb-1">Columns</label>
                         <input
@@ -742,6 +745,48 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
                           value={layoutConfig.columns}
                           readOnly
                           onChange={(e) => handleLayoutChange('columns', parseInt(e.target.value) || 0)}
+                          className="w-full p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                     <div>
+                        <label className="block text-sm font-medium mb-1">Seat Style {formError.seatStyle  ? <span className='text-red-500'>&nbsp;  &nbsp; &nbsp; * Select  style</span> : ""} </label>
+                        <select
+                          value={layoutConfig.seatStyle}
+                          onChange={(e) => handleLayoutChange('seatStyle', e.target.value)}
+                          className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:outline-none"
+                        >
+                          <option value="">Select style</option>
+                          <option value="theater">Theater</option>
+                          <option value="banquet">Banquet</option>
+                          <option value="classroom">Classroom</option>
+                        </select>
+                      </div>
+
+
+                      
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Passage Rows (use commas)</label>
+                        <input
+                        name='passageRows'
+                          type="text"
+                          value={passageRowsInput}
+                          onChange={(e) => setPassageRowsInput(e.target.value)}
+                          onBlur={() => handleLayoutChange('passageRows', passageRowsInput)}
+                          className="w-full p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Passage Columns (use commas)</label>
+                        <input
+                        name="passageColumns"
+                          type="text"
+                            value={passageColumnsInput}
+                            onChange={(e) => setPassageColumnsInput(e.target.value)}
+                            onBlur={() => handleLayoutChange('passageColumns', passageColumnsInput)}
                           className="w-full p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none"
                         />
                       </div>
@@ -879,6 +924,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
               )}
 
               {locationError ? <span className='text-red-500 text-center'>&nbsp;  &nbsp; &nbsp; * {locationError}</span> : ""}
+              {formError.location ? <span className='text-red-500 text-center'>&nbsp;  &nbsp; &nbsp; *  Location  {formError.location}</span> : ""}
               <EventLocationPicker onLocationSelect={handleLocationSelect} />
 
 

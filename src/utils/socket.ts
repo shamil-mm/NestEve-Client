@@ -10,7 +10,7 @@ const socket =io("http://localhost:3004",{
      timeout:20000
 })
 socket.on('connect',()=>{
-    console.log(' Socket connected successfully:', socket.id);
+    console.log('Socket connected successfully:', socket.id);
 })
 socket.on("connect_error",(error)=>{
     console.error(' Socket connection failed:', error);

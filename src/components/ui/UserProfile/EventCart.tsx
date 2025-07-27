@@ -148,7 +148,7 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
               <div> ticket status</div>
             </div>
             <div className="text-right">
-            <button className="border-1 text-green-500 text-xs py-1 px-3 rounded-sm">{localBooking.status}</button>
+            <button className={`border-1 text-xs py-1 px-3 rounded-sm ${localBooking.status=='cancelled'? 'text-red-500':'text-green-500'}`}>{localBooking.status}</button>
             </div>
           </div>
           <div className="flex justify-between text-xs text-gray-400 mt-2">
@@ -190,7 +190,7 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
               </div> */}
 
           <div className="flex justify-between mt-3">
-            {localBooking.status==="pending" && localBooking.paymentStatus==="unpaid" ? (<button onClick={handleRetrypayment}  className="border border-blue-600 text-xs py-1 px-3 rounded-sm">RETRY PAYMENT</button>):(<button onClick={ticketShowfn} className="border border-blue-600 text-xs py-1 px-3 rounded-sm">TICKET VIEW</button>)}  
+            {localBooking.status==="pending" && localBooking.paymentStatus==="unpaid" ? (<button onClick={handleRetrypayment}  className="border border-blue-600 text-xs py-1 px-3 rounded-sm">RETRY PAYMENT</button>):(localBooking.status!=="cancelled" &&( <button onClick={ticketShowfn} className="border border-blue-600 text-xs py-1 px-3 rounded-sm">TICKET VIEW</button>))}  
             {localBooking.status==="confirmed" && localBooking.paymentStatus==="paid" && (<button onClick={handleCancelbooking}  className="border-1 border-blue-600 text-xs py-1 px-3 rounded-sm">CANCEL BOOKING</button>)}  
             
           </div>

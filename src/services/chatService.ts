@@ -1,3 +1,4 @@
+import axios from "axios";
 import { client } from "./client";
 
 export const createConversation=async(organizerId:string,userId:string)=>{
@@ -48,4 +49,39 @@ export const fetchChats=async(conversationId:string)=>{
     } catch (error) {
          console.error("fetch chats failed from service.ts", error);
     }
+}
+export const uploadWithPresignedUrl=async(file:File)=>{
+    try {
+        const res=await client.post(`/communication/api/presign`,{
+            fileName:file.name,
+            fileType:file.type
+        })
+        const { uploadUrl, fileUrl } = res.data;
+       const resFromS3= await axios.put(uploadUrl,file,{
+          headers:{
+               'Content-Type':file.type,
+          }
+        })
+
+        console.log('resFromS3',resFromS3)
+        return fileUrl
+    } catch (error) {
+        console.log("uploadWithPresignedUrl error",error)
+    }
+}
+export const getMediaUrl=async(key:string)=>{
+     try {
+
+          console.log('get MediaUrl is woking')
+
+        const res=await client.get(`/communication/api/media-url`,{
+          params:{
+               key
+          }
+        })  
+        return res.data
+      
+     } catch (error) {
+         console.log("getMediaUrl error",error) 
+     }
 }

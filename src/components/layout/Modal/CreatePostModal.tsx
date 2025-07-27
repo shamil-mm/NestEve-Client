@@ -88,10 +88,10 @@ const CreatePostModal:React.FC<CreatePostModalProps> = ({event,close,purpose,cur
         <div className="bg-black border border-gray-700 rounded-lg shadow-lg w-full max-w-md">
           <div className="flex flex-col h-full">
      
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
-              <h2 className="text-xl font-semibold text-white">{currentPost ? 'Edit Post' : 'Create Post'}</h2>
-              <button onClick={handleClose} className="text-gray-400 hover:text-white">
-                <X size={24} />
+            <div className="flex items-center justify-between p-6 border-blue-800/30">
+              <h2 className="text-2xl font-bold text-white">{currentPost ? 'Edit Post' : 'Create Post'}</h2>
+              <button onClick={handleClose} className="p-2 hover:bg-blue-800/20 rounded-full transition-colors duration-200">
+                <X size={24} className="w-5 h-5 text-gray-300 hover:text-white"/>
               </button>
             </div>
             <div className="flex items-center px-4 py-3">
@@ -106,11 +106,14 @@ const CreatePostModal:React.FC<CreatePostModalProps> = ({event,close,purpose,cur
             </div>
             
             <div className="px-4 py-2 flex-grow">
+               <label className="block text-sm font-medium text-gray-200">
+                            Your text *
+                        </label>
               <textarea
                 value={postText}
                 onChange={handleTextChange}
                 placeholder="Share your notes here"
-                className="w-full h-32 bg-gray-800 text-white border-none rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 bg-slate-800/50 border border-blue-700/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
               />
             </div>
             

@@ -25,6 +25,9 @@ import AudioCallPage from "../pages/ChatPage/AudioCallPage";
 import Calendar from "../pages/CalendarPages/Calendar";
 import Ticket from "../pages/TicketPages/Ticket";
 import PublicTicketViewPage from "../pages/PublicTicketView/PublicTicketViewPage";
+import PaymentAndTransactions from "../pages/AdminPages/PaymentAndTransactions";
+import NotificationPage from "../pages/Notification/NotificationPage";
+
 
 const AppRouter = () => {
   return (
@@ -32,12 +35,14 @@ const AppRouter = () => {
         <Routes>
             <Route path="/" element={<LandingPage/>} />
             <Route path='/public-ticket-view/:token' element={<PublicTicketViewPage/>}/>
+
             <Route element={<PublicRoutes/>}>
             <Route path="/role" element={<RolePicker/>} />
             <Route path="/verify-email" element={<VerifyEmail/>} />
             <Route path='/forgot-password' element={<VerifyForgotPassword/>}/>
-      
             </Route>
+
+            
             <Route element={<ProtectedRoutes/>}>
             <Route path='/profile' element={<UserProfile/>}></Route>
             <Route path='/wallet' element={<Wallet/>}></Route>
@@ -51,6 +56,8 @@ const AppRouter = () => {
             <Route path='/audio-call' element={<AudioCallPage/>}></Route>
             <Route path='/calendar' element={<Calendar/>}></Route>
             <Route path='/event-tickets' element={<Ticket/>}></Route>
+            <Route path='/event-notifications' element={<NotificationPage/>}></Route>
+           
           
          
             </Route>
@@ -66,6 +73,7 @@ const AppRouter = () => {
             <Route path='/admin-tags' element={<Tags/>}/>
             <Route path='/admin-category' element={<Category/>}/>
             <Route path='/admin-events' element={<Events/>}/>
+            <Route path='/admin-payment-transaction' element={<PaymentAndTransactions/>}/>
 
             </Route>
 

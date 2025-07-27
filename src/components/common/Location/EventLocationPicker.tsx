@@ -48,7 +48,7 @@ const EventLocationPicker: React.FC<Props> = ({ onLocationSelect }) => {
       return;
     }
 
-    const debounce = setTimeout(fetchSuggestions, 400);
+    const debounce = setTimeout(fetchSuggestions, 600);
     return () => clearTimeout(debounce);
   }, [query]);
 
@@ -84,7 +84,7 @@ const EventLocationPicker: React.FC<Props> = ({ onLocationSelect }) => {
           onChange={(e) => setQuery(e.target.value)}
         />
 
-        {suggestions.length > 0 && (
+        {suggestions && suggestions.length > 0 && (
           <ul className="absolute z-20 w-full left-0 top-full bg-black rounded mt-1 max-h-60 overflow-y-auto">
             {suggestions.map((sug, idx) => (
               <li

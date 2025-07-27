@@ -85,3 +85,53 @@ export const fetchBooking=async(token:string)=>{
         console.log('error getting on fetchBooking booking service' )
     }
 }
+
+export const getBookingByBookingId=async(bookingId:string,organizerId:string)=>{
+     try {
+       
+        const response=await client.get(`/booking/api/get-booking-by-bookingId`,{
+            params:{
+                bookingId,
+                organizerId
+            }
+        })
+       
+       return response
+    } catch (error :any) {
+       
+        console.log('error getting on getBookingByBookingId booking service' )
+    }
+
+}
+export const fetchPaymentAndTransaction =async (searchTerm:string, sortField:string, sortDirection:string, filterBy:string, page:number, limit:number)=>{
+    try {
+         const response=await client.get(`/booking/api/admin-fetch-payment-and-transaction`,{
+             params: {
+                        search: searchTerm,
+                        sortField,
+                        sortDirection,
+                        filterBy,
+                        page,
+                        limit,
+                    },
+         })
+       
+       return response
+        
+    } catch (error) {
+         console.log('error getting on fetchPaymentAndTransaction booking service',error )
+    }
+}
+export const checkReviewEligibility =async (userId:string,eventId:string)=>{
+  try {
+        const response=await client.get(`/booking/api/review-eligibility`,{
+            params:{
+                userId,
+                eventId
+            }
+        })
+        return response.data
+    } catch (error) {
+        console.log('checkReviewEligibility failed',error)
+    }
+}

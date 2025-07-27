@@ -34,7 +34,8 @@ const Wallet = () => {
   <img src={hero} alt="concert crowd" className="w-full h-full object-cover" />
   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
 </div>
-<Navbar />
+
+<Navbar/>
 <div className="flex flex-1 overflow-hidden">
     <WalletSideBar handlePageCB={handlePageCB}/>
 

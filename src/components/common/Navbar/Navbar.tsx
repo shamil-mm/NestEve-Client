@@ -8,12 +8,15 @@ import { userLogout } from "../../../services/authServices";
 import { logoutSuccess } from "../../../store/slices/authUsers";
 import { toast } from "react-fox-toast";
 
+import ShortNotification from "../../../pages/Notification/ShortNotification";
+
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUser, setIsUser] = useState(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const naveItem = ["Home", "Find Events", "About"];
+ const [notificationModal,setNotificationModal]=useState<boolean>(false)
   const userDropdownOptions = [
     { label: "Profile", onClick: () => navigate('/profile') },
     { label: "Browse Events", onClick: () => navigate('/search-event') },
@@ -27,7 +30,7 @@ const Navbar = () => {
     try {
       dispatch(logoutSuccess())
       const res = await userLogout()
-      //  console.log(res!.data!.success)
+     
       toast.success(res!.data!.success)
       localStorage.removeItem('authUserState');
     } catch (error) {
@@ -43,6 +46,9 @@ const Navbar = () => {
   const handleCalendar=()=>{
     navigate('/calendar') 
   }
+  const handleNotification=()=>{
+    setNotificationModal(prev=>!prev)
+  }
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-black/70 ">
@@ -50,41 +56,40 @@ const Navbar = () => {
 
 
 
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-6">
-          {naveItem.map((item) => (
-            <li key={item}>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                {item}
-              </a>
-            </li>
-          ))}
-        </ul>
+       
         {/* Logo */}
-        <img src="/logo.png" alt="logo" className="w-28 md:w-36 lg:w-40" />
+        <img src="/logo.png" alt="logo" className="w-28 md:w-36 lg:w-40" onClick={()=>navigate('/')}/>
 
         {/* Desktop Buttons */}
+        
+
         {isAuthenticated ? (
           <div className="hidden md:flex space-x-4 ">
             <Calendar onClick={handleCalendar} className="mt-3 cursor-pointer" />
-            <BellDot className="mt-3 cursor-pointer" />
+            <BellDot className="mt-3 cursor-pointer" onClick={handleNotification}/>
+            <div className="m-0">
+            {notificationModal &&(<ShortNotification/>)}
+            </div>
+           
             <User className="mt-3 cursor-pointer" onClick={() => setIsUser(!isUser)} />
             {isUser && (
               <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="absolute top-27 right-5 bg-black/90 text-white shadow-lg w-60 py-5"
+                className="absolute top-27 right-5 bg-black/90 text-white shadow-lg w-80 p-2 text-center border rounded-sm"
               >
                 {userDropdownOptions.map((option) => (
-                  <div
+                  <motion.div
                     key={option.label}
                     onClick={option.onClick}
-                    className="px-4 py-2 hover:bg-blue-400/20 cursor-pointer"
+                    whileHover={{ scale: 1.1}}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className="px-4 py-2  cursor-pointer"
                   >
                     {option.label}
-                    <hr />
-                  </div>
+                  
+                  </motion.div>
 
                 ))}
               </motion.div>
@@ -98,9 +103,9 @@ const Navbar = () => {
             <Button variant="outline">Contact Us</Button>
           </div>
         )}
+         
 
 
-        {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden text-white focus:outline-none"
@@ -139,16 +144,7 @@ const Navbar = () => {
           exit={{ opacity: 0, y: -20 }}
           className="md:hidden bg-black text-white w-full absolute top-16 left-0 p-6 space-y-4"
         >
-          <ul className="space-y-4">
-            {naveItem.map((item) => (
-              <li key={item}>
-                <a href="#" className="block hover:text-blue-400 transition-colors">
-                  {item}
-                </a>
-                <hr />
-              </li>
-            ))}
-          </ul>
+         
           <div className="flex flex-col items-center mt-4 space-y-3">
             <Button variant="outline" >Get Started</Button>
             <Button variant="outline" >Contact Us</Button>
@@ -160,4 +156,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

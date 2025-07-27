@@ -219,43 +219,43 @@ const CommonLogin: React.FC<LoginProps> = ({ onLogin }) => {
                 <label className="block text-white text-sm mb-1">Email</label>
                 <input
                   type="email"
-                  className="w-full p-2 bg-gray-800 text-white"
+                  className="w-full p-2 bg-gray-800 text-white rounded-sm"
                   value={forgotEmail}
                   onChange={(e) => {
                     setForgotEmail(e.target.value)
                     setForgotEmailError({})
                   }}
-                  placeholder="Enter your email address"
+                  placeholder="Enter email address"
                 />
                 {forgotEmailError.email && <span className="text-red-500 text-sm">{forgotEmailError.email}</span>}
                 <br />
-                {/* {error.password &&  <span className="text-red-500 text-sm">{error.password}</span>} */}
-                <label className="block text-white text-sm mb-1">Password</label>
+                
+                <label className="block text-white text-sm mb-1">New Password</label>
                 <input
                   type="password"
-                  className="w-full p-2 bg-gray-800 text-white"
+                  className="w-full p-2 bg-gray-800 text-white rounded-sm"
                   value={newPassword}
                   onChange={(e) => {
                     setNewPassword(e.target.value)
                     setForgotEmailError({})
                   }}
-                  placeholder="Enter your email address"
+                  placeholder="Enter new passward"
                 />
                 {forgotEmailError.password && <span className="text-red-500 text-sm">{forgotEmailError.password}</span>}
-                {/* {error.password &&  <span className="text-red-500 text-sm">{error.password}</span>} */}
+         
 
               </div>
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
-                  className="px-4 py-2 bg-gray-700 text-white "
+                  className="px-4 py-2 bg-gray-700 text-white rounded-sm "
                   onClick={() => setShowForgotPasswordModal(false)}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white "
+                  className="px-4 py-2 bg-blue-600 text-white rounded-sm"
                 >
                   Reset Password
                 </button>
