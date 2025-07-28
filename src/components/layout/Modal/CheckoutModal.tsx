@@ -62,9 +62,9 @@ const CheckoutModal = () => {
     // const ticketType = event.ticketTypes.find(t => t.name === ticket.name);
     return sum + (ticket.quantity * ticket.price);
   }, 0);
-  const pricePerCategory=tickets.map((value)=>{
-   return isSeated? value.selectedSeats?.reduce((acc,value)=>acc+Number(value.price),0):value.price
-  }) 
+  // const pricePerCategory=tickets.map((value)=>{
+  //  return isSeated? value.selectedSeats?.reduce((acc,value)=>acc+Number(value.price),0):value.price
+  // }) 
 
   const handleSubmit = async(e:React.MouseEvent <HTMLButtonElement>) => {
     e.preventDefault();

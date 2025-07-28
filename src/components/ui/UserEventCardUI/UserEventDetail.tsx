@@ -15,7 +15,7 @@ import { setSelectedOrganizer } from '../../../store/slices/chat';
 import { getGeoAddress } from '../../../utils/geocode';
 import { StaticMap } from '../../common/Location/StaticMap';
 import CreateReviewModal from '../../layout/Modal/CreateReviewModal';
-import { editReviews, fetchReviews, removeReviews } from '../../../services/EventServices';
+import {  fetchReviews, removeReviews } from '../../../services/EventServices';
 import { IReview } from '../../../interfaces/Ireview';
 import Swal from 'sweetalert2';
 import { toast } from 'react-fox-toast';

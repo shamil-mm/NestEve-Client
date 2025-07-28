@@ -6,7 +6,7 @@ interface EventFilterProps {
     placeholder: string;
   }
 
-const EventFilter:React.FC<EventFilterProps> = ({ label, placeholder }) => {
+const EventFilter:React.FC<EventFilterProps> = ({  placeholder }) => {
   return (
     <div className="relative">
       <select defaultValue="option" className="w-full py-3 px-4 pr-8 bg-indigo-900/40 border border-indigo-800 rounded-md text-white appearance-none focus:outline-none focus:ring-2 focus:ring-white">

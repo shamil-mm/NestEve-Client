@@ -8,7 +8,7 @@ import {
     // MessageSquare, 
     // Bell, 
     CreditCard, 
-    User, 
+    // User, 
     LogOut, 
     UserRoundCog,
     Group

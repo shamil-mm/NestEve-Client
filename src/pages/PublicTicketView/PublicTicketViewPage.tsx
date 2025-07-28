@@ -177,7 +177,7 @@ const PublicTicketViewPage = () => {
             <MapPin className="text-blue-400 mt-1" size={16} />
             <div>
               <div className="text-xs text-gray-400">Venue</div>
-              <div className="text-sm font-medium">{event?.venue || "TBA"}</div>
+              <div className="text-sm font-medium">{ "TBA"}</div>
             </div>
           </div>
           <div className="flex-1 flex items-start space-x-2">

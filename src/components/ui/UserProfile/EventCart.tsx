@@ -66,7 +66,7 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
                 if(result.isConfirmed){
                   const bookingId=(localBooking as {_id:string})._id
 
-                  const res=await cancelbooking({userId:user?.id as string,bookingId})
+                 await cancelbooking({userId:user?.id as string,bookingId})
                   setLocalBooking(prev => ({
                       ...prev,
                       status: "cancelled",
@@ -96,7 +96,7 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
       const res=  await stripeCheckout(event as IEvent,localBooking.tickets as ITicket[],user?.id as string)
       const sessionId=res?.data.response
       if (res){
-        const result=stripe?.redirectToCheckout({
+        stripe?.redirectToCheckout({
           sessionId:sessionId
         })
       }

@@ -32,7 +32,6 @@ export interface IOrganizer {
   avatarUrl?: string;
 }
 export interface IEvent{
-    filter(arg0: (event: any) => boolean): unknown;
     _id:string;
     organizerId:IOrganizer,
     title:string;

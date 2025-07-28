@@ -1,4 +1,4 @@
-import { Bell, LogOut, Search } from 'lucide-react';
+import { Bell, LogOut } from 'lucide-react';
 import { useAppDispatch,useAppSelector } from '../../../hooks/AuthHook';
 import React from 'react';
 // import { logoutSuccess } from '../../../store/slices/authUsers';

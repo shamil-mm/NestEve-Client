@@ -1,6 +1,6 @@
 import { FileUp } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { deleteImage, fetchUserData, generatePrisignedUrl, getProfileImage, imageUpload, saveImageUrl, uploadImageToServer } from '../../../services/authServices';
+import {  fetchUserData, getProfileImage, uploadImageToServer } from '../../../services/authServices';
 import { toast } from 'react-fox-toast';
 import { useAppDispatch,useAppSelector } from "../../../hooks/AuthHook";
 import { setAvatar } from '../../../store/slices/authUsers';

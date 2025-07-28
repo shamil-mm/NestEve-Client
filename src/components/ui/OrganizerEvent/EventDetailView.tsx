@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { Calendar, Clock, MapPin, DollarSign, Pencil, Trash2, Armchair } from 'lucide-react';
+import { Calendar, Clock, MapPin,  Pencil, Trash2, Armchair } from 'lucide-react';
 import { IEvent } from '../../../interfaces/IEvent';
 import { getGeoAddress } from '../../../utils/geocode';
 import { StaticMap } from '../../common/Location/StaticMap';
@@ -11,7 +11,7 @@ interface EventDetailViewProps{
 
 const EventDetailView:React.FC<EventDetailViewProps> = ({event,close}) => {
 
-    const [showMap, setShowMap] = useState(false);
+    // const [showMap, setShowMap] = useState(false);
     const [address, setAddress] = useState('');
     
         useEffect(() => {
