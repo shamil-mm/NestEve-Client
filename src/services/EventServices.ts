@@ -332,7 +332,7 @@ export const fetchSearchEvents=async(filterdata:{
 
 export const fetchSingleEvent= async(id :string)=>{
     try {
-     
+        
         const response=await client.get(`/events/api/single-event/${id}`)
         return response
     } catch (error) {
