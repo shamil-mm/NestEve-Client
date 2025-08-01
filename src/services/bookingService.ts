@@ -15,6 +15,7 @@ export const stripeCheckout = async (event:Partial<IEvent>,tickets:ITicket[],use
 export const getUserBookings= async(id:string)=>{
     try {
         const response=await client.get(`/booking/api/get-user-booking/${id}`)
+        console.log('get user booking',response)
        return response
         
     } catch (error) {
