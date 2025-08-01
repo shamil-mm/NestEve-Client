@@ -169,11 +169,11 @@ const OrganizerDashboard = () => {
   };
 
   const pieData = {
-    labels: events.map((e) => e.title),
+    labels: events.map((e) => e.title) || [],
     datasets: [
       {
         label: "Booking Share",
-        data: events.map((e) => e.totalBookings),
+        data: events.map((e) => e.totalBookings) || [],
          backgroundColor: [
         "rgba(59, 130, 246, 0.2)",  
         "rgba(16, 185, 129, 0.2)", 
@@ -256,7 +256,7 @@ const OrganizerDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {events.length >0 ?(events.map((e) => (
+              {Array.isArray(event) && events.length >0 && (events.map((e) => (
                 <tr key={e._id} className="border-b border-white/10">
                   <td className="py-2">{e.title}</td>
                   <td>{formatDate(e.startDate)}</td>
@@ -264,9 +264,7 @@ const OrganizerDashboard = () => {
                   <td>₹{e.totalRevenue}</td>
                   <td> {e.refunds}</td>
                 </tr>
-              ))):(
-                <p>No events found</p>
-              )}
+              )))}
             </tbody>
           </table>
         </div>
