@@ -256,7 +256,7 @@ const OrganizerDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {events.map((e) => (
+              {events.length >0 ?(events.map((e) => (
                 <tr key={e._id} className="border-b border-white/10">
                   <td className="py-2">{e.title}</td>
                   <td>{formatDate(e.startDate)}</td>
@@ -264,7 +264,9 @@ const OrganizerDashboard = () => {
                   <td>₹{e.totalRevenue}</td>
                   <td> {e.refunds}</td>
                 </tr>
-              ))}
+              ))):(
+                <p>No events found</p>
+              )}
             </tbody>
           </table>
         </div>
