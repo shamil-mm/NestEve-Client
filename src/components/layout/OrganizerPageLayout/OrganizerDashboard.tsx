@@ -117,6 +117,7 @@ const OrganizerDashboard = () => {
     }
     GetDashboardData()
   },[])
+  console.log("events data", events);
 
   const selected = chartData[view];
 
@@ -258,7 +259,7 @@ const OrganizerDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(event) && events.length >0 && (events.map((e) => (
+              {Array.isArray(events) && events.length >0 && (events.map((e) => (
                 <tr key={e._id} className="border-b border-white/10">
                   <td className="py-2">{e.title}</td>
                   <td>{formatDate(e.startDate)}</td>
