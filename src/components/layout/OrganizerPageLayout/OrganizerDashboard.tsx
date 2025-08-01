@@ -169,11 +169,11 @@ const OrganizerDashboard = () => {
   };
 
   const pieData = {
-    labels: events.map((e) => e.title) || [],
+    labels: events?.map((e) => e.title) || [],
     datasets: [
       {
         label: "Booking Share",
-        data: events.map((e) => e.totalBookings) || [],
+        data: events?.map((e) => e.totalBookings) || [],
          backgroundColor: [
         "rgba(59, 130, 246, 0.2)",  
         "rgba(16, 185, 129, 0.2)", 
@@ -236,7 +236,9 @@ const OrganizerDashboard = () => {
           <h2 className="text-xl font-semibold mb-4">Booking Distribution</h2>
           <div className="w-full flex justify-center">
         <div className="w-60 h-64"> 
-          <Pie data={pieData} options={pieOptions} />
+          {Array.isArray(events) && events.length >0 && (
+            <Pie data={pieData} options={pieOptions} />
+          )}
         </div>
       </div>
         </div>
