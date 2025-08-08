@@ -9,9 +9,11 @@ interface UserEventCardUIProps{
     callback(value:boolean,event:IEvent,type:string):void;
    }
    
-   
+
 const UserEventCardUI:React.FC<UserEventCardUIProps> = ({event,callback}) => {
   
+     console.log('image',event.image)
+     
   const [address, setAddress] = useState('');
 
   useEffect(() => {
