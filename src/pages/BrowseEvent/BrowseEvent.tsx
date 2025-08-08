@@ -117,7 +117,7 @@ const BrowseEvent = () => {
     if (filters.location.lat > 0 && filters.location.lng > 0) FetchEvents();
   }, [filters])
 
-
+console.log('events  - ',events)
 
 
   const checkoutmodalfn = useCallback((value: boolean) => {
