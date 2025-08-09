@@ -4,6 +4,7 @@ import { Navigate,Outlet } from "react-router-dom"
 
 export const ProtectedRoutes = () => {
   const {isAuthenticated,user}=useAppSelector((state)=>state.authUser)
+  console.log("checking protected routers ",isAuthenticated ,user)
   return isAuthenticated && user?.is_block===false ? <Outlet/>:<Navigate to='/role'/>
 }
 export const PublicRoutes=()=>{
