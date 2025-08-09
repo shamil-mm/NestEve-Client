@@ -17,10 +17,10 @@ export const client = axios.create({
        
 
            if (error.response && error.response.status === 401 && error.response.statusText==='Unauthorized'&& error.response.data.message==='Authentication required' ) {
-              console.log('its comming here for clear the data okay')
                try {
-                   store.dispatch(logoutSuccess());
-                   window.location.href = "/role"
+                   console.log('its comming here for clear the data okay')
+                //    store.dispatch(logoutSuccess());
+                //    window.location.href = "/role"
                    return Promise.reject(error);
                } catch (err) {
                    store.dispatch(logoutSuccess());
