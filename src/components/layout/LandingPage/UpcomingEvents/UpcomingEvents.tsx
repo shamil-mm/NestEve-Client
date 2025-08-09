@@ -13,44 +13,46 @@ import { checkUserLocation } from "../../../../services/authServices";
 const UpcomingEvents = () => {
 
   const [events, setEvents] = useState<IEvent[]>([])
-  const  userId = useAppSelector((state) => state.authUser.user?.id)
+  const userId = useAppSelector((state) => state.authUser.user?.id)
   const [location, setLocation] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 });
   const navigate = useNavigate()
 
 
-  useEffect(()=>{
-   const CheckLocation= async()=>{
-    const response = await checkUserLocation(userId as string)
-    if (response?.lat && response?.lng) {
-      console.log("get lat and lng of the user",{lat:response.lat,lng:response.lng})
-      setLocation({lat:response.lat,lng:response.lng})
-    }else{
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(
-          (position)=>{
-            const {latitude,longitude}=position.coords
-            // console.log("browser location",latitude,longitude)
-            setLocation({lat:latitude,lng:longitude})
-          },
-          (error)=>{
-            console.log('error getting browser locatioin',error)
-          },{
-            enableHighAccuracy:true,timeout:10000
+  useEffect(() => {
+    const CheckLocation = async () => {
+      const response = await checkUserLocation(userId as string)
+      if (response?.lat && response?.lng) {
+        setLocation({ lat: response.lat, lng: response.lng })
+      } else {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords
+              setLocation({ lat: latitude, lng: longitude })
+            },
+            (error) => {
+              console.log('error getting browser locatioin', error)
+            }, {
+            enableHighAccuracy: true, timeout: 10000
           }
-        )
-      }else{
-        console.log('geo location not supported by this browser')
+          )
+        } else {
+          console.log('geo location not supported by this browser')
+        }
       }
     }
+    if (userId) {
+      const timer=setTimeout(()=>{
+        CheckLocation()
+      },60000)
+      return ()=>clearTimeout(timer)
     }
-   if (userId) CheckLocation()
-
-  },[userId])
+  }, [userId])
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const response = await fetchAllEvents(location?.lat as number,location?.lng as number)
+        const response = await fetchAllEvents(location?.lat as number, location?.lng as number)
         if (response?.data.events) {
           setEvents(response?.data.events)
         }
@@ -59,11 +61,11 @@ const UpcomingEvents = () => {
       }
 
     }
-    
-      fetchEvent()
+
+    fetchEvent()
   }, [location])
 
- 
+
 
   return (
     <section className="py-20 bg-black">
@@ -85,8 +87,8 @@ const UpcomingEvents = () => {
 
         </div>
         <br />
-        
-          
+
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {events.map(event => (
