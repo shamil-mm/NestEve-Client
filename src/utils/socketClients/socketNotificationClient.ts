@@ -1,8 +1,8 @@
 import {io} from 'socket.io-client'
 
 
-const apigateway=`${import.meta.env.VITE_API_BASE_URL}/notification`
-const notificationSocket=io(apigateway,{
+
+const notificationSocket=io("http://localhost:3005",{
     transports:['websocket'],
     withCredentials:true,
     autoConnect:true,

@@ -1,7 +1,6 @@
 import {io} from 'socket.io-client'
 
-const apigateway=`${import.meta.env.VITE_API_BASE_URL}/communication`
-const socket =io(apigateway,{
+const socket =io("http://localhost:3004",{
      transports: ["websocket"],
      withCredentials:true,
      autoConnect:true,
