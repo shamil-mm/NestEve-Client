@@ -2,7 +2,7 @@ import {io} from 'socket.io-client'
 
 
 
-const notificationSocket=io("http://localhost:3005",{
+const notificationSocket=io(import.meta.env.VITE_NOTIFICATION_URL,{
     transports:['websocket'],
     withCredentials:true,
     autoConnect:true,
