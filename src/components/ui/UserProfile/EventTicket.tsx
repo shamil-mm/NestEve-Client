@@ -19,9 +19,9 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
   const [hideImage, setHideImage] = useState(false);
   const [hiddenDownloadMode, setHiddenDownloadMode] = useState(false);
   const [address, setAddress] = useState('');
-  
-     
 
+
+   console.log('event from event tickets : ',event)
   const ticketRef = useRef<HTMLDivElement>(null);
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -34,15 +34,15 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
     getEvent();
   }, [booking.eventId]);
 
-   useEffect(() => {
-        const fetchAddress = async () => {
-          if (event?.location?.coordinates) {
-            const result = await getGeoAddress(event?.location?.coordinates[1], event?.location?.coordinates[0]);
-            setAddress(result);
-          }
-        };
-        fetchAddress();
-      }, [event]);
+  useEffect(() => {
+    const fetchAddress = async () => {
+      if (event?.location?.coordinates) {
+        const result = await getGeoAddress(event?.location?.coordinates[1], event?.location?.coordinates[0]);
+        setAddress(result);
+      }
+    };
+    fetchAddress();
+  }, [event]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -60,7 +60,7 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
     try {
       setHideImage(true);
       setHiddenDownloadMode(true);
-      await new Promise((res) => setTimeout(res, 300)); // wait for DOM render
+      await new Promise((res) => setTimeout(res, 300)); 
 
       const node = printRef.current;
       if (!node) return;
@@ -103,13 +103,13 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
 
 
 
-  const handleShareOnwhatsapp=(e:React.MouseEvent<HTMLButtonElement>)=>{
+  const handleShareOnwhatsapp = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
-    if(event && booking.secureShareToken){
+    if (event && booking.secureShareToken) {
 
-    
-   const message = `*Your Event Ticket: "${event?.title}"*
+
+      const message = `*Your Event Ticket: "${event?.title}"*
 
  *Venue:* ${address}
  *Date:* ${formatDate(event?.startDate || '')}
@@ -118,10 +118,10 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
   *View Ticket:*    ${window.location.origin}/public-ticket-view/${booking.secureShareToken}
 
   Booked via *NestEve*`;
-  const whatsappURL = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      const whatsappURL = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-  window.open(whatsappURL, "_blank");
-    }else{
+      window.open(whatsappURL, "_blank");
+    } else {
       console.log('event  or booking ticket id missing in event tickets')
     }
   }
@@ -134,7 +134,7 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
         margin: "auto",
       }}
     >
-    
+
       <div className="relative py-3 px-4 bg-gradient-to-r from-purple-800 to-blue-700">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -154,11 +154,11 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
         </div>
       </div>
 
-     
+
       {!hideImage && (
         <div className="relative w-full h-40 text-white">
           <img
-            src={event?.image || "/api/placeholder/400/320"}
+            src={event?.image}
             crossOrigin="anonymous"
             alt={event?.title || "Event"}
             className="w-full h-full object-cover"
@@ -176,7 +176,7 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
         </div>
       )}
 
-    
+
       <div className="p-4 space-y-5 text-white">
         <div className="flex space-x-50">
           <div className="flex-1 flex items-start space-x-2">
@@ -202,7 +202,7 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
             <MapPin className="text-blue-400 mt-1" size={40} />
             <div>
               <div className="text-xs text-gray-400">Venue</div>
-              <div className="text-sm font-medium">{address }</div>
+              <div className="text-sm font-medium">{address}</div>
             </div>
           </div>
           <div className="flex-1 flex items-start space-x-2">
@@ -224,9 +224,8 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
           <div>
             <div className="text-xs text-gray-400">Payment Status</div>
             <div
-              className={`font-medium ${
-                booking.paymentStatus === "paid" ? "text-green-500" : "text-yellow-500"
-              }`}
+              className={`font-medium ${booking.paymentStatus === "paid" ? "text-green-500" : "text-yellow-500"
+                }`}
             >
               {booking.paymentStatus}
             </div>
@@ -271,8 +270,8 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
         {/* QR Code */}
         <div className="flex items-center justify-center  ">
           <div className="flex flex-col items-center bg-white pt-2 px-1">
-            <TicketQRCode ticketId={booking._id}/>
-            <br className="bg-black"/>
+            <TicketQRCode ticketId={booking._id} />
+            <br className="bg-black" />
             <div className="text-xs text-black ">Scan to verify ticket</div>
           </div>
         </div>
@@ -287,7 +286,7 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
               Download
             </button>
             <button onClick={handleShareOnwhatsapp} className="flex-1 border-blue-600 border-1 text-white text-sm py-2 px-4 font-medium transition">
-               Share on WhatsApp
+              Share on WhatsApp
             </button>
           </div>
         )}
@@ -297,27 +296,27 @@ const EventTicket: React.FC<EventTicketProps> = ({ booking }) => {
 
   return (
     <>
-     {hiddenDownloadMode && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      zIndex: -1,
-      width: "210mm",
-      height: "297mm",
-      backgroundColor: "white", 
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    }}
-    ref={printRef}
-  >
-    <div style={{ transform: "scale(1)", transformOrigin: "center" }}>
-      <TicketContent isPrint />
-    </div>
-  </div>
-)}
+      {hiddenDownloadMode && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: -1,
+            width: "210mm",
+            height: "297mm",
+            backgroundColor: "white",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          ref={printRef}
+        >
+          <div style={{ transform: "scale(1)", transformOrigin: "center" }}>
+            <TicketContent isPrint />
+          </div>
+        </div>
+      )}
 
       <PageLayout>
         <TicketContent />
