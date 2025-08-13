@@ -3,6 +3,7 @@ import {io} from 'socket.io-client'
 
 
 const notificationSocket=io(import.meta.env.VITE_NOTIFICATION_URL,{
+    path: "/notification/socket.io",
     transports:['websocket'],
     withCredentials:true,
     autoConnect:true,

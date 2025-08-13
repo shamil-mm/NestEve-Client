@@ -1,6 +1,7 @@
 import {io} from 'socket.io-client'
 
 const socket =io(import.meta.env.VITE_COMMUNICATION_URL,{
+     path: "/communication/socket.io",
      transports: ["websocket"],
      withCredentials:true,
      autoConnect:true,
