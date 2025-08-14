@@ -84,7 +84,7 @@ const CheckoutModal = () => {
           sessionId:sessionId
         })
       }
-      } catch (error:any) {
+      } catch (error:any) {  
        const msg = error?.message || "";
 
         const match = msg.match(/You specified '(.*)'/);
