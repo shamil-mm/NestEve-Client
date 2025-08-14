@@ -81,31 +81,33 @@ const CheckoutModal = () => {
       console.log('testing someone is processing message',res?.data)
       const sessionId=res?.data.response
       if(res?.data.response==="Some one is processing"){
+        console.log('it comming inside')
          Swal.fire({
               icon: 'error',
               title: 'Oops!',
               text: 'Someone is already processing this booking. Please try again shortly.',
             });
             navigate("/search-event")
-      }else if (res){
+      }else{
         stripe?.redirectToCheckout({
           sessionId:sessionId
         })
       }
       } catch (error:any) {  
-       const msg = error?.message || "";
+        console.log(error)
+      //  const msg = error?.message || "";
 
-        const match = msg.match(/You specified '(.*)'/);
-        const extractedMessage = match?.[1];
+      //   const match = msg.match(/You specified '(.*)'/);
+      //   const extractedMessage = match?.[1];
 
-        if (extractedMessage === "some one is processing") {
-           Swal.fire({
-              icon: 'error',
-              title: 'Oops!',
-              text: 'Someone is already processing this booking. Please try again shortly.',
-            });
-            navigate("/search-event")
-        }
+      //   if (extractedMessage == "Some one is processing") {
+      //      Swal.fire({
+      //         icon: 'error',
+      //         title: 'Oops!',
+      //         text: 'Someone is already processing this booking. Please try again shortly.',
+      //       });
+      //       navigate("/search-event")
+      //   }
       }
     }
    
