@@ -78,6 +78,7 @@ const CheckoutModal = () => {
        
       const stripe=await loadStripe(publishableKey)
       const res=  await stripeCheckout({...event,is_seated:isSeated},tickets,user?.id as string)
+      console.log('testing someone is processing message',res?.data)
       const sessionId=res?.data.response
       if (res){
         stripe?.redirectToCheckout({
