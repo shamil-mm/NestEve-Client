@@ -80,7 +80,14 @@ const CheckoutModal = () => {
       const res=  await stripeCheckout({...event,is_seated:isSeated},tickets,user?.id as string)
       console.log('testing someone is processing message',res?.data)
       const sessionId=res?.data.response
-      if (res){
+      if(res?.data.response==="Some one is processing"){
+         Swal.fire({
+              icon: 'error',
+              title: 'Oops!',
+              text: 'Someone is already processing this booking. Please try again shortly.',
+            });
+            navigate("/search-event")
+      }else if (res){
         stripe?.redirectToCheckout({
           sessionId:sessionId
         })
