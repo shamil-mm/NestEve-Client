@@ -177,6 +177,7 @@ const BrowseEvent = () => {
   const detailView = async (value: boolean, event: IEvent, type: string) => {
     if (type === "detailedView") {
       setDetailview(value)
+      console.log("detailedview event checking",event)
       setDetailviewEvent(event)
     }
   }
