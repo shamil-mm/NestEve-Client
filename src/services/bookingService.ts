@@ -6,6 +6,7 @@ export const stripeCheckout = async (event:Partial<IEvent>,tickets:ITicket[],use
     try {
         
         const response= await client.post('/booking/api/stripe-checkout-session',{event,tickets,userId})
+        console.log(response)
         return  response
     } catch (error) {
         console.log('error in stripe checkout session ',error)

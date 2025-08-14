@@ -11,8 +11,6 @@ interface UserEventCardUIProps{
    
 
 const UserEventCardUI:React.FC<UserEventCardUIProps> = ({event,callback}) => {
-  
-     console.log('image',event.image)
      
   const [address, setAddress] = useState('');
 
