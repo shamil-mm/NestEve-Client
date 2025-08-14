@@ -2,16 +2,13 @@ import {io} from 'socket.io-client'
 
 
 
+console.log('notification url',import.meta.env.VITE_NOTIFICATION_URL)
 const notificationSocket=io(import.meta.env.VITE_NOTIFICATION_URL,{
     path: "/notification/socket.io",
     transports:['websocket'],
     withCredentials:true,
-    autoConnect:true,
-    reconnection:true,
-    reconnectionDelay:1000,
-    reconnectionAttempts:5,
-    timeout:20000
 })
+
 
 notificationSocket.on('connect',()=>{
     console.log("Notificaion socket connected successfully :" ,notificationSocket.id)

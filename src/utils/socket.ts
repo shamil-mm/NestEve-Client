@@ -1,14 +1,10 @@
 import {io} from 'socket.io-client'
 
+console.log('communication url',import.meta.env.VITE_COMMUNICATION_URL)
 const socket =io(import.meta.env.VITE_COMMUNICATION_URL,{
      path: "/communication/socket.io",
      transports: ["websocket"],
      withCredentials:true,
-     autoConnect:true,
-     reconnection:true,
-     reconnectionDelay:1000,
-     reconnectionAttempts:5,
-     timeout:20000
 })
 socket.on('connect',()=>{
     console.log('Socket connected successfully:', socket.id);
