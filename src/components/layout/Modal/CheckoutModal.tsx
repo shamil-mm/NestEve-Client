@@ -87,6 +87,7 @@ const CheckoutModal = () => {
             title: 'Oops!',
             text: 'Someone is already processing this booking. Please try again shortly.',
           }).then((result) => {
+            console.log(result ,"in then state")
             if (result.isConfirmed) {
               navigate("/search-event");
             }
