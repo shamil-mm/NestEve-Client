@@ -3,6 +3,7 @@ import { client } from "./client";
 
 export const createConversation=async(organizerId:string,userId:string)=>{
     try {
+     console.log("create conversation is woking")
        
          const response = await client.post('/communication/api/communication',{organizerId,userId})
          return response.data

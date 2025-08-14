@@ -203,7 +203,6 @@ const pages = useMemo(() => {
 
   const handleChat = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-
     const organizerData: IOrganizer = {
       _id: event.organizerId._id,
       name: event.organizerId.name,

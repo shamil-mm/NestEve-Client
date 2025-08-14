@@ -64,7 +64,9 @@ const Chatpage = () => {
 
 
   useEffect(()=>{
+    console.log("conversation creating useEffect is woking")
     const CreateConversation=async()=>{
+       console.log("conversation creating useEffect is woking inside the function",chatOrganizer ,'  ',userId)
       if(chatOrganizer?._id && userId){
         await createConversation(chatOrganizer?._id as string,userId) 
         const res=await getAllChats(userId as string)
@@ -75,7 +77,7 @@ const Chatpage = () => {
       }
     }
     CreateConversation()
-  },[chatOrganizer?._id, userId])
+  },[chatOrganizer, userId])
 
   useEffect(()=>{
     const GetChats=async()=>{
