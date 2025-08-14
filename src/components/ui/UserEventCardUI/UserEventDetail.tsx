@@ -202,6 +202,7 @@ const pages = useMemo(() => {
   }
 
   const handleChat = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('handlechat is woking')
     e.preventDefault()
 
     const organizerData: IOrganizer = {
