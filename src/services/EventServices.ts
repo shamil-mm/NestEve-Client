@@ -160,7 +160,6 @@ export const createEvent=async(eventData:object,image:File,userId:string)=>{
                 if(typeof value==='object'){
                     formData.append(key,JSON.stringify(value))
                 }else{
-
                     formData.append(key,value)
                 }
             }
