@@ -6,7 +6,6 @@ import { RootState } from "../../../store";
 import { loadStripe } from '@stripe/stripe-js';
 import { stripeCheckout } from "../../../services/bookingService";
 import { toast } from "react-fox-toast";
-import Swal from "sweetalert2";
 
 
 export interface Address {
@@ -80,16 +79,9 @@ const CheckoutModal = () => {
         console.log('testing someone is processing message', res?.data)
         const sessionId = res?.data.response
         if (res?.data.response === "Some one is processing") {
-         
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops!',
-            text: 'Someone is already processing this booking. Please try again shortly.',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
+         toast.error("Someone is already processing this booking. Please try again shortly.")
+         window.location.reload();
+         return
         } else {
           stripe?.redirectToCheckout({
             sessionId: sessionId
