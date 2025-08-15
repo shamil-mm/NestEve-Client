@@ -81,15 +81,17 @@ const CheckoutModal = () => {
         console.log('testing someone is processing message', res?.data)
         const sessionId = res?.data.response
         if (res?.data.response === "Some one is processing") {
-          console.log('it comming inside')
+
           Swal.fire({
             icon: 'error',
             title: 'Oops!',
             text: 'Someone is already processing this booking. Please try again shortly.',
           }).then((result) => {
-            console.log(result ,"in then state")
             if (result.isConfirmed) {
-              navigate("/search-event");
+              console.log('it comming inside')
+              setTimeout(() => {
+                navigate("/search-event");
+              }, 0);
             }
           });
         } else {
