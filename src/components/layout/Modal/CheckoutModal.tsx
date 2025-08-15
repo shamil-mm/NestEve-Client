@@ -3,7 +3,6 @@ import bg from '../../../assets/abstract-background.jpg'
 import { useAppSelector } from "../../../hooks/AuthHook";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
-import { useNavigate } from "react-router-dom";
 import { loadStripe } from '@stripe/stripe-js';
 import { stripeCheckout } from "../../../services/bookingService";
 import { toast } from "react-fox-toast";
@@ -22,7 +21,7 @@ export interface Address {
 
 const CheckoutModal = () => {
   const user = useAppSelector((state) => state.authUser?.user)
-  const navigate = useNavigate()
+ 
   let { event, tickets, isSeated } = useSelector((state: RootState) => state.checkout)
 
 
