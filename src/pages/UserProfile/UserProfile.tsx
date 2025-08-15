@@ -1,11 +1,8 @@
 import bg from '../../../src/assets/abstract-background.jpg';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import useravatar from '../../assets/useravatar.jpg'
 import EventCart from '../../components/ui/UserProfile/EventCart';
-import FavoriteCart from '../../components/ui/UserProfile/FavoriteCart';
-import nightlife from '../../assets/byemoon.jpg'
-import RatingAndReview from '../../components/ui/UserProfile/RatingAndReview';
+
 import { useAppSelector } from "../../hooks/AuthHook";
 import { useEffect, useState } from 'react';
 import { fetchUserData, getProfileImage } from '../../services/authServices';
@@ -66,12 +63,12 @@ const UserProfile = () => {
 
 
 
-  const favorites = [
-    { image: nightlife, name: "ByeMoon Party" },
-    { image: nightlife, name: "Beach Bash" },
-    { image: nightlife, name: "Sunset Festival" },
-    { image: nightlife, name: "Sunset Festival" },
-  ];
+  // const favorites = [
+  //   { image: nightlife, name: "ByeMoon Party" },
+  //   { image: nightlife, name: "Beach Bash" },
+  //   { image: nightlife, name: "Sunset Festival" },
+  //   { image: nightlife, name: "Sunset Festival" },
+  // ];
   return (
     <div className="min-h-screen flex flex-col items-center justify-start text-white bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
       <div className=" relative inset-0  bg-black/50"></div>
@@ -97,7 +94,7 @@ const UserProfile = () => {
           </div>
 
   
-          <div className="flex justify-around border-b border-blue/20 py-2">
+          {/* <div className="flex justify-around border-b border-blue/20 py-2">
             <div className="text-center">
               <div className="font-bold">0</div>
               <div className="text-sm text-gray-300">Orders</div>
@@ -106,7 +103,7 @@ const UserProfile = () => {
               <div className="font-bold">1</div>
               <div className="text-sm text-gray-300">Favorites</div>
             </div>
-          </div>
+          </div> */}
 
        
           <div className="px-4 py-2">
@@ -118,17 +115,17 @@ const UserProfile = () => {
             ))}
           </div>
 
-          <div className="px-4 py-2">
+          {/* <div className="px-4 py-2">
             <h2 className="text-xl font-bold border-b border-white/20">Favorites</h2>
           </div>
           <div className="space-y-4 px-4">
 
             <FavoriteCart favorites={favorites} />
 
-          </div>
+          </div> */}
 
           {/* Rating and Reviews */}
-          <div className="px-4 py-2 border-t border-white/20">
+          {/* <div className="px-4 py-2 border-t border-white/20">
             <RatingAndReview />
             <div className="flex justify-between items-center mb-2">
 
@@ -145,10 +142,9 @@ const UserProfile = () => {
             </div>
 
             {/* <ReviewsList /> */}
-          </div>
-
+          {/* </div> */} 
           {/* Bottom Navigation */}
-          <div className="flex justify-around py-3 border-t border-white/20">
+          {/* <div className="flex justify-around py-3 border-t border-white/20">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
               <ChevronLeft size={18} />
             </button>
@@ -161,7 +157,7 @@ const UserProfile = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
               <ChevronRight size={18} />
             </button>
-          </div>
+          </div> */}
         </div>
 
       </div>

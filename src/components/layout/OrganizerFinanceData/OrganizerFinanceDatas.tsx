@@ -1,6 +1,6 @@
 
 import  { useEffect, useState } from 'react';
-import {  Search, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
+import {  Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAppSelector } from '../../../hooks/AuthHook';
 import {  getFinanceData } from '../../../services/EventServices';
 
@@ -93,10 +93,10 @@ const OrganizerFinanceDatas = () => {
         </div>
         
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2 bg-transparent border-blue-600 border  px-4 py-2 rounded-sm transition-colors">
+          {/* <button className="flex items-center gap-2 bg-transparent border-blue-600 border  px-4 py-2 rounded-sm transition-colors">
             <FileText className="w-4 h-4" />
             <span>Generate Report</span>
-          </button>
+          </button> */}
           
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
