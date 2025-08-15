@@ -20,7 +20,7 @@ export interface Address {
 
 const CheckoutModal = () => {
   const user = useAppSelector((state) => state.authUser?.user)
- 
+
   let { event, tickets, isSeated } = useSelector((state: RootState) => state.checkout)
 
 
@@ -79,9 +79,11 @@ const CheckoutModal = () => {
         console.log('testing someone is processing message', res?.data)
         const sessionId = res?.data.response
         if (res?.data.response === "Some one is processing") {
-         toast.error("Someone is already processing this booking. Please try again shortly.")
-         window.location.reload();
-         return
+          toast.error("Someone is already processing this booking. Please try again shortly.")
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+          return
         } else {
           stripe?.redirectToCheckout({
             sessionId: sessionId
