@@ -265,7 +265,7 @@ const BrowseEvent = () => {
                     </div>
                   ))}
 
-                  {totalPages >= 3 ? <>
+                  {totalPages >= 4 ? <>
                     <div className="flex justify-center gap-2 mt-4">
                       <button
                         disabled={Number(filters.page) === 1}
