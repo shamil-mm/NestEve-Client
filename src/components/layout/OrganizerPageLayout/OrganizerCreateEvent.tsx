@@ -4,7 +4,7 @@ import EventCreation from '../../../assets/eventCreation.jpg'
 import { zodEventSchema, zodSeatingLayoutSchema, createZodTickenTypesSchema } from '../../../schemas/eventSchema';
 import { z } from 'zod';
 import TagSelecter from '../../ui/OrganizerEvent/TagSelecter';
-import { createEvent, fetchCategoriesList, updateEvent } from '../../../services/EventServices';
+import { fetchCategoriesList, updateEvent } from '../../../services/EventServices';
 import { toast } from 'react-fox-toast';
 import { IEvent, ILayoutConfig } from '../../../interfaces/IEvent';
 import { useAppSelector } from '../../../hooks/AuthHook';
@@ -347,7 +347,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
 
       } else {
         if (userId) {
-          response = await createEvent(eventPayload, img as File, userId)
+          // response = await createEvent(eventPayload, img as File, userId)
         }
       }
 
