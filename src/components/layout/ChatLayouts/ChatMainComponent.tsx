@@ -45,6 +45,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   const [typingUser, setTypingUser] = useState<string | null>(null)
   const [onlineUsers, setOnlineUsers] = useState<string[]>([])
   const [incomingCall, setIncomingCall] = useState<IncomingCall | null>(null)
+  const [outgoingCall, setOutgoingCall] = useState<{name:string;callType:'video' | 'audio'} | null>(null)
   const [selectedMessage, setSelectedMessage] = useState<msg | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -266,16 +267,14 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
   const handleCall = (type: 'video' | 'audio') => {
     let receiverId = chatData?.participants[0]._id
-    if (!socket || !singleChat || !user || !receiverId) {
-        toast.info("Participant is offline! So you can't make a call")
-      return
-    };
+    if (!socket || !singleChat || !user || !receiverId) return;
     socket.emit('callUser', {
       fromUser: { id: user.id, name: user.name },
       toUserId: receiverId,
       roomId: singleChat._id,
       callType: type
     })
+    setOutgoingCall({name:(chatData?.participants[0].name as string),callType:type})
   }
 
   const acceptCall = ({ fromUser, roomId, callType }: IncomingCall) => {
@@ -466,6 +465,22 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
               onClick={() => rejectCall(incomingCall)}
             >
               Reject
+            </button>
+          </div>
+        </div>
+      )}
+      {outgoingCall && (
+        <div className="fixed bottom-5 right-5 p-4 bg-white shadow-xl rounded-xl z-50">
+          <p className="text-lg font-semibold mb-2">
+            You are {outgoingCall.callType} calling  {outgoingCall.name}!
+          </p>
+          <div className="flex gap-4">
+            
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => setOutgoingCall(null)}
+            >
+              cancel
             </button>
           </div>
         </div>
