@@ -472,10 +472,15 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
       {outgoingCall && (
         <div className="fixed bottom-5 right-5 p-4 bg-white shadow-xl rounded-xl z-50">
           <p className="text-lg font-semibold mb-2">
-            You are {outgoingCall.callType} calling  {outgoingCall.name}!
+            You are {outgoingCall.callType} calling {outgoingCall.name} !
           </p>
           <div className="flex gap-4">
-            
+           
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+              {onlineUsers.includes(chatData?.participants[0]._id)?"Ringing":`${outgoingCall.name} is off line`}
+            </button>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded"
               onClick={() => setOutgoingCall(null)}
