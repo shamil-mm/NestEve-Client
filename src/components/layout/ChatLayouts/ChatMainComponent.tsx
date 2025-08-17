@@ -76,6 +76,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
     socket.on('callRejected', () => {
       toast.info('Call was rejected');
+      setOutgoingCall(null)
     });
 
     return () => {
