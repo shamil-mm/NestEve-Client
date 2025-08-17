@@ -103,8 +103,8 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   }, [])
 
   useEffect(() => {
-  setTimeout(scrolltoBottom, 100)
-}, [messages]);
+    setTimeout(scrolltoBottom, 100)
+  }, [messages]);
 
 
 
@@ -127,7 +127,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
       if (singleChat) {
         const res = await fetchChats(singleChat._id as string)
         const formatedData = await formateChat(res.data, userId as string)
-        
+
 
         if (formatedData) {
           setMessages(formatedData)
@@ -142,16 +142,16 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   useEffect(() => {
     const handleRecieveMessage = async (message: any) => {
       console.log('received :', message)
-      if(message.mediaUrl && message.mediaType){
+      if (message.mediaUrl && message.mediaType) {
         try {
-          
+
           const signedUrl = await getMediaUrl(message.mediaUrl)
-          console.log('signedUrl',signedUrl)
-          if(signedUrl){
-            message.mediaUrl=signedUrl
+          console.log('signedUrl', signedUrl)
+          if (signedUrl) {
+            message.mediaUrl = signedUrl
           }
         } catch (error) {
-           console.error("Error fetching signed URL", error);
+          console.error("Error fetching signed URL", error);
         }
       }
 
@@ -188,29 +188,29 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   }, [])
 
 
-  const handleAttach =async(files: File[]): Promise<void> => {
-    const file=files[0]
-    if(!file) return
+  const handleAttach = async (files: File[]): Promise<void> => {
+    const file = files[0]
+    if (!file) return
     try {
-      const fileUrl=await uploadWithPresignedUrl(file)
-     
-      console.log('responseUrls',fileUrl)
-      const messageData={
-          conversationId: singleChat._id, 
-          sender: userId,                                              
-          mediaUrl: fileUrl,
-          mediaType: 'image',
-          replayTo: selectedMessage?._id || undefined
-          }
-        setSelectedMessage(null)
-        socket.emit('sentMessage', messageData)
-     
+      const fileUrl = await uploadWithPresignedUrl(file)
+
+      console.log('responseUrls', fileUrl)
+      const messageData = {
+        conversationId: singleChat._id,
+        sender: userId,
+        mediaUrl: fileUrl,
+        mediaType: 'image',
+        replayTo: selectedMessage?._id || undefined
+      }
+      setSelectedMessage(null)
+      socket.emit('sentMessage', messageData)
+
 
 
 
     } catch (error) {
       console.error("Image message failed", error);
-    }finally{
+    } finally {
       setIsModalOpen(false);
     }
   };
@@ -266,7 +266,10 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
   const handleCall = (type: 'video' | 'audio') => {
     let receiverId = chatData?.participants[0]._id
-    if (!socket || !singleChat || !user || !receiverId) return;
+    if (!socket || !singleChat || !user || !receiverId) {
+        toast.info("Participant is offline! So you can't make a call")
+      return
+    };
     socket.emit('callUser', {
       fromUser: { id: user.id, name: user.name },
       toUserId: receiverId,
@@ -366,8 +369,8 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                 )}
                 <div
                   className={`px-4 py-2 rounded-2xl ${msg.sender === 'me'
-                      ? 'bg-gray-700 text-white rounded-br-md'
-                      : 'bg-gray-700 text-white rounded-bl-md'
+                    ? 'bg-gray-700 text-white rounded-br-md'
+                    : 'bg-gray-700 text-white rounded-bl-md'
                     }`}
                 >
                   <p className="text-sm">{msg.message}</p>
@@ -377,7 +380,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                       alt="media"
                       className="rounded-md mt-2 max-h-64 object-contain border border-gray-600"
                     />
-                  
+
                   )}
                 </div>
                 {msg.time && (
@@ -403,7 +406,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
 
         </div>
-          <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} />
       </div>
 
       {selectedMessage && (
