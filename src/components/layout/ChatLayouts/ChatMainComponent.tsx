@@ -45,7 +45,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   const [typingUser, setTypingUser] = useState<string | null>(null)
   const [onlineUsers, setOnlineUsers] = useState<string[]>([])
   const [incomingCall, setIncomingCall] = useState<IncomingCall | null>(null)
-  const [outgoingCall, setOutgoingCall] = useState<{name:string;callType:'video' | 'audio'} | null>(null)
+  const [outgoingCall, setOutgoingCall] = useState<{ name: string; callType: 'video' | 'audio' } | null>(null)
   const [selectedMessage, setSelectedMessage] = useState<msg | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -274,7 +274,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
       roomId: singleChat._id,
       callType: type
     })
-    setOutgoingCall({name:(chatData?.participants[0].name as string),callType:type})
+    setOutgoingCall({ name: (chatData?.participants[0].name as string), callType: type })
   }
 
   const acceptCall = ({ fromUser, roomId, callType }: IncomingCall) => {
@@ -475,18 +475,20 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
             You are {outgoingCall.callType} calling {outgoingCall.name} !
           </p>
           <div className="flex gap-4">
-           
+
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="bg-blue-600 text-white px-4 py-2 rounded"
             >
-              {onlineUsers.includes(chatData?.participants[0]._id)?"Ringing":`${outgoingCall.name} is off line`}
+              {onlineUsers.includes(chatData?.participants[0]._id) ? "Ringing" : `${outgoingCall.name} is off line`}
             </button>
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded"
-              onClick={() => setOutgoingCall(null)}
-            >
-              cancel
-            </button>
+            {!onlineUsers.includes(chatData?.participants[0]._id) && (
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded"
+                onClick={() => setOutgoingCall(null)}
+              >
+                Cancel
+              </button>
+            )}
           </div>
         </div>
       )}
