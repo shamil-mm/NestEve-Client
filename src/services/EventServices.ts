@@ -1,5 +1,7 @@
 
+import { toast } from 'react-fox-toast';
 import {client} from './client'
+import { Axios, AxiosError } from 'axios';
 
 export  const tagCreation=async(name:string)=>{
     try {
@@ -9,7 +11,12 @@ export  const tagCreation=async(name:string)=>{
         return response
         
     } catch (error) {
+        const err=error as AxiosError<{success:boolean,message:string}>
+        if(err?.response?.status === 409){
+            toast.info(err.response.data.message);
+        }
         console.error("Tag creation failed from service.ts", error);
+        
     }
 }
 export  const getTags=async(searchTerm:string, sortField:string, sortDirection:string, filterBy:string, page:number, limit:number)=>{
