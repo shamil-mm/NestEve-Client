@@ -3,6 +3,7 @@ import AdminCommonLayout from '../../components/common/Admin/AdminCommonLayout'
 import CreateTagModal from '../../components/layout/Modal/CreateTagModal';
 import { blockList, editTag, fetchSingleTag, getTags, tagCreation } from '../../services/EventServices';
 import { Search } from 'lucide-react';
+import { toast } from 'react-fox-toast';
 
 const Tags = () => {
     const[isModalOpen,setIsModalOpen]=useState(false)
@@ -68,7 +69,10 @@ const Tags = () => {
               ...prevTagList,
               response?.data?.response.tag
             ])
-          } 
+          } else{
+            console.log('response for the dublicate tag',response)
+            toast.info(response?.data?.message)
+          }
           
         }
         toggleModal()
