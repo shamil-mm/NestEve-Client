@@ -6,19 +6,16 @@ import {  AxiosError } from 'axios';
 export  const tagCreation=async(name:string)=>{
     try {
         const response =  await client.post(`/events/api/admin/tags`,{name});
-        console.log(response,"tag creation response")
+
         return response
         
     } catch (error) {
         const err=error as AxiosError<{success:boolean,message:string}>
-        console.log('error response status',err.response?.status)
-        console.log('error response message',err.response?.data.message)
         if(err?.response?.status === 409){
-            console.log("its comming inside the tag creating error")
             toast.info(err.response.data.message);
         }
         console.error("Tag creation failed from service.ts", error);
-        
+        return
     }
 }
 export  const getTags=async(searchTerm:string, sortField:string, sortDirection:string, filterBy:string, page:number, limit:number)=>{
@@ -67,11 +64,16 @@ export  const editTag=async(name:string,id:string)=>{
     try {
         console.log(name,'editTag service is working',id)
         const response =  await client.patch(`/events/api/admin/tag`,{name,id});
-        console.log(response,"editTag response")
         return response
         
     } catch (error) {
+         const err=error as AxiosError<{success:boolean,message:string}>
+        if(err?.response?.status === 409){
+            toast.info(err.response.data.message);
+        }
+        
         console.error("editTag failed from service.ts", error);
+        return
     }
 }
 

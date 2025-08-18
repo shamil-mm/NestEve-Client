@@ -62,7 +62,6 @@ const Tags = () => {
 
         }else{
           const response=await tagCreation(name as string)
-          console.log(response?.data?.response.tag)
           if( response?.data?.response?.tag){
             setTagList(prevTagList=>[
               ...prevTagList,
