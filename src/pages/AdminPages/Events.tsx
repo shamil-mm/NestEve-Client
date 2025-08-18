@@ -48,7 +48,7 @@ const Events = () => {
     console.log('handleblock is working')
     e.preventDefault()
     const res = await blockEvent(data)
-    if (res?.data?.response?.message === "success") {
+    if (res?.data?.response?.message === "Event unblocked successfully." || res?.data?.response?.message === "Event blocked successfully.") {
       setEvents(prevList =>
         prevList.map(event =>
           event._id === data.id

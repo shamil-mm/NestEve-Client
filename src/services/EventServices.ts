@@ -283,7 +283,6 @@ export const fetchEvent=async(searchTerm:string, sortField:string, sortDirection
 export const blockEvent=async(data:{id:string,is_block:boolean})=>{
     try {
         const response =  await client.post(`/events/api/admin/block-event`,data);
-                console.log(response,"block event response")
                 return response
         
     } catch (error) {
