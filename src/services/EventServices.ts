@@ -1,7 +1,7 @@
 
 import { toast } from 'react-fox-toast';
 import {client} from './client'
-import { Axios, AxiosError } from 'axios';
+import {  AxiosError } from 'axios';
 
 export  const tagCreation=async(name:string)=>{
     try {
