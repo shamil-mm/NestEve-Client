@@ -85,7 +85,12 @@ export  const categoryCreation=async(categoryName:string,description:string)=>{
         return response
         
     } catch (error) {
+        const err=error as AxiosError<{success:boolean,message:string}>
+        if(err?.response?.status === 409){
+            toast.info(err.response.data.message);
+        }
         console.error("Category creation failed from service.ts", error);
+        return
     }
 }
 export  const editCategory=async(categoryName:string,description:string,id:string)=>{
