@@ -477,9 +477,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
           </p>
           <div className="flex gap-4">
 
-            <button
-              className="bg-blue-600 text-white px-4 py-2 rounded"
-            >
+            <button className="bg-blue-600 text-white px-4 py-2 rounded" >
               {onlineUsers.includes(chatData?.participants[0]._id) ? "Ringing" : `${outgoingCall.name} is off line`}
             </button>
             {!onlineUsers.includes(chatData?.participants[0]._id) && (

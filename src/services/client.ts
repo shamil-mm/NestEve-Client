@@ -16,7 +16,7 @@ export const client = axios.create({
        async function (error) {
        
 
-           if (error.response && error.response.status === 401 && error.response.statusText==='Unauthorized'&& error.response.data.message==='Authentication required' ) {
+           if (error.response && error.response.status === 401 && error.response.data.message==='Authentication required' ) {
                try {
                    console.log('its comming here for clear the data okay')
                    store.dispatch(logoutSuccess());
