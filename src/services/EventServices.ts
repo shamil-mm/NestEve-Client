@@ -11,8 +11,10 @@ export  const tagCreation=async(name:string)=>{
         
     } catch (error) {
         const err=error as AxiosError<{success:boolean,message:string}>
-        console.log('error response',err.response)
+        console.log('error response status',err.response?.status)
+        console.log('error response message',err.response?.data.message)
         if(err?.response?.status === 409){
+            console.log("its comming inside the tag creating error")
             toast.info(err.response.data.message);
         }
         console.error("Tag creation failed from service.ts", error);
