@@ -5,13 +5,13 @@ import {  AxiosError } from 'axios';
 
 export  const tagCreation=async(name:string)=>{
     try {
-        console.log('tag creation service is working',name)
         const response =  await client.post(`/events/api/admin/tags`,{name});
         console.log(response,"tag creation response")
         return response
         
     } catch (error) {
         const err=error as AxiosError<{success:boolean,message:string}>
+        console.log('error response',err.response)
         if(err?.response?.status === 409){
             toast.info(err.response.data.message);
         }
