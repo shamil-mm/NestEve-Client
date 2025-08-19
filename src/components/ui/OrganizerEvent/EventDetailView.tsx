@@ -13,6 +13,7 @@ const EventDetailView:React.FC<EventDetailViewProps> = ({event,close}) => {
 
     // const [showMap, setShowMap] = useState(false);
     const [address, setAddress] = useState('');
+    console.log('event location from event detail view',event.location)
     
         useEffect(() => {
           const fetchAddress = async () => {

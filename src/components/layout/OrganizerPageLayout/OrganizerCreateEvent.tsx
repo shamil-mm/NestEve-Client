@@ -24,7 +24,7 @@ interface OrganizerCreateEventProps {
 }
 const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSuccess, editEvent }) => {
 
-  
+
   const userId = useAppSelector((state) => state.authUser?.user?.id)
   // const handleSearch = async () => {
   //   if (!search) return;
@@ -62,7 +62,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
     endTime: '',
     status: 'showing',
     category: '',
-    location: []as number[],
+    location: [] as number[],
     is_seated: false
   });
   useEffect(() => {
@@ -76,7 +76,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
         endTime: editevent.endTime || '',
         status: editevent.status || 'showing',
         category: editEvent?.category._id || '',
-        location: [editevent.location.coordinates[0],editevent.location.coordinates[1]] ,
+        location: [editevent.location.coordinates[0], editevent.location.coordinates[1]],
         is_seated: editevent.is_seated || false
       })
       if (editevent.tags) {
@@ -97,6 +97,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
 
   useEffect(() => {
   }, [formError]);
+
   useEffect(() => {
     const fetchcategories = async () => {
 
@@ -141,7 +142,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
         return {
           ...prev,
           categories: updatedCategories
-        } 
+        }
       });
     }
   };
@@ -193,14 +194,14 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
       {
         rows: 0,
         columns: 0,
-        seatStyle:'',
-        passageRows:[],
-        passageColumns:[],
-        categories: [{name: "General", rowRange: [""], price: 0 }]
+        seatStyle: '',
+        passageRows: [],
+        passageColumns: [],
+        categories: [{ name: "General", rowRange: [""], price: 0 }]
       });
 
-      const [passageRowsInput, setPassageRowsInput] = useState(layoutConfig.passageRows.join(','));
-      const [passageColumnsInput, setPassageColumnsInput] = useState(layoutConfig.passageColumns.join(','));
+  const [passageRowsInput, setPassageRowsInput] = useState(layoutConfig.passageRows.join(','));
+  const [passageColumnsInput, setPassageColumnsInput] = useState(layoutConfig.passageColumns.join(','));
 
   const handleLayoutChange = (field: string, value: any) => {
     if (field === "rows") {
@@ -219,20 +220,20 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
         ...prev,
         columns: value,
       }));
-    }else if(field==='seatStyle'){
-      setLayoutConfig(prev=>({
+    } else if (field === 'seatStyle') {
+      setLayoutConfig(prev => ({
         ...prev,
-        seatStyle:value
+        seatStyle: value
       }))
-    }else if(field ==='passageRows'){
-      setLayoutConfig(prev=>({
+    } else if (field === 'passageRows') {
+      setLayoutConfig(prev => ({
         ...prev,
-        passageRows:value.split(',').map((v:string)=>parseInt(v)).filter((n:number)=>!isNaN(n))
+        passageRows: value.split(',').map((v: string) => parseInt(v)).filter((n: number) => !isNaN(n))
       }))
-    }else if(field=== 'passageColumns'){
-      setLayoutConfig(prev=>({
+    } else if (field === 'passageColumns') {
+      setLayoutConfig(prev => ({
         ...prev,
-        passageColumns:value.split(',').map(((v:string)=>parseInt(v))).filter((n:number)=>!isNaN(n))
+        passageColumns: value.split(',').map(((v: string) => parseInt(v))).filter((n: number) => !isNaN(n))
       }))
     }
   };
@@ -246,7 +247,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
     });
   };
 
- 
+
   const handleSelectedTag = useCallback((tags: { _id: string; tag: string }[]) => {
     setSelectedTags(tags)
   }, [])
@@ -289,18 +290,18 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
     setLocationError("")
 
 
-    
+
 
     const tagIds = selectedTags.map((tag) => tag._id)
     if (!previewImg) {
       setError("please select a image")
       return
     }
- const geolocation=[location?.lng,location?.lat]
+    const geolocation ={type:'Point',coordinates:[location?.lng, location?.lat]}
 
     try {
 
-      const result = zodEventSchema.parse({ ...formData ,location:geolocation})
+      const result = zodEventSchema.parse({ ...formData, location: geolocation })
       let stanitizeTicketTypes;
       let sanitizeLayoutConfig;
       try {
@@ -325,14 +326,16 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
           return;
         }
       }
+      
       if (!location?.lat || !location.lng) {
-      setLocationError('Please select a location')
-      return
-    }
+        setLocationError('Please select a location')
+        return
+      }
 
-   
+
       const eventPayload = {
         ...result,
+        location:geolocation,
         tags: tagIds,
         ticketTypes: stanitizeTicketTypes,
         ...(seatedEvent && { layoutConfig: sanitizeLayoutConfig }),
@@ -736,7 +739,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
 
                       </div>
 
-                      
+
                       <div>
                         <label className="block text-sm font-medium mb-1">Columns</label>
                         <input
@@ -751,8 +754,8 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 mb-4">
-                     <div>
-                        <label className="block text-sm font-medium mb-1">Seat Style {formError.seatStyle  ? <span className='text-red-500'>&nbsp;  &nbsp; &nbsp; * Select  style</span> : ""} </label>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Seat Style {formError.seatStyle ? <span className='text-red-500'>&nbsp;  &nbsp; &nbsp; * Select  style</span> : ""} </label>
                         <select
                           value={layoutConfig.seatStyle}
                           onChange={(e) => handleLayoutChange('seatStyle', e.target.value)}
@@ -766,11 +769,11 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
                       </div>
 
 
-                      
+
                       <div>
                         <label className="block text-sm font-medium mb-1">Passage Rows (use commas)</label>
                         <input
-                        name='passageRows'
+                          name='passageRows'
                           type="text"
                           value={passageRowsInput}
                           onChange={(e) => setPassageRowsInput(e.target.value)}
@@ -782,11 +785,11 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
                       <div>
                         <label className="block text-sm font-medium mb-1">Passage Columns (use commas)</label>
                         <input
-                        name="passageColumns"
+                          name="passageColumns"
                           type="text"
-                            value={passageColumnsInput}
-                            onChange={(e) => setPassageColumnsInput(e.target.value)}
-                            onBlur={() => handleLayoutChange('passageColumns', passageColumnsInput)}
+                          value={passageColumnsInput}
+                          onChange={(e) => setPassageColumnsInput(e.target.value)}
+                          onBlur={() => handleLayoutChange('passageColumns', passageColumnsInput)}
                           className="w-full p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none"
                         />
                       </div>
