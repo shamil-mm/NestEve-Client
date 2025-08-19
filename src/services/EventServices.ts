@@ -199,7 +199,13 @@ export const createEvent=async(eventData:object,image:File,userId:string)=>{
         return response  
         
     } catch (error) {
+         const err=error as AxiosError<{success:boolean,message:string}>
+        if(err?.response?.status === 409){
+            toast.info(err.response.data.message);
+        }
         console.error("createEvent failed from service.ts", error); 
+        return
+        
     }
 }
 
@@ -253,7 +259,13 @@ export const getEventImage= async(eventImageUrl:string)=>{
         
         
     } catch (error) {
+         const err=error as AxiosError<{success:boolean,message:string}>
+        if(err?.response?.status === 409){
+            toast.info(err.response.data.message);
+        }
         console.error("update Event failed from service.ts", error);
+        return
+        
     }
   }
 export const removeEvent= async(eventId:string)=>{
