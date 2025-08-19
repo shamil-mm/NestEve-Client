@@ -371,7 +371,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                   </div>
                 )}
                 <div
-                  className={`px-4 py-2 rounded-2xl ${msg.sender === 'me'
+                  className={`px-4 py-2 rounded-2xl relative ${msg.sender === 'me'
                     ? 'bg-gray-700 text-white rounded-br-md group'
                     : 'bg-gray-700 text-white rounded-bl-md'
                     }`}
@@ -387,7 +387,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
                   )}
                   <button
-                    className="absolute right-0 top-1/2 -translate-y-1/2 hidden group-hover:block text-red-500 hover:text-red-700"
+                    className="absolute top-2 right-2 hidden group-hover:block text-red-500 hover:text-red-700"
                     onClick={() => handleMessageDelete(msg._id as string)}
                   >
                     🗑️
