@@ -372,10 +372,11 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                 )}
                 <div
                   className={`px-4 py-2 rounded-2xl ${msg.sender === 'me'
-                    ? 'bg-gray-700 text-white rounded-br-md'
+                    ? 'bg-gray-700 text-white rounded-br-md group'
                     : 'bg-gray-700 text-white rounded-bl-md'
                     }`}
                 >
+                  
                   <p className="text-sm">{msg.message}</p>
                   {msg.mediaType === 'image' && msg.mediaUrl && (
                     <img
@@ -385,22 +386,23 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                     />
 
                   )}
+                  <button
+                    className="absolute right-0 top-1/2 -translate-y-1/2 hidden group-hover:block text-red-500 hover:text-red-700"
+                    onClick={() => handleMessageDelete(msg._id as string)}
+                  >
+                    🗑️
+                  </button>
                 </div>
-                <div className="relative group inline-block">
+               
                   {msg.time && (
                   <p className={`text-xs text-gray-400 mt-1 ${msg.sender === 'me' ? 'text-right' : 'text-left'
                     }`}>
                     {msg.time}
                   </p>
                 )}
-                <button
-                    className="absolute right-0 top-1/2 -translate-y-1/2 hidden group-hover:block text-red-500 hover:text-red-700"
-                    onClick={() => handleMessageDelete(msg._id as string)}
-                  >
-                    🗑️
-                  </button>
+                
 
-                </div>
+                
                 
               </div>
             </div>
