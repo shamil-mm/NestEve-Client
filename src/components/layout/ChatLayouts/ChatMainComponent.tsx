@@ -376,6 +376,13 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                     : 'bg-gray-700 text-white rounded-bl-md'
                     }`}
                 >
+
+                  <button
+                    className="absolute top-1/2 -translate-y-1/2 left-0 -ml-8 hidden group-hover:block "
+                    onClick={() => handleMessageDelete(msg._id as string)}
+                  >
+                    <Trash color='red'/>
+                  </button>
                   
                   <p className="text-sm">{msg.message}</p>
                   {msg.mediaType === 'image' && msg.mediaUrl && (
@@ -386,12 +393,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                     />
 
                   )}
-                  <button
-                    className="absolute top-2 right-2 hidden group-hover:block "
-                    onClick={() => handleMessageDelete(msg._id as string)}
-                  >
-                    <Trash color='red'/>
-                  </button>
+                  
                 </div>
                
                   {msg.time && (
