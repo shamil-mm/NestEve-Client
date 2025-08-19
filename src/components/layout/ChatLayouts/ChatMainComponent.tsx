@@ -48,7 +48,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   const [outgoingCall, setOutgoingCall] = useState<{ name: string; callType: 'video' | 'audio' } | null>(null)
   const [selectedMessage, setSelectedMessage] = useState<msg | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [deleteSelected, setDeleteSelected] = useState(false);
+  const [deleteSelected, setDeleteSelected] = useState<{id:string}|null>(null);
 
 
 
@@ -357,7 +357,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
           {messages.map((msg) => (
             <div onClick={() => handleReplay(msg)} key={msg._id} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-              <div className="max-w-xs lg:max-w-md" onClick={()=>{if(msg.sender === 'me')setDeleteSelected(true)}}>
+              <div className="max-w-xs lg:max-w-md" onClick={()=>{if(msg.sender === 'me')setDeleteSelected({id:msg._id as string})}}>
                 {msg.replyTo && (
                   <div className="bg-gray-800/80 text-white p-2 rounded-xl border-l-4 border-blue-600 mb-1">
                     <p className="text-xs font-semibold">
@@ -377,7 +377,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                     : 'bg-gray-700 text-white rounded-bl-md'
                     }`}
                 >
-                 {deleteSelected &&(
+                 {deleteSelected && deleteSelected.id===msg._id &&(
                    <button
                     className="absolute top-1/2 -translate-y-1/2 left-0 -ml-8"
                     onClick={() => handleMessageDelete(msg._id as string)}
