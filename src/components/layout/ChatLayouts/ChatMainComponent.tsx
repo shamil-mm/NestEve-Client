@@ -296,6 +296,9 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
     }
   }
 
+  const handleMessageDelete =(messageId:string)=>{
+    console.log("message id comming here",messageId)
+  }
 
 
 
@@ -383,12 +386,22 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
                   )}
                 </div>
-                {msg.time && (
+                <div className="relative group inline-block">
+                  {msg.time && (
                   <p className={`text-xs text-gray-400 mt-1 ${msg.sender === 'me' ? 'text-right' : 'text-left'
                     }`}>
                     {msg.time}
                   </p>
                 )}
+                <button
+                    className="absolute right-0 top-1/2 -translate-y-1/2 hidden group-hover:block text-red-500 hover:text-red-700"
+                    onClick={() => handleMessageDelete(msg._id as string)}
+                  >
+                    🗑️
+                  </button>
+
+                </div>
+                
               </div>
             </div>
           ))}
