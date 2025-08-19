@@ -32,7 +32,7 @@ export const createZodTickenTypesSchema = (seated: boolean): z.ZodType<any> =>
     .array(createTicketTypeSchema(seated))
     .min(1, "At least one ticket type is required");
 
-export const zodEventSchema = z
+export const zodUpdateEventSchema = z
   .object({
     title: z.string().min(5, "Title must be at least 5 characters"),
     description: z
@@ -58,7 +58,7 @@ export const zodEventSchema = z
       .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time "),
     status: z.enum(["showing", "hidden", "draft"]),
     category: z.string().min(1, "Category is required"),
-    location: locationSchema.optional(),
+    location: locationSchema.optional().nullable(),
   })
   .refine(
     ({ startTime, endTime }) => {

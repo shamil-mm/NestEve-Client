@@ -11,6 +11,7 @@ import { useAppSelector } from '../../../hooks/AuthHook';
 import "react-datepicker/dist/react-datepicker.css";
 import { generateBalancedLayouts, getRowCountFromRange } from '../../../utils/eventCreationHelperFunction/ColumnSuggestion';
 import EventLocationPicker from '../../common/Location/EventLocationPicker';
+import { zodUpdateEventSchema } from '../../../schemas/eventUpdateSchema';
 
 
 
@@ -299,8 +300,15 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
  const geolocation=[location?.lng,location?.lat]
 
     try {
-
-      const result = zodEventSchema.parse({ ...formData ,location:geolocation})
+       
+      let result
+      if (editevent) {
+        result = zodUpdateEventSchema.parse(formData)
+      } else {
+        if (userId) {
+          result = zodEventSchema.parse({ ...formData ,location:geolocation})
+        }
+      }
       let stanitizeTicketTypes;
       let sanitizeLayoutConfig;
       try {
