@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import hero from '../../../assets/abstract-background.jpg'
-import { Phone, Video, MoreVertical, Paperclip, Send } from 'lucide-react';
+import { Phone, Video, MoreVertical, Paperclip, Send, Trash } from 'lucide-react';
 import { IConversation } from '../../../interfaces/chat/Iconversation';
 import { useAppSelector } from '../../../hooks/AuthHook';
 import { getOpponent } from '../../../utils/formateConversation';
@@ -387,10 +387,10 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
                   )}
                   <button
-                    className="absolute top-2 right-2 hidden group-hover:block text-red-500 hover:text-red-700"
+                    className="absolute top-2 right-2 hidden group-hover:block "
                     onClick={() => handleMessageDelete(msg._id as string)}
                   >
-                    🗑️
+                    <Trash color='red'/>
                   </button>
                 </div>
                
