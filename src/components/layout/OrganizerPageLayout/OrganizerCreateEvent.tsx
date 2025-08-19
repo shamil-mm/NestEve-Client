@@ -325,7 +325,7 @@ const OrganizerCreateEvent: React.FC<OrganizerCreateEventProps> = ({ close, onSu
           return;
         }
       }
-      if (!location?.lat || !location.lng) {
+      if (!editEvent && (!location?.lat || !location?.lng)) {
       setLocationError('Please select a location')
       return
     }
