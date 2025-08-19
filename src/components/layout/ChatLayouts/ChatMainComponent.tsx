@@ -48,6 +48,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   const [outgoingCall, setOutgoingCall] = useState<{ name: string; callType: 'video' | 'audio' } | null>(null)
   const [selectedMessage, setSelectedMessage] = useState<msg | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [deleteSelected, setDeleteSelected] = useState(false);
 
 
 
@@ -356,7 +357,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
 
           {messages.map((msg) => (
             <div onClick={() => handleReplay(msg)} key={msg._id} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-              <div className="max-w-xs lg:max-w-md">
+              <div className="max-w-xs lg:max-w-md" onClick={()=>{if(msg.sender === 'me')setDeleteSelected(true)}}>
                 {msg.replyTo && (
                   <div className="bg-gray-800/80 text-white p-2 rounded-xl border-l-4 border-blue-600 mb-1">
                     <p className="text-xs font-semibold">
@@ -372,17 +373,20 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                 )}
                 <div
                   className={`px-4 py-2 rounded-2xl relative ${msg.sender === 'me'
-                    ? 'bg-gray-700 text-white rounded-br-md group'
+                    ? 'bg-gray-700 text-white rounded-br-md'
                     : 'bg-gray-700 text-white rounded-bl-md'
                     }`}
                 >
-
-                  <button
-                    className="absolute top-1/2 -translate-y-1/2 left-0 -ml-8 hidden group-hover:block "
+                 {deleteSelected &&(
+                   <button
+                    className="absolute top-1/2 -translate-y-1/2 left-0 -ml-8"
                     onClick={() => handleMessageDelete(msg._id as string)}
                   >
                     <Trash color='red'/>
                   </button>
+
+                 )}
+                 
                   
                   <p className="text-sm">{msg.message}</p>
                   {msg.mediaType === 'image' && msg.mediaUrl && (
