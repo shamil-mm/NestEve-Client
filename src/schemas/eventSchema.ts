@@ -1,11 +1,14 @@
 import { z } from "zod";
 
-const locationSchema = z
-  .tuple([z.number(), z.number()])
-  .refine(
-    ([lng, lat]) => lng >= -180 && lng <= 180 && lat >= -90 && lat <= 90,
-    { message: "Coordinates must be valid [longitude, latitude]" }
-  );
+const locationSchema = z.object({
+  type: z.literal("Point"),
+  coordinates: z
+    .tuple([z.number(), z.number()])
+    .refine(
+      ([lng, lat]) => lng >= -180 && lng <= 180 && lat >= -90 && lat <= 90,
+      { message: "Coordinates must be valid [longitude, latitude]" }
+    ),
+});
 
 const createTicketTypeSchema = (seated: boolean): z.ZodType<any> => {
   return z.object({
