@@ -108,10 +108,10 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
   }
   
   return (
-    <div className="rounded-lg overflow-hidden bg-black/50 border border-white/10">
-      <div className="flex">
+    <div className="rounded-lg overflow-hidden bg-black/50 border border-white/10 mb-3 sm:mb-4">
+      <div className="flex flex-col sm:flex-row">
         {/* Image section */}
-        <div className="relative w-1/3 h-50 min-h-[100px]">
+        <div className="relative w-full sm:w-1/3 h-48 sm:h-50 min-h-[150px] sm:min-h-[100px]">
           <img 
             src={event?.image}
             alt="Event" 
@@ -127,45 +127,45 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
         </div>
 
         {/* Details section */}
-        <div className="p-4 w-2/3">
-          <div className="flex justify-between">
-            <h3 className="font-bold text-lg">{event?.title}</h3>
-            <div className="flex items-center gap-1 text-xs">
+        <div className="p-3 sm:p-4 w-full sm:w-2/3">
+          <div className="flex justify-between items-start gap-2">
+            <h3 className="font-bold text-sm sm:text-base md:text-lg truncate flex-1">{event?.title}</h3>
+            <div className="flex items-center gap-1 text-xs flex-shrink-0">
               <Star size={12} fill="yellow" stroke="yellow" />
               <span>4.8</span>
             </div>
           </div>
 
-          <p className="text-sm text-gray-300 line-clamp-2 my-1">
+          <p className="text-xs sm:text-sm text-gray-300 line-clamp-2 my-1">
             {event?.description}
           </p>
 
           
-          <div className="flex justify-between text-xs text-gray-400 mt-2">
+          <div className="flex justify-between text-xs text-gray-400 mt-2 gap-2">
             <div>
              
               <div> ticket status</div>
             </div>
             <div className="text-right">
-            <button className={`border-1 text-xs py-1 px-3 rounded-sm ${localBooking.status=='cancelled'? 'text-red-500':'text-green-500'}`}>{localBooking.status}</button>
+            <button className={`border-1 text-xs py-0.5 sm:py-1 px-2 sm:px-3 rounded-sm whitespace-nowrap ${localBooking.status=='cancelled'? 'text-red-500':'text-green-500'}`}>{localBooking.status}</button>
             </div>
           </div>
-          <div className="flex justify-between text-xs text-gray-400 mt-2">
+          <div className="flex justify-between text-xs text-gray-400 mt-2 gap-2">
             <div>
              
               <div>payment status</div>
             </div>
             <div className="text-right">
-            <button className="border-1 text-green-500 text-xs py-1 px-3 rounded-sm">{localBooking.paymentStatus}</button>
+            <button className="border-1 text-green-500 text-xs py-0.5 sm:py-1 px-2 sm:px-3 rounded-sm whitespace-nowrap">{localBooking.paymentStatus}</button>
             </div>
           </div>
-          <div className="flex justify-between text-xs text-gray-400 mt-2">
+          <div className="flex justify-between text-xs text-gray-400 mt-2 gap-2">
             <div>
              
               <div>payment method</div>
             </div>
             <div className="text-right">
-              <button className="border-1 text-green-500 text-xs py-1 px-3 rounded-sm">{localBooking.paymentMethod}</button>
+              <button className="border-1 text-green-500 text-xs py-0.5 sm:py-1 px-2 sm:px-3 rounded-sm whitespace-nowrap">{localBooking.paymentMethod}</button>
             </div>
           </div>
 
@@ -188,9 +188,9 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
                 </ul>
               </div> */}
 
-          <div className="flex justify-between mt-3">
-            {localBooking.status==="pending" && localBooking.paymentStatus==="unpaid" ? (<button onClick={handleRetrypayment}  className="border border-blue-600 text-xs py-1 px-3 rounded-sm">RETRY PAYMENT</button>):(localBooking.status!=="cancelled" &&( <button onClick={ticketShowfn} className="border border-blue-600 text-xs py-1 px-3 rounded-sm">TICKET VIEW</button>))}  
-            {localBooking.status==="confirmed" && localBooking.paymentStatus==="paid" && (<button onClick={handleCancelbooking}  className="border-1 border-blue-600 text-xs py-1 px-3 rounded-sm">CANCEL BOOKING</button>)}  
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 mt-3">
+            {localBooking.status==="pending" && localBooking.paymentStatus==="unpaid" ? (<button onClick={handleRetrypayment}  className="border border-blue-600 text-xs py-1.5 sm:py-1 px-2 sm:px-3 rounded-sm whitespace-nowrap w-full sm:w-auto text-center">RETRY PAYMENT</button>):(localBooking.status!=="cancelled" &&( <button onClick={ticketShowfn} className="border border-blue-600 text-xs py-1.5 sm:py-1 px-2 sm:px-3 rounded-sm whitespace-nowrap w-full sm:w-auto text-center">TICKET VIEW</button>))}  
+            {localBooking.status==="confirmed" && localBooking.paymentStatus==="paid" && (<button onClick={handleCancelbooking}  className="border-1 border-blue-600 text-xs py-1.5 sm:py-1 px-2 sm:px-3 rounded-sm whitespace-nowrap w-full sm:w-auto text-center">CANCEL BOOKING</button>)}  
             
           </div>
         </div>

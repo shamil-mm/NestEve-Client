@@ -97,18 +97,18 @@ const Ticket = () => {
   <PageLayout>
     <BrowseEventSidebar getSelectedFilters={getSelectedFilters}/>
     
-        <div className="w-8/12 h-fit flex flex-col px-3 ">
+        <div className="w-full sm:w-full md:w-8/12 lg:w-9/12 h-fit flex flex-col px-2 sm:px-3">
         
 
-        <div className="text-white flex justify-between items-center">
+        <div className="text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
  
   <div>
    
   </div>
 
  
-  <div className="flex items-center gap-2">
-    <select name="sort" className="border-white rounded-sm h-10 border-2 my-2 bg-black text-white">
+  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+    <select name="sort" className="border-white rounded-sm h-9 sm:h-10 border-2 my-2 bg-black text-white text-sm sm:text-base w-full sm:w-auto">
       <option value="">Sort</option>
       <option value="price-low-to-high">Low to High</option>
       <option value="price-high-to-low">High to Low</option>
