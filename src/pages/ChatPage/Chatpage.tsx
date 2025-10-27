@@ -8,7 +8,6 @@ import { formateConversations } from '../../utils/formateConversation';
 import { IConversation, showChat } from '../../interfaces/chat/Iconversation';
 import ChatMainComponent from '../../components/layout/ChatLayouts/ChatMainComponent';
 import socket from '../../utils/socket';
-import { ArrowLeft } from 'lucide-react';
 
 const Chatpage = () => {
   const [chatOrganizer,setChatOrganizer]=useState<IChatOrganizer|null>(null)
