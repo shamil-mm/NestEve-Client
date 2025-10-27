@@ -36,8 +36,8 @@ const UserRegister: React.FC<UserRegisterProps> = ({ onRegister }) => {
   
  }
   return (
-    <div className="flex w-full h-full">
-      <div className="m-8 w-1/2 bg-white flex items-center justify-center">
+    <div className="flex flex-col md:flex-row w-full h-full">
+      <div className="m-4 md:m-8 w-full md:w-1/2 bg-white hidden md:flex items-center justify-center">
         <img 
           src={registerImage}
           alt="Login illustration" 
@@ -45,7 +45,7 @@ const UserRegister: React.FC<UserRegisterProps> = ({ onRegister }) => {
         />
       </div>
       {/* Right side with login form */}
-      <div className="w-1/2 p-10 flex flex-col justify-center">
+      <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-center">
         <form onSubmit={hanldeSubmit} className="w-full">
           <div className="mb-4">
             <label className="block text-white text-sm mb-1">Name</label>

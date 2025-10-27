@@ -52,13 +52,13 @@ const Navbar = () => {
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-black/70 ">
-      <div className="container mx-auto px-12 py-4 md:py-6 flex justify-between items-center text-white">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 md:py-6 flex justify-between items-center text-white">
 
 
 
        
         {/* Logo */}
-        <img src="/logo.png" alt="logo" className="w-28 md:w-36 lg:w-40" onClick={()=>navigate('/')}/>
+        <img src="/logo.png" alt="logo" className="w-20 sm:w-24 md:w-28 lg:w-36 xl:w-40 cursor-pointer" onClick={()=>navigate('/')}/>
 
         {/* Desktop Buttons */}
         
@@ -77,7 +77,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="absolute top-27 right-5 bg-black/90 text-white shadow-lg w-80 p-2 text-center border rounded-sm"
+                className="absolute top-27 right-0 sm:right-5 bg-black/90 text-white shadow-lg w-64 sm:w-80 p-2 text-center border rounded-sm"
               >
                 {userDropdownOptions.map((option) => (
                   <motion.div
@@ -142,12 +142,34 @@ const Navbar = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="md:hidden bg-black text-white w-full absolute top-16 left-0 p-6 space-y-4"
+          className="md:hidden bg-black/95 text-white w-full absolute top-full left-0 p-4 sm:p-6 space-y-4"
         >
          
-          <div className="flex flex-col items-center mt-4 space-y-3">
-            <Button variant="outline" >Get Started</Button>
-            <Button variant="outline" >Contact Us</Button>
+          <div className="flex flex-col items-center mt-4 space-y-3 px-4">
+            {isAuthenticated ? (
+              <>
+                <div className="w-full flex flex-col space-y-2">
+                  <Calendar onClick={handleCalendar} className="cursor-pointer p-2 bg-black/50 rounded" />
+                  <BellDot className="cursor-pointer p-2 bg-black/50 rounded" onClick={handleNotification}/>
+                </div>
+                <div className="w-full">
+                  {userDropdownOptions.map((option) => (
+                    <div
+                      key={option.label}
+                      onClick={option.onClick}
+                      className="px-4 py-3 cursor-pointer hover:bg-black/50 border-b border-white/10 last:border-0"
+                    >
+                      {option.label}
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={() => navigate('/role')}>Get Started</Button>
+                <Button variant="outline" >Contact Us</Button>
+              </>
+            )}
           </div>
         </motion.div>
       )}

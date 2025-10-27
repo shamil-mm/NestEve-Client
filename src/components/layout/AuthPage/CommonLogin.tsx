@@ -81,13 +81,13 @@ const CommonLogin: React.FC<LoginProps> = ({ onLogin }) => {
 
   return (
     <>
-      <div className="flex w-full h-full">
+      <div className="flex flex-col md:flex-row w-full h-full">
 
-        <div className="m-8 w-1/2 bg-white hidden md:flex items-center justify-center">
+        <div className="m-4 md:m-8 w-full md:w-1/2 bg-white hidden md:flex items-center justify-center">
           <img
             src={loginImage}
             alt="Login illustration"
-            className="w-3/4 "
+            className="w-3/4"
           />
         </div>
 
@@ -95,7 +95,7 @@ const CommonLogin: React.FC<LoginProps> = ({ onLogin }) => {
 
 
 
-        <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-center">
           <ToggleButton data={getToggleData} />
 
 
@@ -211,9 +211,9 @@ const CommonLogin: React.FC<LoginProps> = ({ onLogin }) => {
       </div>
 
       {showForgotPasswordModal && (
-        <div className="fixed inset-0 bg-black/80  flex items-center justify-center z-50">
-          <div className="bg-gray-900 p-6 rounded-lg w-96">
-            <h2 className="text-xl text-white mb-4">Reset Password</h2>
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 p-4 sm:p-6 rounded-lg w-full max-w-md">
+            <h2 className="text-lg sm:text-xl text-white mb-3 sm:mb-4">Reset Password</h2>
             <form onSubmit={handleForgotPassword}>
               <div className="mb-4">
                 <label className="block text-white text-sm mb-1">Email</label>
@@ -245,17 +245,17 @@ const CommonLogin: React.FC<LoginProps> = ({ onLogin }) => {
          
 
               </div>
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 sm:space-x-3">
                 <button
                   type="button"
-                  className="px-4 py-2 bg-gray-700 text-white rounded-sm "
+                  className="px-4 py-2 bg-gray-700 text-white rounded-sm text-sm sm:text-base"
                   onClick={() => setShowForgotPasswordModal(false)}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-sm"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-sm text-sm sm:text-base"
                 >
                   Reset Password
                 </button>

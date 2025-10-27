@@ -33,24 +33,24 @@ const Sidebar = () => {
         
       ];
   return (
-    <div className="bg-white w-64 border-r border-gray-200 hidden md:flex md:flex-col">
-    <div className="p-4 border-b">
-      <h1 className="text-blue-600 text-2xl font-bold">NestEve</h1>
+    <div className="bg-white w-48 sm:w-56 md:w-64 border-r border-gray-200 flex flex-col">
+    <div className="p-3 sm:p-4 border-b">
+      <h1 className="text-blue-600 text-lg sm:text-xl md:text-2xl font-bold">NestEve</h1>
     </div>
     
     <nav className="flex-1 overflow-y-auto">
-      <ul className="p-2">
+      <ul className="p-1 sm:p-2">
         {menuItems.map((item, index) => (
           <li key={index}>
             <Link 
               to={item.link as string}
-              className={`flex items-center px-4 py-3 text-gray-600 rounded-md mb-1 ${
+              className={`flex items-center px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-sm sm:text-base text-gray-600 rounded-md mb-1 ${
                 location.pathname===item.link ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'
               }`}
               
             >
-              <span className="mr-3">{item.icon}</span>
-              <span>{item.label}</span>
+              <span className="mr-2 sm:mr-3">{item.icon}</span>
+              <span className="hidden sm:inline">{item.label}</span>
             </Link>
           </li>
         ))}

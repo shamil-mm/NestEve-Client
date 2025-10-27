@@ -112,19 +112,19 @@ const CheckoutModal = () => {
 
   return (
 
-    <div className="min-h-screen  flex flex-col bg-cover bg-center relative" style={{ backgroundImage: `url(${bg})` }}>
+    <div className="min-h-screen flex flex-col bg-cover bg-center relative" style={{ backgroundImage: `url(${bg})` }}>
 
-      <div className="flex  justify-center p-20">
-        <div className="w-full max-w-4xl  bg-black/70 border border-blue-500  p-6 text-white ">
-          <h1 className="text-3xl font-bold text-center mb-8">Checkout</h1>
+      <div className="flex justify-center p-4 sm:p-6 md:p-12 lg:p-20">
+        <div className="w-full max-w-4xl bg-black/70 border border-blue-500 p-4 sm:p-6 text-white">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 sm:mb-6 md:mb-8">Checkout</h1>
 
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
 
 
 
-            <div className="flex-1 flex flex-col gap-6">
-              <div className="p-4 border border-white-700 ">
-                <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
+            <div className="flex-1 flex flex-col gap-4 sm:gap-6">
+              <div className="p-3 sm:p-4 border border-white-700">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4">Order Summary</h2>
 
                 <div className="mb-4" id={event._id}>
                   <h3 className="mb-2">{event.title}</h3>
@@ -165,8 +165,8 @@ const CheckoutModal = () => {
                 </div>
               </div>
 
-              <div className="p-4 border border-white-700 ">
-                <h2 className="text-2xl font-bold mb-4">Pay with</h2>
+              <div className="p-3 sm:p-4 border border-white-700">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4">Pay with</h2>
 
                 <div className="flex flex-col gap-2">
                   <label className="flex items-center gap-2 cursor-pointer">
@@ -211,7 +211,7 @@ const CheckoutModal = () => {
                 <button
                   onClick={handleSubmit}
                   type="submit"
-                  className="w-full bg-transparent text-white font-bold py-3 px-6 border border-blue-500 rounded transition-colors duration-300"
+                  className="w-full bg-transparent text-white font-bold py-2 sm:py-3 px-4 sm:px-6 border border-blue-500 rounded transition-colors duration-300 text-sm sm:text-base"
                 >
                   PLACE ORDER
                 </button>

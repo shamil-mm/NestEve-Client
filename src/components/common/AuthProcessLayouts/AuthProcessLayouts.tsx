@@ -81,7 +81,7 @@ const AuthProcessLayouts = () => {
   }
   if (loading) {
     return <>
-      <div className="h-screen flex items-center justify-center text-white  bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
+      <div className="min-h-screen flex items-center justify-center text-white bg-cover bg-center p-4" style={{ backgroundImage: `url(${bg})` }}>
         <div className="absolute inset-0 backdrop-blur bg-black/50"></div>
         <div className="relative z-10">
           <Loading />
@@ -92,9 +92,9 @@ const AuthProcessLayouts = () => {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center text-white  bg-cover bg-center" style={{ backgroundImage: `url(${bg})` }}>
+    <div className="min-h-screen flex items-center justify-center text-white bg-cover bg-center p-4 sm:p-6 md:p-8" style={{ backgroundImage: `url(${bg})` }}>
       <div className="absolute inset-0 bg-black/50"></div>
-      <div className="bg-black/80 h-3/4 w-4xl border-white border-1 z-1">
+      <div className="relative bg-black/80 w-full max-w-5xl border-white border-1 z-1 overflow-y-auto" style={{ maxHeight: '90vh' }}>
 
         {step === 'login' && (
           <CommonLogin onLogin={handlerOnLogin} />

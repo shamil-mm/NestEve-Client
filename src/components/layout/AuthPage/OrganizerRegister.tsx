@@ -42,9 +42,9 @@ const OrganizerRegister: React.FC<OrganizerRegisterProps> = ({ onRegister }) => 
       
     }
   return (
-    <div className="flex w-full h-full">
+    <div className="flex flex-col md:flex-row w-full h-full">
       {/* Left side with illustration */}
-      <div className="m-8 w-1/2 bg-white flex items-center justify-center">
+      <div className="m-4 md:m-8 w-full md:w-1/2 bg-white hidden md:flex items-center justify-center">
         <img 
           src={registerImage}
           alt="Login illustration" 
@@ -53,7 +53,7 @@ const OrganizerRegister: React.FC<OrganizerRegisterProps> = ({ onRegister }) => 
       </div>
       
       {/* Right side with login form */}
-      <div className="w-1/2 p-10 flex flex-col justify-center">
+      <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-center">
         <div className="w-full">
           <div className="mb-4">
             <label className="block text-white text-sm mb-1">Name</label>
