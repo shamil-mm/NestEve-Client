@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import hero from '../../../assets/abstract-background.jpg'
-import { Phone, Video, MoreVertical, Paperclip, Send, Trash } from 'lucide-react';
+import { Phone, Video, MoreVertical, Paperclip, Send, Trash, ArrowLeft } from 'lucide-react';
 import { IConversation } from '../../../interfaces/chat/Iconversation';
 import { useAppSelector } from '../../../hooks/AuthHook';
 import { getOpponent } from '../../../utils/formateConversation';
@@ -13,7 +13,9 @@ import AttachmentModal from '../Modal/AttachmentModal';
 
 
 interface ChatMainComponentProps {
-  singleChat: IConversation
+  singleChat: IConversation;
+  onBack?: () => void;
+  showBackButton?: boolean;
 }
 export interface msg {
   _id?: string;
@@ -32,7 +34,7 @@ export interface msg {
 };
 
 
-const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => {
+const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat, onBack, showBackButton = false }) => {
 
 
   const [message, setMessage] = useState('');
@@ -316,7 +318,9 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
         }
         }
       >
-        <div className='bg-black/50 text-white text-center p-3 sm:p-4 rounded-sm text-xs sm:text-sm md:text-base'>Hello ... Please select a chat to start messaging !!!</div>
+        <div className='bg-black/50 text-white text-center p-3 sm:p-4 rounded-sm text-xs sm:text-sm md:text-base'>
+          Hello ... Please select a chat to start messaging !!!
+        </div>
       </div>
     )
   }
@@ -326,6 +330,15 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
       <div className="bg-black p-3 sm:p-4 border-b border-gray-700">
         <div className="flex items-center justify-between gap-2 sm:gap-3">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            {showBackButton && (
+              <button 
+                onClick={onBack}
+                className="sm:hidden w-8 h-8 flex items-center justify-center text-white hover:bg-gray-800 rounded-full transition-colors flex-shrink-0"
+                aria-label="Back to chats"
+              >
+                <ArrowLeft size={20} />
+              </button>
+            )}
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
               👨
             </div>

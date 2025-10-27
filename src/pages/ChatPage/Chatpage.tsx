@@ -8,6 +8,8 @@ import { formateConversations } from '../../utils/formateConversation';
 import { IConversation, showChat } from '../../interfaces/chat/Iconversation';
 import ChatMainComponent from '../../components/layout/ChatLayouts/ChatMainComponent';
 import socket from '../../utils/socket';
+import { ArrowLeft } from 'lucide-react';
+
 const Chatpage = () => {
   const [chatOrganizer,setChatOrganizer]=useState<IChatOrganizer|null>(null)
   const organizer =useAppSelector((state)=>state.chat.selectedOrganizer)
@@ -15,6 +17,7 @@ const Chatpage = () => {
   const dispatch=useAppDispatch()
   const [chats,setChatlist]=useState<showChat[]>([])
   const [singleChat,setSingleChat]=useState<IConversation|null>(null)
+  const [showSidebar, setShowSidebar] = useState(true)
   
   useEffect(()=>{
     if(organizer){
@@ -124,15 +127,28 @@ const Chatpage = () => {
 
       const res=await getSingleChat(conversationId as string)
       setSingleChat(res.data as IConversation)
-    
+      setShowSidebar(false) // Hide sidebar on mobile when chat is selected
   }
+
+  const handleBackToSidebar = () => {
+    setSingleChat(null)
+    setShowSidebar(true)
+  }
+
+  useEffect(() => {
+    if (!singleChat) {
+      setShowSidebar(true)
+    } else {
+      setShowSidebar(false)
+    }
+  }, [singleChat])
 
   
 
   return (
-    <div className="w-full h-screen bg-black flex overflow-hidden">
+    <div className="w-full h-screen bg-black flex overflow-hidden relative">
       {/* Sidebar */}
-      <div className="w-full sm:w-64 md:w-72 lg:w-80 bg-black border-r border-gray-700 flex flex-col" >
+      <div className={`w-full sm:w-64 md:w-72 lg:w-80 bg-black border-r border-gray-700 flex flex-col transition-transform duration-300 ${showSidebar ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 absolute sm:relative inset-0 z-10 sm:z-auto`}>
         {/* Sidebar Header */}
         <div className="p-3 sm:p-4 border-b border-gray-700 flex-shrink-0">
           <h1 className="text-white text-lg sm:text-xl font-medium">chats</h1>
@@ -165,7 +181,10 @@ const Chatpage = () => {
           ))}
         </div>
       </div>
-      <ChatMainComponent singleChat={singleChat as IConversation}/> 
+      {/* Show chat component only when chat is selected on mobile, always on desktop */}
+      <div className={`${singleChat ? 'flex' : 'hidden'} sm:flex flex-1`}>
+        <ChatMainComponent singleChat={singleChat as IConversation} onBack={handleBackToSidebar} showBackButton={!!singleChat}/> 
+      </div>
     </div>
   );
 }
