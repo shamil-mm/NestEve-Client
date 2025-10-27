@@ -130,31 +130,31 @@ const Chatpage = () => {
   
 
   return (
-    <div className="w-full h-screen bg-black flex">
+    <div className="w-full h-screen bg-black flex overflow-hidden">
       {/* Sidebar */}
-      <div className="w-80 bg-black border-r border-gray-700" >
+      <div className="w-full sm:w-64 md:w-72 lg:w-80 bg-black border-r border-gray-700 flex flex-col" >
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-gray-700">
-          <h1 className="text-white text-xl font-medium">chats</h1>
+        <div className="p-3 sm:p-4 border-b border-gray-700 flex-shrink-0">
+          <h1 className="text-white text-lg sm:text-xl font-medium">chats</h1>
         </div>
         
         {/* Chat List */}
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto flex-1">
           {chats.map((chat) => (
-            <div key={chat.id} onClick={(e)=>handleSingleMessage(e,chat.id)} className="p-4 hover:bg-black cursor-pointer border-b border-gray-700/50">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
+            <div key={chat.id} onClick={(e)=>handleSingleMessage(e,chat.id)} className="p-3 sm:p-4 hover:bg-gray-900 cursor-pointer border-b border-gray-700/50 transition-colors">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs sm:text-sm flex-shrink-0">
                   {chat.avatar}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-white font-medium truncate">{chat.name}</h3>
-                    <span className="text-gray-400 text-xs">{chat.lastMessageTime}</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-white font-medium truncate text-sm sm:text-base">{chat.name}</h3>
+                    <span className="text-gray-400 text-xs flex-shrink-0">{chat.lastMessageTime}</span>
                   </div>
-                  <div className="flex items-center justify-between mt-1">
-                    <p className="text-gray-400 text-sm truncate">{chat.lastMessage}</p>
+                  <div className="flex items-center justify-between mt-1 gap-2">
+                    <p className="text-gray-400 text-xs sm:text-sm truncate">{chat.lastMessage}</p>
                     {chat.unread > 0 && (
-                      <span className="bg-blue-600 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                      <span className="bg-blue-600 text-white text-xs rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 min-w-[18px] sm:min-w-[20px] text-center flex-shrink-0">
                         {chat.unread}
                       </span>
                     )}

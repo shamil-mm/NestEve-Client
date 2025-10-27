@@ -307,7 +307,7 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
   if (!chatData) {
     return (
       <div
-        className="flex-1 p-4 overflow-y-auto flex items-center justify-center"
+        className="flex flex-1 p-4 overflow-y-auto items-center justify-center"
         style={{
           backgroundImage: `url(${hero})`,
           backgroundSize: 'cover',
@@ -316,35 +316,35 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
         }
         }
       >
-        <div className='bg-black/50 text-white text-center p-4 rounded-sm'>Hello ... Please select a chat to start messaging !!!</div>
+        <div className='bg-black/50 text-white text-center p-3 sm:p-4 rounded-sm text-xs sm:text-sm md:text-base'>Hello ... Please select a chat to start messaging !!!</div>
       </div>
     )
   }
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-1 flex-col">
 
-      <div className="bg-black p-4 border-b border-gray-700">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white">
+      <div className="bg-black p-3 sm:p-4 border-b border-gray-700">
+        <div className="flex items-center justify-between gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
               👨
             </div>
-            <div>
-              <h2 className="text-white font-medium">{chatData?.participants[0].name}</h2>
-              <p className={onlineUsers.includes(chatData?.participants[0]._id) ? "text-green-400 text-sm" : "text-gray-400"}><span >{onlineUsers.includes(chatData?.participants[0]._id) ? 'Online' : 'Offline'}</span></p>
+            <div className="min-w-0">
+              <h2 className="text-white font-medium text-sm sm:text-base truncate">{chatData?.participants[0].name}</h2>
+              <p className={onlineUsers.includes(chatData?.participants[0]._id) ? "text-green-400 text-xs sm:text-sm" : "text-gray-400 text-xs sm:text-sm"}><span >{onlineUsers.includes(chatData?.participants[0]._id) ? 'Online' : 'Offline'}</span></p>
             </div>
           </div>
-          <div className="flex items-center space-x-4">
-            <Phone onClick={() => handleCall('audio')} className="w-5 h-5 text-blue-400 cursor-pointer hover:text-blue-300" />
-            <Video onClick={() => handleCall('video')} className="w-5 h-5 text-blue-400 cursor-pointer hover:text-blue-300" />
-            <MoreVertical className="w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-300" />
+          <div className="flex items-center gap-2 sm:gap-3 sm:space-x-4 flex-shrink-0">
+            <Phone onClick={() => handleCall('audio')} className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 cursor-pointer hover:text-blue-300" />
+            <Video onClick={() => handleCall('video')} className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 cursor-pointer hover:text-blue-300" />
+            <MoreVertical className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 cursor-pointer hover:text-gray-300" />
           </div>
         </div>
       </div>
 
 
       <div
-        className="flex-1 p-4 overflow-y-auto"
+        className="flex-1 p-2 sm:p-3 md:p-4 overflow-y-auto"
         style={{
           backgroundImage: `url(${hero})`,
           backgroundSize: 'cover',
@@ -353,13 +353,13 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
         }}
       >
 
-        <div className="space-y-4 max-w-4xl mx-auto">
+        <div className="space-y-2 sm:space-y-3 md:space-y-4 max-w-4xl mx-auto">
 
           {messages.map((msg) => (
             <div onClick={() => handleReplay(msg)} key={msg._id} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-              <div className="max-w-xs lg:max-w-md" onClick={()=>{if(msg.sender === 'me')setDeleteSelected({id:msg._id as string})}}>
+              <div className="max-w-[280px] sm:max-w-xs md:max-w-sm lg:max-w-md" onClick={()=>{if(msg.sender === 'me')setDeleteSelected({id:msg._id as string})}}>
                 {msg.replyTo && (
-                  <div className="bg-gray-800/80 text-white p-2 rounded-xl border-l-4 border-blue-600 mb-1">
+                  <div className="bg-gray-800/80 text-white p-1.5 sm:p-2 rounded-xl border-l-4 border-blue-600 mb-1">
                     <p className="text-xs font-semibold">
                       {msg.replyTo.sender === "me" ? "You" : "Other"}
                     </p>
@@ -372,28 +372,28 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
                   </div>
                 )}
                 <div
-                  className={`px-4 py-2 rounded-2xl relative ${msg.sender === 'me'
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl relative ${msg.sender === 'me'
                     ? 'bg-gray-700 text-white rounded-br-md'
                     : 'bg-gray-700 text-white rounded-bl-md'
                     }`}
                 >
                  {deleteSelected && deleteSelected.id===msg._id &&(
                    <button
-                    className="absolute top-1/2 -translate-y-1/2 left-0 -ml-8"
+                    className="absolute top-1/2 -translate-y-1/2 left-0 -ml-6 sm:-ml-8"
                     onClick={() => handleMessageDelete(msg._id as string)}
                   >
-                    <Trash color='red'/>
+                    <Trash size={14} color='red'/>
                   </button>
 
                  )}
                  
                   
-                  <p className="text-sm">{msg.message}</p>
+                  <p className="text-xs sm:text-sm">{msg.message}</p>
                   {msg.mediaType === 'image' && msg.mediaUrl && (
                     <img
                       src={msg.mediaUrl}
                       alt="media"
-                      className="rounded-md mt-2 max-h-64 object-contain border border-gray-600"
+                      className="rounded-md mt-2 max-h-48 sm:max-h-64 object-contain border border-gray-600 w-full"
                     />
 
                   )}
@@ -415,9 +415,9 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
           ))}
 
           {typingUser && typingUser !== userId && (
-            <div className="flex items-center space-x-2 ml-4">
-              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-white">💬</div>
-              <div className="bg-white rounded-xl px-4 py-2 text-gray-700 shadow animate-bounce">
+            <div className="flex items-center gap-2 ml-2 sm:ml-4">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-700 rounded-full flex items-center justify-center text-white text-xs sm:text-sm">💬</div>
+              <div className="bg-white rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-gray-700 shadow animate-bounce text-xs sm:text-sm">
                 <span className="dot-flash">.</span>
                 <span className="dot-flash delay-150">.</span>
                 <span className="dot-flash delay-300">.</span>
@@ -431,12 +431,12 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
       </div>
 
       {selectedMessage && (
-        <div className="flex items-center justify-between bg-black p-2  border border-blue-700 rounded-t-md">
-          <div className="text-sm text-white">
+        <div className="flex items-center justify-between bg-black p-2 sm:p-3 border border-blue-700 rounded-t-md gap-2">
+          <div className="text-xs sm:text-sm text-white truncate">
             Replying to: <span className="font-medium">{selectedMessage.message}</span>
           </div>
           <button
-            className="text-xs text-red-500 border border-red-700 px-1 rounded-sm"
+            className="text-xs text-red-500 border border-red-700 px-2 sm:px-3 py-1 rounded-sm flex-shrink-0"
             onClick={() => setSelectedMessage(null)}
           >
             cancel
@@ -445,45 +445,45 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
       )}
 
 
-      <div className="bg-black p-4 border-t border-gray-700">
-        <div className="flex items-center space-x-3 max-w-4xl mx-auto">
-          <Paperclip className="w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-300" onClick={() => setIsModalOpen(true)} />
+      <div className="bg-black p-3 sm:p-4 border-t border-gray-700">
+        <div className="flex items-center gap-2 sm:gap-3 max-w-4xl mx-auto">
+          <Paperclip className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 cursor-pointer hover:text-gray-300 flex-shrink-0" onClick={() => setIsModalOpen(true)} />
           <AttachmentModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onAttach={handleAttach}
           />
-          <div className="flex-1 relative">
+          <div className="flex-1 relative min-w-0">
             <input
               type="text"
               value={message}
               onChange={(e) => handleInputChange(e)}
-              placeholder="Type your message here..."
-              className="w-full bg-black border-gray-700 border-2 text-white placeholder-gray-400 rounded-full px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Type your message..."
+              className="w-full bg-black border-gray-700 border-2 text-white placeholder-gray-400 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 pr-10 sm:pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
             <button
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 rounded-full p-1.5 transition-colors"
+              className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 rounded-full p-1 sm:p-1.5 transition-colors"
               onClick={setMessageHandler}
             >
-              <Send className="w-4 h-4 text-white" />
+              <Send className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
             </button>
           </div>
         </div>
       </div>
       {incomingCall && (
-        <div className="fixed bottom-5 right-5 p-4 bg-white shadow-xl rounded-xl z-50">
-          <p className="text-lg font-semibold mb-2">
-            {incomingCall.fromUser.name} is  {incomingCall.callType} calling you!
+        <div className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 p-3 sm:p-4 bg-white shadow-xl rounded-lg sm:rounded-xl z-50 max-w-[calc(100vw-1.5rem)]">
+          <p className="text-sm sm:text-base lg:text-lg font-semibold mb-2">
+            {incomingCall.fromUser.name} is {incomingCall.callType} calling you!
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4">
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="bg-green-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base"
               onClick={() => acceptCall(incomingCall)}
             >
               Accept
             </button>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded"
+              className="bg-red-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base"
               onClick={() => rejectCall(incomingCall)}
             >
               Reject
@@ -492,18 +492,18 @@ const ChatMainComponent: React.FC<ChatMainComponentProps> = ({ singleChat }) => 
         </div>
       )}
       {outgoingCall && (
-        <div className="fixed bottom-5 right-5 p-4 bg-white shadow-xl rounded-xl z-50">
-          <p className="text-lg font-semibold mb-2">
+        <div className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 p-3 sm:p-4 bg-white shadow-xl rounded-lg sm:rounded-xl z-50 max-w-[calc(100vw-1.5rem)]">
+          <p className="text-sm sm:text-base lg:text-lg font-semibold mb-2">
             You are {outgoingCall.callType} calling {outgoingCall.name} !
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4 flex-wrap">
 
-            <button className="bg-blue-600 text-white px-4 py-2 rounded" >
+            <button className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base" >
               {onlineUsers.includes(chatData?.participants[0]._id) ? "Ringing" : `${outgoingCall.name} is off line`}
             </button>
             {!onlineUsers.includes(chatData?.participants[0]._id) && (
               <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-red-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base"
                 onClick={() => setOutgoingCall(null)}
               >
                 Cancel
