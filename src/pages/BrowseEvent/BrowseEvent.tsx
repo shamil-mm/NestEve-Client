@@ -204,57 +204,57 @@ const BrowseEvent = () => {
 
 
         {detailview && detailviewEvent ? (
-          <div className="w-9/12 h-fit flex flex-col px-3">
+          <div className="w-full md:w-9/12 h-fit flex flex-col px-2 sm:px-3">
             <UserEventDetail event={detailviewEvent} close={close} checkoutmodalfn={checkoutmodalfn} />
           </div>
         ) : (
-          <div className="w-9/12 h-fit flex flex-col px-3 ">
-            <div className=" text-white flex justify-end">
+          <div className="w-full md:w-9/12 h-fit flex flex-col px-2 sm:px-3">
+            <div className="text-white flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
               <select name="sort" value={filters.sort} onChange={(e) =>
                 setFilters((prev) => ({
                   ...prev,
                   sort: e.target.value,
                   page: '1'
                 })
-                )} className="border mt-0.5 border-white rounded-sm h-10">
+                )} className="border mt-0.5 border-white rounded-sm h-9 sm:h-10 w-full sm:w-auto text-sm sm:text-base bg-black text-white">
                 <option value="" className="bg-black text-white">Sort</option>
                 <option value="latest" className="bg-black text-white">Latest</option>
                 <option value="price-low-to-high" className="bg-black text-white">Price Low to High</option>
                 <option value="price-high-to-low" className="bg-black text-white">Price High to Low</option>
               </select>
-              &nbsp; &nbsp;
 
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  placeholder="Enter location (e.g Kochi)"
-                  value={place}
-                  onChange={(e) => setPlace(e.target.value)}
-                  className=" h-10 text-white bg-black px-4 mt-0.5 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                &nbsp;
+              <div className="relative w-full flex flex-col sm:flex-row gap-2">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Enter location (e.g Kochi)"
+                    value={place}
+                    onChange={(e) => setPlace(e.target.value)}
+                    className="h-9 sm:h-10 text-white bg-black px-3 sm:px-4 mt-0.5 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm sm:text-base"
+                  />
+                  {suggestions.length > 0 && (
+                    <ul className="absolute z-50 w-full left-0 top-full bg-black rounded mt-1 max-h-60 overflow-y-auto text-sm sm:text-base">
+                      {suggestions.map((sug, idx) => (
+                        <li
+                          key={idx}
+                          className="p-2 cursor-pointer text-white hover:bg-gray-700"
+                          onClick={() => handleSelectSuggestions(sug)}
+                        >
+                          {sug.display_name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
                 <Button onClick={() => {
                   setFilters(prev => ({ ...prev, location: { lat: 0, lng: 0 } }))
                   setPlace("")
 
                 }} variant="outline">Clear</Button>
-                {suggestions.length > 0 && (
-                  <ul className="absolute z-50 w-full left-0 top-full bg-black rounded mt-1 max-h-60 overflow-y-auto">
-                    {suggestions.map((sug, idx) => (
-                      <li
-                        key={idx}
-                        className="p-2 cursor-pointer text-white"
-                        onClick={() => handleSelectSuggestions(sug)}
-                      >
-                        {sug.display_name}
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </div>
-              &nbsp; &nbsp;
-              <SearchBar onSearch={handleSearch} />
-
+              <div className="w-full sm:w-auto">
+                <SearchBar onSearch={handleSearch} />
+              </div>
             </div>
             <div>
               {events.length > 0 ? (
@@ -266,7 +266,7 @@ const BrowseEvent = () => {
                   ))}
 
                   {totalPages >= 4 ? <>
-                    <div className="flex justify-center gap-2 mt-4">
+                    <div className="flex justify-center gap-1 sm:gap-2 mt-4 flex-wrap">
                       <button
                         disabled={Number(filters.page) === 1}
                         onClick={() =>
@@ -275,7 +275,7 @@ const BrowseEvent = () => {
                             page: String(Number(prev.page) - 1),
                           }))
                         }
-                        className="bg-gray-700 text-white px-3 py-1 rounded disabled:opacity-50"
+                        className="bg-gray-700 text-white px-2 sm:px-3 py-1 rounded disabled:opacity-50 text-sm sm:text-base"
                       >
                         Prev
                       </button>
@@ -289,7 +289,7 @@ const BrowseEvent = () => {
                               page: String(i + 1),
                             }))
                           }
-                          className={`px-3 py-1 rounded ${Number(filters.page) === i + 1
+                          className={`px-2 sm:px-3 py-1 rounded text-sm sm:text-base ${Number(filters.page) === i + 1
                             ? "bg-blue-500 text-white"
                             : "bg-gray-300 text-black"
                             }`}
@@ -306,7 +306,7 @@ const BrowseEvent = () => {
                             page: String(Number(prev.page) + 1),
                           }))
                         }
-                        className="bg-gray-700 text-white px-3 py-1 rounded disabled:opacity-50"
+                        className="bg-gray-700 text-white px-2 sm:px-3 py-1 rounded disabled:opacity-50 text-sm sm:text-base"
                       >
                         Next
                       </button>
@@ -316,7 +316,7 @@ const BrowseEvent = () => {
 
                 </>
               ) : (
-                <p className="text-center text-white text-lg p-4 rounded-lg shadow-md mt-4">
+                <p className="text-center text-white text-sm sm:text-base md:text-lg p-4 rounded-lg shadow-md mt-4">
                   Sorry, we couldn't find any events near your selected location !!!
                 </p>
               )}
