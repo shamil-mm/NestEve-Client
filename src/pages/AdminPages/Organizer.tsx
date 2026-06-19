@@ -143,7 +143,7 @@ const Organizers = () => {
                 <th className="px-6 py-3 text-left text-sm font-semibold ">Email</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold ">Event Created</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold ">Ticket Purchased</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold ">Status</th>
+                {/* <th className="px-6 py-3 text-left text-sm font-semibold ">Status</th> */}
                 <th className="px-6 py-3 text-left text-sm font-semibold ">Actions</th>
               </tr>
             </thead>
@@ -155,7 +155,7 @@ const Organizers = () => {
                   <td className="px-6 py-4 text-sm text-gray-800">{user.email}</td>
                   <td className="px-6 py-4 text-sm text-gray-800">1</td>
                   <td className="px-6 py-4 text-sm text-gray-800">3</td>
-                  <td className="px-6 py-4 text-sm text-gray-800 text-center">
+                  {/* <td className="px-6 py-4 text-sm text-gray-800 text-center">
                     <span 
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
                         user.status === 'active' 
@@ -165,7 +165,7 @@ const Organizers = () => {
                     >
                       {user.status}
                     </span>
-                  </td>
+                  </td> */}
                   <td className="px-6 py-4 whitespace-nowrap text-center">
                     <div className="flex justify-center space-x-2">
                     <button onClick={()=>{handleBlock({email:user.email,is_block:user.is_block})}} className={`${user.is_block===false?'px-3 py-1 bg-yellow-600 rounded text-white':'p-1 bg-red-500 rounded text-white'}`}>

@@ -1,6 +1,5 @@
 import {io} from 'socket.io-client'
 
-console.log('communication url',import.meta.env.VITE_COMMUNICATION_URL)
 const socket =io(import.meta.env.VITE_COMMUNICATION_URL,{
      path: "/communication/socket.io",
      transports: ["websocket"],

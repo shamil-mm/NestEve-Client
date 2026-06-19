@@ -9,6 +9,7 @@ const User = () => {
     email: string;
     _id: string;
     status?: 'active' | 'suspended' | 'deleted';
+    createdAt:string;
     is_block: boolean
   }
   const [users, setUsers] = useState<Users[]>([]);
@@ -138,8 +139,8 @@ const User = () => {
                     <th className="px-6 py-3 text-left text-sm font-semibold">No</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">User Name</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
-                    <th className="px-6 py-3 text-center text-sm font-semibold">Ticket Purchased</th>
-                    <th className="px-6 py-3 text-center text-sm font-semibold">Status</th>
+                    
+                    <th className="px-6 py-3 text-center text-sm font-semibold">Join Date</th>
                     <th className="px-6 py-3 text-center text-sm font-semibold">Actions</th>
                   </tr>
                 </thead>
@@ -150,8 +151,8 @@ const User = () => {
                         <td className="px-6 py-4 text-sm text-gray-800">{index + 1}</td>
                         <td className="px-6 py-4 text-sm text-gray-800">{user.name}</td>
                         <td className="px-6 py-4 text-sm text-gray-800">{user.email}</td>
-                        <td className="px-6 py-4 text-sm text-center text-gray-800">2</td>
-                        <td className="px-6 py-4 text-center">
+                        <td className="px-6 py-4 text-sm text-center text-gray-800">{user.createdAt.split("T")[0]}</td>
+                        {/* <td className="px-6 py-4 text-center">
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-medium ${user.status === 'active'
                                 ? 'bg-green-100 text-green-700'
@@ -160,7 +161,7 @@ const User = () => {
                           >
                             {user.status}
                           </span>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 text-center">
                           <button
                             onClick={() =>

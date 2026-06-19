@@ -3,7 +3,7 @@ import { client } from './client';
 
 const API_BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
-export const userRegister =async (formData:{name:String;email:string;password:string,role:'user'|'organizer'| null,organization?:string})=>{
+export const userRegister =async (formData:{name:string;email:string;password:string,role:'user'|'organizer'| null,organization?:string})=>{
     try {
         const response= await axios.post(`${API_BASE_URL}/auth/api/register`,formData,{ withCredentials: true })
         console.log(response)
@@ -113,6 +113,7 @@ export const fetchUsers=async(searchTerm:string, sortField:string, sortDirection
         limit,
       },
     })
+    console.log("admin get users",response)
     return response
   } catch (error) {
     
