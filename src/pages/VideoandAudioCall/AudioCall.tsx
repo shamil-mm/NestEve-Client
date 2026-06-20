@@ -25,7 +25,7 @@ export default function AudioCall({ roomId, userId, userName }: AudioCallProps) 
 
   useEffect(() => {
     
-      const appID = +import.meta.env.VITE_ZEGOCLOUD_APPID;
+      const appID = import.meta.env.VITE_ZEGOCLOUD_APPID;
       const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SERVER_SECRET;
 
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
