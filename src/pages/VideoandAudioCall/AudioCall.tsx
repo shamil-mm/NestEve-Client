@@ -27,7 +27,8 @@ export default function AudioCall({ roomId, userId, userName }: AudioCallProps) 
     
       const appID = import.meta.env.VITE_ZEGOCLOUD_APPID;
       const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SERVER_SECRET;
-
+    console.log("appId",appID)
+    console.log("server Secret",serverSecret)
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
         appID,
         serverSecret,
