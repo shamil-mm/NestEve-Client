@@ -30,7 +30,7 @@ export default function AudioCall({ roomId, userId, userName }: AudioCallProps) 
     console.log("appId",appID)
     console.log("server Secret",serverSecret)
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-        appID,
+        Number(appID),
         serverSecret,
         roomID,
         UID,
