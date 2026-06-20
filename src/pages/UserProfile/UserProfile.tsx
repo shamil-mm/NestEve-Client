@@ -41,6 +41,7 @@ const UserProfile = () => {
     async function bookingfc() {
       try {
         const res = await getUserBookings(id as string)
+        console.log("from bookingfc",res?.data?.data)
         setBooking(res?.data?.data)
       } catch (error) {
         console.log(error);
@@ -48,7 +49,7 @@ const UserProfile = () => {
 
     }
     bookingfc()
-  }, [])
+  }, [id])
 
   const handleTicketModal = (value: boolean, booking: IBooking) => {
     setTicketModal(value)

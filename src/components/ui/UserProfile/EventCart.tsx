@@ -15,7 +15,6 @@ interface EventCartProps{
   ticketModal:(value:boolean,booking:IBooking)=>void
 }
 const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
-  console.log("eventId from event Cart",booking)
   const [localBooking, setLocalBooking] = useState<Partial<IBooking>>(booking);
 
   const [event,setEvent]=useState<IEvent|null>(null)

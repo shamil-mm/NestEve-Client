@@ -10,7 +10,7 @@ export interface IBooking {
             name:string,
             price:number,
             quantity:number,
-            selectedSeats:{ id: String, status: String, category: String, price: Number }[]
+            selectedSeats:{ id: string, status: string, category: string, price: number }[]
         }[],
     status:'confirmed'|'pending' |'cancelled' ,
     paymentStatus:'paid'|'unpaid'|'refund',
