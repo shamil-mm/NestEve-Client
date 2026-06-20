@@ -27,6 +27,7 @@ const EventCart:React.FC<EventCartProps> = ({booking,ticketModal}) => {
   useEffect(()=>{
     async function  getevent(){
       const eventId=localBooking?.eventId?._id
+      console.log("eventId from event Cart",eventId)
       const response=await fetchSingleEvent(eventId as string)
       setEvent(response?.data.events)
     }
