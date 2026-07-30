@@ -134,7 +134,7 @@ const BrowseEvent = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [filters.page]);
 
-  const handleSelectSuggestions = (suggestion: any) => {
+  const handleSelectSuggestions = (suggestion:any) => {
     if (!suggestion.lat || !suggestion.lon) return;
     isManualSelection.current = true
     setFilters(prev => ({

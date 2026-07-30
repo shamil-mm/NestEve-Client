@@ -17,15 +17,15 @@ export const client = axios.create({
        
 
            if (error.response && error.response.status === 401 && error.response.data.message==='Authentication required' ) {
-               try {
-                   console.log('its comming here for clear the data okay')
-                   store.dispatch(logoutSuccess());
-                   window.location.href = "/role"
-                   return Promise.reject(error);
-               } catch (err) {
-                   store.dispatch(logoutSuccess());
-                   return Promise.reject(err);
-               }
+            //    try {
+            //        console.log('its comming here for clear the data okay')
+            //        store.dispatch(logoutSuccess());
+            //        window.location.href = "/role"
+            //        return Promise.reject(error);
+            //    } catch (err) {
+            //        store.dispatch(logoutSuccess());
+            //        return Promise.reject(err);
+            //    }
             console.log(error)
             console.log(error.response)
            }

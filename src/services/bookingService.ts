@@ -19,7 +19,7 @@ export const getUserBookings= async(id:string)=>{
        return response
         
     } catch (error) {
-        console.log('error getting on getuser booking service' )
+        console.log(error,'error getting on getuser booking service' )
     }
 }
 export const fetchBookedSeats=async(id:string)=>{
@@ -28,7 +28,7 @@ export const fetchBookedSeats=async(id:string)=>{
         return response  
         
     } catch (error) {
-        console.log('error getting on fetchBookedSeats booking service' )
+        console.log(error,'error getting on fetchBookedSeats booking service' )
     }
 }
 export const cancelbooking=async(data:{userId:string,bookingId:string})=>{
@@ -37,7 +37,7 @@ export const cancelbooking=async(data:{userId:string,bookingId:string})=>{
         return response  
         
     } catch (error) {
-        console.log('error getting on cance booking in service' )
+        console.log(error,'error getting on cance booking in service' )
     }
 }
 
@@ -47,7 +47,7 @@ export const getwallet= async(id:string)=>{
        return response
         
     } catch (error) {
-        console.log('error getting on getuser booking service' )
+        console.log(error,'error getting on getuser booking service' )
     }
 }
 export const getBookingsByEventIds=async(ids:string[],queryParams:{
@@ -73,7 +73,7 @@ export const getBookingsByEventIds=async(ids:string[],queryParams:{
         console.log('response from booking service',response)
        return response
     } catch (error) {
-        console.log('error getting on getBookingsByEventIds booking service' )
+        console.log(error,'error getting on getBookingsByEventIds booking service' )
     }
 }
 export const fetchBooking=async(token:string)=>{
@@ -83,7 +83,7 @@ export const fetchBooking=async(token:string)=>{
        console.log('fetchBooking',response) 
        return response
     } catch (error) {
-        console.log('error getting on fetchBooking booking service' )
+        console.log(error,'error getting on fetchBooking booking service' )
     }
 }
 
@@ -98,9 +98,9 @@ export const getBookingByBookingId=async(bookingId:string,organizerId:string)=>{
         })
        
        return response
-    } catch (error :any) {
+    } catch (error ) {
        
-        console.log('error getting on getBookingByBookingId booking service' )
+        console.log(error,'error getting on getBookingByBookingId booking service' )
     }
 
 }
